@@ -11,7 +11,7 @@ import { IconBtn, Tip } from '../ui'
 import { usePhone } from '../../lib/hooks'
 import { cx, tc } from '../../lib/util'
 
-const TRUTH: Record<string, string> = { conceptual_ui: 'Made-up screen', conceptual_visual: 'Concept visual', external_footage: 'Stock footage', real_ui: 'Real product UI' }
+const TRUTH: Record<string, string> = { conceptual_ui: 'Made-up screen', conceptual_visual: 'Concept visual', external_footage: 'Stock footage', own_footage: 'Our own earlier films', placeholder_ui: 'Stand-in screen: the build records the real app', real_ui: 'Real product UI' }
 type Tab = 'overview' | 'choices' | 'sound' | 'notes'
 
 /** The full sheet for one shot: a playable frame with a filmstrip, and everything decided about the shot. */
@@ -136,7 +136,7 @@ function Overview({ id }: { id: string }) {
         <Fact k="Truth" v={TRUTH[sc.truth || 'real_ui'] || sc.truth || 'Real'} />
         <Fact k="Text on screen" v={`${sc.levels || 1} level${(sc.levels || 1) > 1 ? 's' : ''}${sc.copy ? `: ${sc.copy}` : ''}`} />
       </dl>
-      {sc.notes && <div><div className="label mb-1.5">Director's notes</div><dl className="flex flex-col gap-2">{Object.entries(sc.notes).map(([k, v]) => <div key={k} className="grid grid-cols-[90px_1fr] gap-2"><dt className="font-semibold capitalize text-muted">{k}</dt><dd>{v}</dd></div>)}</dl></div>}
+      {sc.notes && <div><div className="label mb-1.5">Director's comments</div><dl className="flex flex-col gap-2">{Object.entries(sc.notes).map(([k, v]) => <div key={k} className="grid grid-cols-[90px_1fr] gap-2"><dt className="font-semibold capitalize text-muted">{k}</dt><dd>{v}</dd></div>)}</dl></div>}
     </div>
   )
 }
@@ -193,10 +193,10 @@ function Notes({ id }: { id: string }) {
   return (
     <div className="flex flex-col gap-3 text-[13.5px]">
       <form className="flex flex-col gap-1.5" onSubmit={async e => { e.preventDefault(); if (!text.trim()) return; await addNote({ kind: 'shot', a: r.start, b: r.end, target: `Shot ${r.i + 1}: ${r.sc.name}`, scene: id, strokes: [], quick: [], category: 'story' }, text.trim()); setText('') }}>
-        <textarea value={text} onChange={e => setText(e.target.value)} rows={2} className="field resize-none" placeholder="A note about this whole shot: its idea, length or order" aria-label="Note on this shot" onKeyDown={e => e.stopPropagation()} />
-        <button type="submit" className="btn btn-ember btn-sm self-end" disabled={!text.trim()}>Save note</button>
+        <textarea value={text} onChange={e => setText(e.target.value)} rows={2} className="field resize-none" placeholder="A comment about this whole shot: its idea, length or order" aria-label="Comment on this shot" onKeyDown={e => e.stopPropagation()} />
+        <button type="submit" className="btn btn-ember btn-sm self-end" disabled={!text.trim()}>Save comment</button>
       </form>
-      {!mine.length ? <p className="text-muted">No notes on this shot yet.</p> : (
+      {!mine.length ? <p className="text-muted">No comments on this shot yet.</p> : (
         <ol className="flex flex-col gap-2">{mine.map(({ n, num }) => (
           <li key={n.id} className="card p-2.5"><div className="flex items-baseline gap-2"><span className="grid h-5 min-w-5 place-items-center rounded-full bg-ember px-1 text-[11px] font-extrabold text-ember-ink">{num}</span><b className="truncate">{n.target}</b><span className="mono ml-auto text-[11.5px] text-dim">{tc(n.t)}</span></div><p className="mt-1 text-muted">{n.text}</p></li>
         ))}</ol>

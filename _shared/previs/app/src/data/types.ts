@@ -171,4 +171,7 @@ export interface ClaudeStatus { state: 'idle' | 'reading' | 'working' | 'publish
 /** One line in the activity feed (collection films/<id>/activity). */
 export interface Activity { id: string; at: string; by: 'claude' | 'you' | string; kind: 'seen' | 'applied' | 'published' | 'question' | 'note' | 'info' | string; text: string; noteIds?: string[]; version?: string }
 
+/** A free note about the whole film (an idea, a reminder, a decision). Claude reads notes as background, never as change requests. */
+export interface PadNote { id: string; text: string; at: string; by?: string; who?: 'you' | 'claude'; local?: boolean }
+
 export interface Approval { approved: boolean; picks: Picks; tweaks: Tweaks; version: string; at: string; notesOpen: number; by?: string }

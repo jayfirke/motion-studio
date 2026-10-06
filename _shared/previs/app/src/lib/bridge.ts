@@ -35,9 +35,10 @@ export function claudeMessage(only?: Note[]): string {
   const ver = M?.D.versions?.slice(-1)[0]?.v || 'v0.1'
   const lines = list.slice(0, 25).map((n, i) => `${i + 1}. [${tc(n.t)}${n.t2 != null ? `–${tc(n.t2)}` : ''}] ${n.kind === 'request' ? 'REQUEST' : n.intent === 'question' ? 'QUESTION' : n.priority === 'nice' ? 'nice-to-have' : 'change'} · ${n.target}: ${n.text}${n.prefer ? ` (prefers ${n.prefer.key} → ${n.prefer.id})` : ''}`)
   return [
-    `Previs Studio: please work through my notes on ${M?.D.project.product || film?.id} (${ver}).`,
+    `Previs Studio: please work through my comments on ${M?.D.project.product || film?.id} (${ver}).`,
     `Read them from the page database: collection films/${film?.id}/notes (also films/${film?.id}/state/picks, state/custom, state/approval).`,
-    `Mark each note seen, then done with a one-line reply, log what you did in films/${film?.id}/activity, and publish a new version.`,
+    `Mark each comment seen, then done with a one-line reply, log what you did in films/${film?.id}/activity, and publish a new version.`,
+    `Also read my notes in films/${film?.id}/pad: they are background thoughts about the whole film, not change requests.`,
     '',
     `${list.length} open:`,
     ...lines,
@@ -47,8 +48,8 @@ export function claudeMessage(only?: Note[]): string {
 
 export async function copyForClaude(only?: Note[]) {
   const text = claudeMessage(only)
-  try { await navigator.clipboard.writeText(text); toast.success('Copied for Claude Code', { description: 'Paste it into your Claude Code chat. Claude reads the notes from this page.' }); logActivity('Copied the open notes for the Claude Code chat', 'note'); return true }
-  catch { toast.error('Copy is blocked here', { description: 'Open "How Claude works with your notes" and select the message by hand.' }); return false }
+  try { await navigator.clipboard.writeText(text); toast.success('Copied for Claude Code', { description: 'Paste it into your Claude Code chat. Claude reads the comments from this page.' }); logActivity('Copied the open comments for the Claude Code chat', 'note'); return true }
+  catch { toast.error('Copy is blocked here', { description: 'Open "How Claude works with your comments" and select the message by hand.' }); return false }
 }
 
 /** Posts the open notes as a page comment and sends it to Claude (live sessions watching this page). */
@@ -63,8 +64,8 @@ export async function sendToClaude(el: Element, only?: Note[]): Promise<boolean>
   try {
     const anchor = await c.anchorFor(el)
     await c.sendToClaude({ anchor, text: claudeMessage(only) })
-    toast.success('Sent to Claude Code', { description: 'Claude replies in this page’s comments and marks each note here as it works.' })
-    logActivity(`Sent ${(only || ui.get().notes.filter(n => n.status !== 'done')).length} notes to Claude Code`, 'note')
+    toast.success('Sent to Claude Code', { description: 'Claude replies in this page’s comments and marks each comment here as it works.' })
+    logActivity(`Sent ${(only || ui.get().notes.filter(n => n.status !== 'done')).length} comments to Claude Code`, 'note')
     return true
   } catch (e) {
     const code = (e as { code?: string })?.code

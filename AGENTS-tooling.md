@@ -174,7 +174,7 @@ python3 _shared/tools/freesound.py get 256455 448086 --dir projects/NNN-name/aud
 
 ```bash
 ffmpeg -i input.mp4 -ar 16000 -ac 1 /tmp/a.wav
-whisper-cli -m "$HOME/Library/Application Support/ru.starmel.OpenSuperWhisper/whisper-models/ggml-large-v3-turbo.bin" \
+whisper-cli -m "${WHISPER_MODEL:-$HOME/Library/Application Support/ru.starmel.OpenSuperWhisper/whisper-models/ggml-large-v3-turbo.bin}"   # Linux/WSL 2: ~/.local/share/whisper-models/ggml-large-v3-turbo.bin \
   -f /tmp/a.wav -ojf -of whisper-full -l en          # -l hi for Hindi
 npx hyperframes@0.8.134 transcribe whisper-full.json  # word-level transcript.json
 ```

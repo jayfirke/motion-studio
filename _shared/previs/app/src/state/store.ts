@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { toast } from 'sonner'
-import type { Activity, Approval, Box, ClaudeStatus, FilmRef, Note, NoteCategory, Option, Picks, Previs, Stroke, Tweaks } from '../data/types'
+import type { Activity, Approval, Box, ClaudeStatus, FilmRef, Note, NoteCategory, Option, Picks, Previs, Stroke, Tweaks, PadNote } from '../data/types'
 import { buildModel, makeCtx, optLabel, type Ctx, type Custom, type Model } from '../data/model'
 import { validatePrevis } from '../data/schema'
 import type { Lane, Mix } from '../engine/audio'
@@ -35,6 +35,7 @@ interface State {
   past: Snap[]
   future: Snap[]
   notes: Note[]
+  pad: PadNote[]
   approval: Approval | null
   claude: ClaudeStatus | null
   activity: Activity[]
@@ -71,7 +72,7 @@ const PREFS0: Prefs = { theme: 'system', captions: false, replay: true, ...(ls.g
 export const useStudio = create<State>(() => ({
   films: [], film: null, raw: null, M: null, problems: null, loading: true,
   picks: {}, tweaks: {}, custom: {}, hold: false, C: null, past: [], future: [],
-  notes: [], approval: null, claude: null, activity: [],
+  notes: [], pad: [], approval: null, claude: null, activity: [],
   view: 'watch', T: 0, playing: false, rate: 1, loop: false,
   mode: 'watch', tool: 'point', side: (ls.get<Side>('studio2:side') || 'steps'), drawer: false, peek: false, compare: null, step: -1, selNote: null, draft: null,
   mix: MIX0, full: false, sync: 'connecting', saving: 'idle', me: null, prefs: PREFS0, overlay: null, library: null, sheet: null,
@@ -111,7 +112,15 @@ export async function fetchFilm(f: FilmRef) {
   if (cache.has(f.id)) return cache.get(f.id)
   const r = await fetch(f.path + 'previs.json', { cache: 'no-store' })
   if (!r.ok) throw new Error(`previs.json not found for ${f.id}`)
-  const j = await r.json(); cache.set(f.id, j); return j
+  const j = await r.json(); withBase(j, f.path); cache.set(f.id, j); return j
+}
+
+/** Scene HTML may point at the film's own files (`src="media/shot.png"`); make those relative to the film folder. */
+function withBase(j: unknown, base: string) {
+  const scenes = (j as { scenes?: { html?: string }[] })?.scenes
+  if (!base || !Array.isArray(scenes)) return
+  for (const sc of scenes) if (typeof sc.html === 'string')
+    sc.html = sc.html.replace(/\b(src|poster)="(?!https?:|data:|blob:|\/|#)([^"]+)"/g, (_m, a: string, u: string) => `${a}="${base}${u}"`)
 }
 
 let unsubs: (() => void)[] = []
@@ -130,7 +139,7 @@ export async function openFilm(f: FilmRef) {
   Object.keys(picks).forEach(k => { if (!M.DEC[k] || !M.DEC[k].options.some(o => o.id === picks[k])) picks[k] = M.DIRECTOR[k] })
   const tweaks = saved?.tweaks || {}
   const view = (ls.get<View>(`studio2:${f.id}:view`) || 'watch') as View
-  set({ raw: v.data, custom, M, picks, tweaks, past: [], future: [], notes: ls.get<Note[]>(`studio2:${f.id}:notes`) || [], approval: ls.get<Approval>(`studio2:${f.id}:approval`), claude: null, activity: [], view: view === 'home' ? 'watch' : view, loading: false, compare: null, draft: null, step: -1, selNote: null, mode: 'watch', library: null, sheet: null, T: M.D.scenes[0].key ?? 0.8 })
+  set({ raw: v.data, custom, M, picks, tweaks, past: [], future: [], notes: ls.get<Note[]>(`studio2:${f.id}:notes`) || [], pad: ls.get<PadNote[]>(`studio2:${f.id}:pad`) || [], approval: ls.get<Approval>(`studio2:${f.id}:approval`), claude: null, activity: [], view: view === 'home' ? 'watch' : view, loading: false, compare: null, draft: null, step: -1, selNote: null, mode: 'watch', library: null, sheet: null, T: M.D.scenes[0].key ?? 0.8 })
   applyLaneTweaks()
   recompute()
   if (location.hash.replace('#', '') !== f.id && get().films.length > 1) history.replaceState(null, '', '#' + f.id)
@@ -167,8 +176,8 @@ async function connect(f: FilmRef) {
     if (!first) notes.forEach((n, i) => {
       const p = prev.get(n.id); if (!p) return
       const cr = (x: Note) => (x.replies || []).filter(r => r.by === 'claude').length + (x.reply ? 1 : 0)
-      if (cr(n) > cr(p)) toast(`Claude replied on note ${i + 1}`, { description: (n.replies || []).filter(r => r.by === 'claude').slice(-1)[0]?.text || n.reply })
-      else if (n.claude?.state && n.claude.state !== p.claude?.state) toast(`Claude: note ${i + 1} ${n.claude.state === 'done' ? 'is done' : n.claude.state === 'working' ? 'is being worked on' : n.claude.state === 'seen' ? 'was read' : 'has a question'}`)
+      if (cr(n) > cr(p)) toast(`Claude replied on comment ${i + 1}`, { description: (n.replies || []).filter(r => r.by === 'claude').slice(-1)[0]?.text || n.reply })
+      else if (n.claude?.state && n.claude.state !== p.claude?.state) toast(`Claude: comment ${i + 1} ${n.claude.state === 'done' ? 'is done' : n.claude.state === 'working' ? 'is being worked on' : n.claude.state === 'seen' ? 'was read' : 'has a question'}`)
     })
     first = false
     set({ notes })
@@ -191,6 +200,10 @@ async function connect(f: FilmRef) {
   }))
   unsubs.push(db.doc(`films/${f.id}/state/approval`).onSnapshot(s => set({ approval: s.exists ? (s.data() as unknown as Approval) : null })))
   unsubs.push(db.doc(`films/${f.id}/state/claude`).onSnapshot(s => set({ claude: s.exists ? (s.data() as unknown as ClaudeStatus) : null })))
+  unsubs.push(db.collection(`films/${f.id}/pad`).onSnapshot(s => {
+    const pad = [...s.docs.map(d => ({ ...(d.data() as unknown as PadNote), id: d.id })), ...get().pad.filter(p => p.local)].sort((x, y) => (y.at || '').localeCompare(x.at || ''))
+    set({ pad })
+  }))
   unsubs.push(db.collection(`films/${f.id}/activity`).onSnapshot(s => {
     const acts = s.docs.map(d => ({ ...(d.data() as unknown as Activity), id: d.id })).sort((a, b) => (b.at || '').localeCompare(a.at || '')).slice(0, 80)
     set({ activity: acts })
@@ -305,12 +318,12 @@ export async function addNote(draft: Draft, text: string): Promise<Note | null> 
     category: draft.category || 'other', priority: draft.priority || 'must', intent: draft.intent || 'change', prefer: draft.prefer || null, claude: null,
   }
   if (db) {
-    try { const ref = await db.collection(`films/${film.id}/notes`).add(n as unknown as Record<string, unknown>); toast.success(draft.kind === 'request' ? 'Request filed for Claude Code' : 'Note saved for Claude', { description: 'Send your notes to Claude Code from the Notes tab when you are ready.' }); return { ...n, id: (ref as unknown as { id?: string }).id || 'new' } }
+    try { const ref = await db.collection(`films/${film.id}/notes`).add(n as unknown as Record<string, unknown>); toast.success(draft.kind === 'request' ? 'Request filed for Claude Code' : 'Comment saved for Claude', { description: 'Send your comments to Claude Code from the Comments tab when you are ready.' }); return { ...n, id: (ref as unknown as { id?: string }).id || 'new' } }
     catch { /* fall back below */ }
   }
   const local: Note = { ...n, id: 'local-' + Date.now().toString(36), local: true }
   const notes = [...get().notes, local]; set({ notes }); ls.set(key('notes'), notes.filter(x => x.local))
-  toast.success(db ? 'Saved in this browser (the page database refused it)' : 'Note saved in this browser')
+  toast.success(db ? 'Saved in this browser (the page database refused it)' : 'Comment saved in this browser')
   return local
 }
 /** A job only Claude Code can do (record a new line, find a sound outside the library...). */
@@ -321,12 +334,25 @@ export function addRequest(text: string, scene?: string) {
 export async function patchNote(n: Note, patch: Partial<Note>) {
   const { film } = get(); if (!film) return
   if (n.local || !db) { const notes = get().notes.map(x => (x.id === n.id ? { ...x, ...patch } : x)); set({ notes }); ls.set(key('notes'), notes.filter(x => x.local)); return }
-  try { await db.doc(`films/${film.id}/notes/${n.id}`).update(patch as Record<string, unknown>) } catch { toast.error('Could not update the note') }
+  try { await db.doc(`films/${film.id}/notes/${n.id}`).update(patch as Record<string, unknown>) } catch { toast.error('Could not update the comment') }
 }
 export async function deleteNote(n: Note) {
   const { film } = get(); if (!film) return
   if (n.local || !db) { const notes = get().notes.filter(x => x.id !== n.id); set({ notes }); ls.set(key('notes'), notes.filter(x => x.local)); return }
-  try { await db.doc(`films/${film.id}/notes/${n.id}`).delete() } catch { toast.error('Could not delete the note') }
+  try { await db.doc(`films/${film.id}/notes/${n.id}`).delete() } catch { toast.error('Could not delete the comment') }
+}
+/* ---------------- notes pad: free thoughts about the whole film (not change requests) ---------------- */
+export async function addPad(text: string) {
+  const { film, me } = get(); const t = text.trim(); if (!film || !t) return
+  const n: Omit<PadNote, 'id'> = { text: t, at: new Date().toISOString(), by: me || '', who: 'you' }
+  if (db) { try { await db.collection(`films/${film.id}/pad`).add(n as unknown as Record<string, unknown>); toast.success('Note saved', { description: 'Claude reads your notes as background. To ask for a change, use Comment.' }); return } catch { /* local below */ } }
+  const pad = [{ ...n, id: 'local-' + Date.now().toString(36), local: true }, ...get().pad]; set({ pad }); ls.set(key('pad'), pad.filter(x => x.local))
+  toast.success('Note saved in this browser')
+}
+export async function deletePad(p: PadNote) {
+  const { film } = get(); if (!film) return
+  if (p.local || !db) { const pad = get().pad.filter(x => x.id !== p.id); set({ pad }); ls.set(key('pad'), pad.filter(x => x.local)); return }
+  try { await db.doc(`films/${film.id}/pad/${p.id}`).delete() } catch { toast.error('Could not delete the note') }
 }
 /** Your side of the activity feed (Claude Code writes its own lines). */
 export async function logActivity(text: string, kind = 'note') {

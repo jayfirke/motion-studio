@@ -11,7 +11,7 @@ import { Check, Volume2 } from 'lucide-react'
 import { Curve } from '../choices/Curve'
 import { Tip } from '../ui'
 
-const TRUTH: Record<string, string> = { conceptual_ui: 'Made-up screen', conceptual_visual: 'Concept visual', external_footage: 'Stock footage' }
+const TRUTH: Record<string, string> = { conceptual_ui: 'Made-up screen', conceptual_visual: 'Concept visual', external_footage: 'Stock footage', own_footage: 'Our own earlier films', placeholder_ui: 'Stand-in screen: the build records the real app' }
 
 /** The film frame (or two frames when comparing), fitted to whatever space the player has. */
 export function Stage() {

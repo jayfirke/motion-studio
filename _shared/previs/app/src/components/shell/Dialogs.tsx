@@ -58,7 +58,7 @@ export function ApproveDialog() {
         )}
         <section className={cx('flex items-start gap-2.5 rounded-[10px] px-3 py-2.5 text-[13.5px]', openN ? 'bg-amber/10 text-amber' : 'bg-mint/10 text-mint')}>
           {openN ? <MessageSquare size={16} className="mt-0.5 shrink-0" /> : <CheckCircle2 size={16} className="mt-0.5 shrink-0" />}
-          <span>{openN ? `${openN} open note${openN > 1 ? 's' : ''} will go to Claude with this approval. Claude applies them while building.` : 'No open notes.'}{openN > 0 && <button type="button" className="ml-1.5 font-semibold underline" onClick={() => { close(); setSide('notes') }}>Review notes</button>}</span>
+          <span>{openN ? `${openN} open comment${openN > 1 ? 's' : ''} will go to Claude with this approval. Claude applies them while building.` : 'No open comments.'}{openN > 0 && <button type="button" className="ml-1.5 font-semibold underline" onClick={() => { close(); setSide('notes') }}>Review comments</button>}</span>
         </section>
         <section>
           <div className="label mb-1.5">What happens next</div>
@@ -79,8 +79,8 @@ export function ApproveDialog() {
 /* ---------------- help ---------------- */
 const KEYS: [string[], string][] = [
   [['Space'], 'Play or pause'], [['←', '→'], 'One frame back or forward'], [['⇧', '←/→'], 'One second back or forward'], [['J', 'L'], 'Two seconds back or forward'],
-  [['[', ']'], 'Previous or next shot'], [['Home'], 'Back to the start'], [['C'], 'Comment mode on or off'], [['⇧', 'drag'], 'On the shots row: note a stretch of time'], [['P'], 'Draw (in comment mode)'], [['A'], 'Arrow (in comment mode)'],
-  [['N'], 'Next note'], [['S'], 'Captions on or off'], [['⇧', 'N'], 'Previous note'], [['\\'], 'Hold to hear the original picks'], [['F'], 'Full screen'], [['M'], 'Mute'],
+  [['[', ']'], 'Previous or next shot'], [['Home'], 'Back to the start'], [['C'], 'Comment mode on or off'], [['⇧', 'drag'], 'On the shots row: comment a stretch of time'], [['P'], 'Draw (in comment mode)'], [['A'], 'Arrow (in comment mode)'],
+  [['N'], 'Next comment'], [['S'], 'Captions on or off'], [['⇧', 'N'], 'Previous comment'], [['\\'], 'Hold to hear the original picks'], [['F'], 'Full screen'], [['M'], 'Mute'],
   [[modKey, 'Z'], 'Undo'], [['⇧', modKey, 'Z'], 'Redo'], [[modKey, 'K'], 'Search choices and commands'], [['1', '2', '3'], 'Watch, Storyboard, Plan'], [['Esc'], 'Close or step back'],
 ]
 export function HelpDialog() {
@@ -95,7 +95,7 @@ export function HelpDialog() {
             ['Change', 'Open Choices. Every decision has three options. Click one and that moment replays with it.'],
             ['Comment', 'Press C, then click any part of the frame. Drag a box to cover several parts, or drag across the timeline to mark a stretch of time.'],
             ['More options', 'Every choice has "More options": a library of looks, music, motion, voices and more, or describe what you want ("simple and sober"). The Ask tab does the same in plain words.'],
-            ['Send to Claude Code', 'Notes → Send to Claude Code. Claude marks each note Seen, Working and Done, replies, and publishes a new version.'],
+            ['Send to Claude Code', 'Comments → Send to Claude Code. Claude marks each comment Seen, Working and Done, replies, and publishes a new version.'],
             ['Approve', 'When it feels right, press Approve. Claude freezes your picks and builds the video.'],
           ].map(([t, d], i) => <li key={t} className="flex gap-3"><span className="mono grid h-7 w-7 shrink-0 place-items-center rounded-full bg-raise text-[12px] font-bold">{i + 1}</span><div><b className="text-[14px]">{t}</b><p className="text-[13px] leading-snug text-muted">{d}</p></div></li>)}
           <button type="button" className="btn btn-sm mt-1 self-start" onClick={() => { ui.set({ overlay: 'tour' }) }}>Show me around again</button>
@@ -116,8 +116,8 @@ const TOUR = [
   { at: 'frame', title: 'This is your film', body: 'A quick preview with real music, voice and sounds. Click the frame or press Space to play.' },
   { at: 'side', title: 'Change anything', body: 'Every decision has three options. Click one and that moment replays right away with your pick.' },
   { at: 'comment', title: 'Point at what to change', body: 'Press Comment, then click any part of the frame. Drag a box around several parts, or draw.' },
-  { at: 'timeline', title: 'Shots and sound', body: 'Shots on top, then voice, music and sounds. Drag across the shots to note a stretch of time; drag a sound to move it.' },
-  { at: 'claude', title: 'Claude Code picks up your notes', body: 'Send your notes from here or from the Notes tab. You see each one move from Seen to Done, with Claude\u2019s reply.' },
+  { at: 'timeline', title: 'Shots and sound', body: 'Shots on top, then voice, music and sounds. Drag across the shots to comment a stretch of time; drag a sound to move it.' },
+  { at: 'claude', title: 'Claude Code picks up your comments', body: 'Send your comments from here or from the Comments tab. You see each one move from Seen to Done, with Claude\u2019s reply.' },
   { at: 'approve', title: 'Approve when it feels right', body: 'Claude builds the real video only after you approve.' },
 ]
 export function Tour() {
@@ -179,13 +179,13 @@ export function ClaudeDialog() {
   const openNotes = notes.filter(n => n.status !== 'done')
   const msg = open ? claudeMessage(openNotes) : ''
   const steps: [string, string][] = [
-    ['You leave notes', 'Point at anything and write what should change. Each note is saved in this page’s database with your current picks, so Claude sees exactly what you saw.'],
-    ['You send them to Claude Code', st === 'available' ? 'A Claude Code session is watching this page right now: Send posts your notes as a page comment and Claude gets them straight away.' : 'Send copies a ready message. Paste it into your Claude Code chat (the session that made this film). When a session is watching the page, Send reaches it directly instead.'],
-    ['Claude works through them', 'Each note moves from Seen to Working to Done, with a one-line reply, or Claude asks a question. Claude changes only what a note points at and logs every step under Notes → Activity.'],
+    ['You leave comments', 'Point at anything and write what should change. Each comment is saved in this page’s database with your current picks, so Claude sees exactly what you saw.'],
+    ['You send them to Claude Code', st === 'available' ? 'A Claude Code session is watching this page right now: Send posts your comments as a page comment and Claude gets them straight away.' : 'Send copies a ready message. Paste it into your Claude Code chat (the session that made this film). When a session is watching the page, Send reaches it directly instead.'],
+    ['Claude works through them', 'Each comment moves from Seen to Working to Done, with a one-line reply, or Claude asks a question. Claude changes only what a comment points at and logs every step under Comments → Activity.'],
     ['A new version arrives', 'Claude publishes the update to the same link. A banner shows what changed, and Plan → Versions lets you ask to undo any change.'],
   ]
   return (
-    <Shell open={open} onClose={close} wide title="How Claude Code works with your notes" desc="Your notes are the to-do list for the next version. Nothing changes in the film until Claude applies them; nothing is rendered until you approve.">
+    <Shell open={open} onClose={close} wide title="How Claude Code works with your comments" desc="Your comments are the to-do list for the next version. Nothing changes in the film until Claude applies them; nothing is rendered until you approve.">
       <div ref={box} className="grid gap-5 md:grid-cols-[1.1fr_1fr]">
         <ol className="flex flex-col gap-3">
           {steps.map(([t, d], i) => <li key={t} className="flex gap-3"><span className="mono grid h-7 w-7 shrink-0 place-items-center rounded-full bg-raise text-[12px] font-bold">{i + 1}</span><div><b className="text-[14px]">{t}</b><p className="text-[13px] leading-snug text-muted">{d}</p></div></li>)}
@@ -195,7 +195,7 @@ export function ClaudeDialog() {
         </ol>
         <div className="flex flex-col gap-2">
           <div className="label">Claude Code now</div>
-          <p className="text-[13px] text-muted">{claude ? `${claude.state} · ${claude.message || 'no message'} (${new Date(claude.at).toLocaleString()})` : 'Has not picked up notes on this film yet.'} {st === 'available' ? 'A session is watching this page.' : st === 'no_session' ? 'No session is watching this page right now.' : ''}</p>
+          <p className="text-[13px] text-muted">{claude ? `${claude.state} · ${claude.message || 'no message'} (${new Date(claude.at).toLocaleString()})` : 'Has not picked up comments on this film yet.'} {st === 'available' ? 'A session is watching this page.' : st === 'no_session' ? 'No session is watching this page right now.' : ''}</p>
           <div className="label mt-2">The message Claude gets</div>
           <textarea readOnly value={msg} rows={9} className="field mono resize-none text-[11.5px]" aria-label="Message for Claude Code" onFocus={e => e.currentTarget.select()} />
           <div className="flex gap-2">

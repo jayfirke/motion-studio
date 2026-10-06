@@ -70,17 +70,17 @@ function ComposerBox({ draft }: { draft: Draft }) {
   return (
     <>
       {phone && <div className="scrim" onClick={close} />}
-      <div ref={box} role="dialog" aria-label="Add a note" data-testid="composer"
+      <div ref={box} role="dialog" aria-label="Add a comment" data-testid="composer"
         className={cx('pop fixed z-[95] flex flex-col gap-3 p-4', phone ? 'inset-x-0 bottom-0 rounded-b-none pb-[max(16px,env(safe-area-inset-bottom))]' : 'w-[340px]')}
         style={phone ? undefined : { left: pos?.left ?? -9999, top: pos?.top ?? -9999 }}
         onKeyDown={e => e.stopPropagation()} onPointerDown={e => e.stopPropagation()}>
         <div className="flex items-start gap-2">
           <div className="min-w-0 flex-1">
-            <div className="label">Note on</div>
+            <div className="label">Comment on</div>
             <div className="truncate text-[15px] font-bold" title={draft.target}>{draft.target}</div>
             <div className="mono mt-0.5 text-[12px] text-muted">{when}{shot ? ` · shot ${shot.i + 1} ${shot.sc.name}` : ''}{draft.kind === 'region' && draft.targets && draft.targets.length > 1 ? ` · ${draft.targets.length} parts` : ''}</div>
           </div>
-          <IconBtn small label="Close" desc="Discard this note" keys={['Esc']} onClick={close}><X size={16} /></IconBtn>
+          <IconBtn small label="Close" desc="Discard this comment" keys={['Esc']} onClick={close}><X size={16} /></IconBtn>
         </div>
         {QUICK[draft.kind]?.length > 0 && (
           <div className="flex flex-wrap gap-1.5">
@@ -91,7 +91,7 @@ function ComposerBox({ draft }: { draft: Draft }) {
           </div>
         )}
         <div className="flex flex-col gap-1.5" data-testid="note-meta">
-          <div className="flex flex-wrap gap-1" role="group" aria-label="What is this note about">
+          <div className="flex flex-wrap gap-1" role="group" aria-label="What is this comment about">
             {(Object.keys(CATS) as NoteCategory[]).map(c => <button key={c} type="button" aria-pressed={cat === c} onClick={() => patch({ category: c })} className={cx('rounded-full px-2 py-0.5 text-[11.5px] font-semibold', cat === c ? 'bg-fg text-ink' : 'bg-raise text-muted hover:text-fg')}>{CATS[c]}</button>)}
           </div>
           <div className="flex flex-wrap items-center gap-1.5">
@@ -112,12 +112,12 @@ function ComposerBox({ draft }: { draft: Draft }) {
           )}
         </div>
         <textarea ref={ta} rows={phone ? 2 : 3} value={text} onChange={e => setText(e.target.value)} className="field resize-none text-[14px]"
-          placeholder="What should change? Plain words are fine." aria-label="Your note"
+          placeholder="What should change? Plain words are fine." aria-label="Your comment"
           onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); save() } if (e.key === 'Escape') close() }} />
         <div className="flex items-center gap-1">
           {drawable && (
             <>
-              <IconBtn small label="Point" desc="Click a part to note it, or drag a box around several" on={tool === 'point'} onClick={() => ui.set({ tool: 'point' })}><MousePointer2 size={15} /></IconBtn>
+              <IconBtn small label="Point" desc="Click a part to comment it, or drag a box around several" on={tool === 'point'} onClick={() => ui.set({ tool: 'point' })}><MousePointer2 size={15} /></IconBtn>
               <IconBtn small label="Draw" desc="Draw freehand on the frame to show what you mean" keys={['P']} on={tool === 'pen'} onClick={() => ui.set({ tool: 'pen' })}><PenLine size={15} /></IconBtn>
               <IconBtn small label="Arrow" desc="Drag an arrow to show where something should go" keys={['A']} on={tool === 'arrow'} onClick={() => ui.set({ tool: 'arrow' })}><ArrowUpRight size={15} /></IconBtn>
               {draft.strokes.length > 0 && <IconBtn small label="Clear drawing" desc="Remove the lines you drew" onClick={() => ui.set({ draft: { ...draft, strokes: [] } })}><Trash2 size={15} /></IconBtn>}
@@ -125,7 +125,7 @@ function ComposerBox({ draft }: { draft: Draft }) {
           )}
           <span className="flex-1" />
           {!phone && <span className="mr-1 hidden items-center gap-1 text-[11.5px] text-dim sm:flex"><Kbd>Enter</Kbd> save</span>}
-          <button type="button" className="btn btn-ember btn-sm" disabled={!can} onClick={save} data-testid="save-note"><Send size={14} />Save note</button>
+          <button type="button" className="btn btn-ember btn-sm" disabled={!can} onClick={save} data-testid="save-note"><Send size={14} />Save comment</button>
         </div>
       </div>
     </>

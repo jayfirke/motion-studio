@@ -103,7 +103,7 @@ function Body({ k }: { k: string }) {
           </ul>
         )}
       </div>
-      <form className="flex gap-1.5 border-t border-line px-4 py-3" onSubmit={e => { e.preventDefault(); if (!req.trim()) return; addRequest(`${d.q}${d.scene ? ` (${d.scene})` : ''}: ${req.trim()}`, d.scene || undefined); setReq(''); toast.success('Filed for Claude Code', { description: 'It appears in Notes; send your notes to Claude Code when ready.' }) }}>
+      <form className="flex gap-1.5 border-t border-line px-4 py-3" onSubmit={e => { e.preventDefault(); if (!req.trim()) return; addRequest(`${d.q}${d.scene ? ` (${d.scene})` : ''}: ${req.trim()}`, d.scene || undefined); setReq(''); toast.success('Filed for Claude Code', { description: 'It appears in Comments; send your comments to Claude Code when ready.' }) }}>
         <input value={req} onChange={e => setReq(e.target.value)} className="field text-[13px]" placeholder="Not here? Ask Claude Code for it" aria-label="Request for Claude Code" />
         <button type="submit" className="btn shrink-0" disabled={!req.trim()}><Send size={14} />File</button>
       </form>

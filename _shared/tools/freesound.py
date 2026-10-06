@@ -31,13 +31,12 @@ FIELDS = 'id,name,username,license,duration,avg_rating,num_ratings,num_downloads
 
 
 def api_key():
-    key = os.environ.get('FREESOUND_API_KEY', '').strip()
+    # env var → macOS Keychain → Linux secret store → ~/.config/motion-studio/keys.env (see keystore.py)
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from keystore import get_key, where
+    key = get_key('FREESOUND_API_KEY', KEYCHAIN_ITEM)
     if not key:
-        try:
-            key = subprocess.run(['security', 'find-generic-password', '-s', KEYCHAIN_ITEM, '-w'],
-                                 capture_output=True, text=True, check=True).stdout.strip()
-        except (subprocess.CalledProcessError, FileNotFoundError):
-            sys.exit(f'No Freesound key: set FREESOUND_API_KEY or add Keychain item "{KEYCHAIN_ITEM}".')
+        sys.exit(f'No Freesound key: ' + where('FREESOUND_API_KEY', KEYCHAIN_ITEM) + '.')
     return key
 
 

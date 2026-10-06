@@ -12,6 +12,8 @@ export interface Dec {
   options: Option[]
   chosen: string
   sfx?: Sfx
+  /** Only one option: the director (or the reviewer) has fixed it. It still plays, but no choice card is shown. */
+  locked?: boolean
 }
 
 export interface Model { D: Previs; DEC: Record<string, Dec>; ORDER: string[]; DIRECTOR: Picks }
@@ -37,7 +39,13 @@ export type Custom = Record<string, Option[]>
 export function buildModel(D: Previs, custom: Custom = {}): Model {
   const DEC: Record<string, Dec> = {}, ORDER: string[] = []
   // Options added by the reviewer or the AI director sit after the director's three.
-  const add = (d: Dec) => { const extra = (custom[d.key] || []).filter(o => !d.options.some(x => x.id === o.id)); if (extra.length) d = { ...d, options: [...d.options, ...extra] }; DEC[d.key] = d; ORDER.push(d.key) }
+  // A decision with a single option is locked (for example the script and voice the owner asked the director to fix): it resolves
+  // like any other but stays out of ORDER, so no choice card, guide step or "changed" count ever shows it.
+  const add = (d: Dec) => {
+    const extra = (custom[d.key] || []).filter(o => !d.options.some(x => x.id === o.id)); if (extra.length) d = { ...d, options: [...d.options, ...extra] }
+    if (d.options.length < 2) { DEC[d.key] = { ...d, locked: true }; return }
+    DEC[d.key] = d; ORDER.push(d.key)
+  }
   add({ key: 'direction', q: 'Which look?', help: HELP.direction, kind: 'direction', scene: null, owner: 'art', options: D.directions.options, chosen: D.directions.chosen })
   const G: Record<string, [string, string]> = { music: ['Which music?', 'music'], motion: ['How should things move?', 'motion'], pacing: ['How fast is the film?', 'editorial'], voice: ['Which voice?', 'script'] }
   Object.entries(D.global).forEach(([k, v]) => add({ key: k, q: G[k]?.[0] || v.label || k, help: HELP[k] || '', kind: k, scene: null, owner: G[k]?.[1], options: v.options, chosen: v.chosen }))

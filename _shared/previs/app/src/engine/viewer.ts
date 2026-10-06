@@ -50,7 +50,38 @@ interface SceneRt {
   sets: { e: HTMLElement; at: number; cls: string; until?: number }[]
   counts: { e: HTMLElement; t: [number, number]; n: [number, number]; d: number; p: string; ease?: string }[]
   copyEls: HTMLElement[]
+  videos: HTMLVideoElement[]
 }
+
+/** Real screen recordings inside a scene follow the film clock: they play while the film plays (at the film's pace)
+ *  and hold the exact frame while scrubbing or showing a still. `data-at` delays a clip inside its scene. Always muted:
+ *  sound comes from the film's own lanes. */
+function syncVideos(S: SceneRt, uu: number, k: number) {
+  const now = performance.now()
+  for (const v of S.videos) {
+    const vt = Math.max(0, uu - (parseFloat(v.dataset.at || '0') || 0))
+    const st = (v as unknown as { __sync?: { uu: number; now: number } }).__sync ||= { uu: -1, now: 0 }
+    const dt = (now - st.now) / 1000, du = uu - st.uu
+    const running = st.uu >= 0 && dt > 0 && dt < 0.25 && du > 0 && Math.abs(du - dt / k) < 0.08
+    st.uu = uu; st.now = now
+    const rate = 1 / k
+    if (Math.abs(v.playbackRate - rate) > 0.001) v.playbackRate = rate
+    if (running) {
+      if (v.paused) v.play().catch(() => {})
+      if (Math.abs(v.currentTime - vt) > 0.25) v.currentTime = vt
+    } else {
+      if (!v.paused) v.pause()
+      if (Math.abs(v.currentTime - vt) > 0.04) v.currentTime = vt
+    }
+  }
+}
+const pauseVideos = (S: SceneRt) => S.videos.forEach(v => { if (!v.paused) v.pause(); (v as unknown as { __sync?: unknown }).__sync = undefined })
+/** Before a cut, park the next scene's clips on their first frame, so the decoder has it ready and the cut doesn't stall. */
+const primeVideos = (S: SceneRt) => S.videos.forEach(v => {
+  const vt = Math.max(0, -(parseFloat(v.dataset.at || '0') || 0))
+  if (!v.paused) v.pause()
+  if (!v.seeking && Math.abs(v.currentTime - vt) > 0.04) v.currentTime = vt
+})
 
 /** Injects a film's own CSS once per film, scoped to that film's viewers (main, compare, cards, posters). */
 export function useFilmCss(D: Previs) {
@@ -104,7 +135,9 @@ function buildScene(sc: Scene, host: HTMLElement): SceneRt {
       prev = s.to
     })
   }))
-  return { sc, wrap, cam, props, sets, counts, copyEls: Array.from(cam.querySelectorAll<HTMLElement>('[data-copy]')) }
+  const videos = Array.from(cam.querySelectorAll<HTMLVideoElement>('video'))
+  videos.forEach(v => { v.muted = true; v.playsInline = true; v.preload = 'auto'; v.loop = false; v.removeAttribute('autoplay') })
+  return { sc, wrap, cam, props, sets, counts, copyEls: Array.from(cam.querySelectorAll<HTMLElement>('[data-copy]')), videos }
 }
 
 function paintScene(S: SceneRt, uu: number, ctx: Ctx) {
@@ -177,11 +210,13 @@ export class FilmViewer {
     t = clamp(t, 0, ctx.total)
     const cur = ctx.at(t)
     this.scenes.forEach(S => { const w = S.wrap.style; w.visibility = 'hidden'; w.zIndex = '1'; w.transform = ''; w.clipPath = ''; w.filter = '' })
+    const shown = new Set<number>()
     const show = (i: number, z: number) => {
       const r = TL[i], S = this.scenes[i]
       S.wrap.style.visibility = 'visible'; S.wrap.style.zIndex = String(z)
       const u = t - r.start
       paintScene(S, u / r.k, ctx)
+      if (S.videos.length) { shown.add(i); syncVideos(S, u / r.k, r.k) }
       const c = camTf(ctx, r.sc, u, r.end - r.start)
       S.cam.style.transformOrigin = c.origin; S.cam.style.transform = c.tf
     }
@@ -197,6 +232,10 @@ export class FilmViewer {
     const nx = TL[cur.i + 1], pv = TL[cur.i - 1]
     if (nx) { const q = tr(nx); if (q.type !== 'cut' && t >= nx.start - q.d / 2) { show(nx.i, 3); blend(cur, nx, (t - (nx.start - q.d / 2)) / q.d, q.type, q.at) } }
     if (pv) { const q = tr(cur); if (q.type !== 'cut' && t < cur.start + q.d / 2) { show(pv.i, 1); this.scenes[cur.i].wrap.style.zIndex = '3'; blend(pv, cur, (t - (cur.start - q.d / 2)) / q.d, q.type, q.at) } }
+    // warm the next scene's clips about a second and a half before its cut
+    const ahead = TL[cur.i + 1]
+    if (ahead && this.scenes[ahead.i].videos.length && !shown.has(ahead.i) && ahead.start - t < 1.5) { primeVideos(this.scenes[ahead.i]); shown.add(ahead.i) }
+    this.scenes.forEach((S, i) => { if (S.videos.length && !shown.has(i)) pauseVideos(S) })
     return cur
   }
 
@@ -208,6 +247,7 @@ export class FilmViewer {
     if (!S) return
     S.wrap.style.visibility = 'visible'
     paintScene(S, u, ctx)
+    if (S.videos.length) syncVideos(S, u, r.k)
     const c = camTf(ctx, S.sc, u * r.k, r.end - r.start)
     S.cam.style.transformOrigin = c.origin; S.cam.style.transform = c.tf
   }
@@ -218,5 +258,5 @@ export class FilmViewer {
     return s ? s.wrap : null
   }
 
-  destroy() { this.host.innerHTML = '' }
+  destroy() { this.scenes.forEach(pauseVideos); this.host.innerHTML = '' }
 }

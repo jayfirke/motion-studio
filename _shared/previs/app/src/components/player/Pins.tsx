@@ -22,7 +22,7 @@ export function Pins() {
             {!!n.strokes?.length && <StrokeSvg strokes={n.strokes} dim={!on} />}
             {n.x != null && n.y != null && (
               <button type="button" className={`pointer-events-auto absolute -ml-1 -mt-7 grid h-7 min-w-7 place-items-center rounded-[14px_14px_14px_3px] border-2 border-white px-1.5 text-[12px] font-extrabold shadow-lg ${done ? 'bg-mint text-mint-ink' : 'bg-ember text-ember-ink'} ${on ? 'scale-110' : ''}`}
-                style={{ left: `${n.x * 100}%`, top: `${n.y * 100}%` }} title={`${n.target}: ${n.text}`} aria-label={`Note ${num}: ${n.text}`} onClick={e => { e.stopPropagation(); select(n.id, n.t) }}>{num}</button>
+                style={{ left: `${n.x * 100}%`, top: `${n.y * 100}%` }} title={`${n.target}: ${n.text}`} aria-label={`Comment ${num}: ${n.text}`} onClick={e => { e.stopPropagation(); select(n.id, n.t) }}>{num}</button>
             )}
           </div>
         )

@@ -81,7 +81,7 @@ export function Plan() {
         <div className="mx-auto flex max-w-[900px] flex-col gap-12 px-4 py-6 sm:px-8">
           <Section id="overview" title={`${D.project.product} · ${ver}`} lead={D.project.feature}>
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-              {[['Runtime', `${C.total.toFixed(1)} s`], ['Shots', D.scenes.length], ['Decisions', M.ORDER.length], ['Options now', M.ORDER.reduce((a, k) => a + M.DEC[k].options.length, 0)], ['In libraries', libCount], ['Voices', (D.libraries?.voice || []).length], ['Open notes', open.length], ['Status', approval?.approved && approval.version === ver ? `Approved ${ver}` : 'In review']].map(([k, v]) => (
+              {[['Runtime', `${C.total.toFixed(1)} s`], ['Shots', D.scenes.length], ['Decisions', M.ORDER.length], ['Options now', M.ORDER.reduce((a, k) => a + M.DEC[k].options.length, 0)], ['In libraries', libCount], ['Voices', (D.libraries?.voice || []).length], ['Open comments', open.length], ['Status', approval?.approved && approval.version === ver ? `Approved ${ver}` : 'In review']].map(([k, v]) => (
                 <div key={k} className="card p-3"><div className="label">{k}</div><div className="mt-1 text-[20px] font-bold leading-none">{v}</div></div>
               ))}
             </div>
@@ -93,7 +93,7 @@ export function Plan() {
             </div>
             <div className="mt-4 flex flex-wrap gap-2">
               <button type="button" className="btn btn-go btn-sm" onClick={() => ui.set({ overlay: 'approve' })}><BadgeCheck size={14} />Approve {ver}</button>
-              <button type="button" className="btn btn-sky btn-sm" onClick={() => ui.set({ overlay: 'claude' })}><Send size={14} />Send notes to Claude Code</button>
+              <button type="button" className="btn btn-sky btn-sm" onClick={() => ui.set({ overlay: 'claude' })}><Send size={14} />Send comments to Claude Code</button>
               <button type="button" className="btn btn-sm" onClick={() => jump('export')}><Download size={14} />Export spec</button>
             </div>
           </Section>
@@ -202,7 +202,7 @@ export function Plan() {
             <div className="label mb-2">Music you can use</div>
             <ul className="mb-5 flex flex-col gap-1.5">
               {[...M.DEC.music.options, ...(D.libraries?.music || []).filter(l => !M.DEC.music.options.some(o => o.ref === l.id))].map(o => {
-                const onCard = M.DEC.music.options.includes(o), current = onCard && picks.music === o.id
+                const onCard = M.DEC.music.options.includes(o), current = onCard && (picks.music ?? M.DEC.music.chosen) === o.id
                 return (
                   <li key={o.id + (o.ref || '')} className={cx('flex items-center gap-2 rounded-[10px] border px-3 py-2 text-[13px]', current ? 'border-sky bg-sky/10' : 'border-line')}>
                     <div className="min-w-0 flex-1"><b>{optLabel(o)}</b> <span className="mono text-[11.5px] text-dim">{o.bpm ? `${Math.round(o.bpm)} BPM` : 'free tempo'}</span><p className="truncate text-[12px] text-muted">{(o.tags || []).slice(0, 5).join(' · ') || cleanText(o.why)}</p></div>
@@ -306,14 +306,14 @@ export function Plan() {
             </ul>
           </Section>
 
-          <Section id="notes" title="Notes" lead={`${notes.length} notes, ${open.length} open. Claude Code works through them in the next version.`}>
+          <Section id="notes" title="Notes" lead={`${notes.length} comments, ${open.length} open. Claude Code works through them in the next version.`}>
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
               {(Object.keys(CATS) as (keyof typeof CATS)[]).map(c => { const n = notes.filter(x => (x.category || 'other') === c); return n.length ? <div key={c} className="card p-3"><div className="label">{CATS[c]}</div><div className="mt-1 text-[20px] font-bold leading-none">{n.length}</div><div className="text-[12px] text-dim">{n.filter(x => x.status !== 'done').length} open</div></div> : null })}
             </div>
             <ul className="mt-4 flex flex-col gap-1.5">
               {open.slice(0, 12).map(n => <li key={n.id} className="flex gap-2 text-[13px]"><span className="mono w-14 text-dim">{tc(n.t)}</span><b className="w-40 shrink-0 truncate">{n.target}</b><span className="truncate text-muted">{n.text}</span></li>)}
             </ul>
-            <button type="button" className="btn btn-sm mt-3" onClick={() => { setSide('notes'); setView('watch') }}>Open notes</button>
+            <button type="button" className="btn btn-sm mt-3" onClick={() => { setSide('notes'); setView('watch') }}>Open comments</button>
           </Section>
 
           <Section id="versions" title="Versions" lead="Every version of this previs and what changed.">
@@ -323,7 +323,7 @@ export function Plan() {
                 <li key={i} className="flex items-start gap-3 rounded-[10px] border border-line p-3 text-[13.5px]">
                   <span className="mono text-[12px] text-dim">{c.v}</span>
                   <div className="flex-1"><b>{c.target}</b><p className="text-muted">{c.change}{c.reason ? ` (${c.reason})` : ''}</p></div>
-                  <Tip title="Ask to undo" desc="Leaves a note asking Claude to bring back how it was before this change"><button type="button" className="btn btn-sm" onClick={() => revert(c)}><Undo2 size={13} />Undo</button></Tip>
+                  <Tip title="Ask to undo" desc="Leaves a comment asking Claude to bring back how it was before this change"><button type="button" className="btn btn-sm" onClick={() => revert(c)}><Undo2 size={13} />Undo</button></Tip>
                 </li>))}</ul>
             )}
           </Section>

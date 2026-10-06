@@ -15,7 +15,9 @@ const code = readFileSync(resolve(dist, js), 'utf8').replace(/<\/script/gi, '<\\
 const style = readFileSync(resolve(dist, css), 'utf8').replace(/<\/style/gi, '<\\/style')
 const fonts = 'https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap'
 
-const page = title => `<title>${title}</title>
+// The charset line keeps the page working when it is served without the publisher's skeleton (python -m http.server).
+const page = title => `<meta charset="utf-8">
+<title>${title}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="${fonts}">
@@ -31,6 +33,7 @@ const targets = [
   [resolve(app, '../studio/index.html'), 'Previs Studio', true],
   [resolve(app, '../page/index.html'), 'Previs Studio', true],
   [resolve(root, 'projects/011-crumb-previs/previs/page/index.html'), 'Crumb Previs', false],
+  [resolve(root, 'projects/012-motion-studio-launch/previs/page/index.html'), 'motion-studio Launch Previs', false],
 ]
 for (const [file, title, always] of targets) {
   if (!always && !existsSync(dirname(file))) continue

@@ -68,9 +68,9 @@ function EndCard() {
   return (
     <div className="pointer-events-none absolute inset-x-0 bottom-4 z-10 flex justify-center px-3" data-testid="endcard">
       <div className="pop pointer-events-auto flex max-w-full flex-wrap items-center justify-center gap-2 p-2.5 pl-4" onClick={e => e.stopPropagation()}>
-        <span className="mr-1 text-[13.5px]"><b>That's the whole film.</b> <span className="text-muted">{approved ? 'Approved; Claude builds it next.' : open ? `${open} open note${open > 1 ? 's' : ''}.` : 'Anything to change?'}</span></span>
+        <span className="mr-1 text-[13.5px]"><b>That's the whole film.</b> <span className="text-muted">{approved ? 'Approved; Claude builds it next.' : open ? `${open} open comment${open > 1 ? 's' : ''}.` : 'Anything to change?'}</span></span>
         <button type="button" className="btn btn-sm" onClick={() => playback.play(0)}><RotateCcw size={14} />Watch again</button>
-        <button type="button" className="btn btn-sm" onClick={() => { const C = ui.get().C!; const r = C.TL[C.TL.length - 1]; playback.seek(r.start + (r.sc.key ?? 0) * r.k); ui.set({ mode: 'comment' }) }}><MessageSquarePlus size={14} />Leave a note</button>
+        <button type="button" className="btn btn-sm" onClick={() => { const C = ui.get().C!; const r = C.TL[C.TL.length - 1]; playback.seek(r.start + (r.sc.key ?? 0) * r.k); ui.set({ mode: 'comment' }) }}><MessageSquarePlus size={14} />Leave a comment</button>
         {!approved && <button type="button" className="btn btn-sm btn-go" onClick={() => ui.set({ overlay: 'approve' })}><BadgeCheck size={14} />Approve</button>}
       </div>
     </div>
@@ -128,7 +128,7 @@ function ModeHint() {
     const upd = () => { const s = refs.screen?.getBoundingClientRect(), f = refs.frame?.getBoundingClientRect(); setRoom(!!s && !!f && f.left - s.left > 250) }
     upd(); addEventListener('resize', upd); return () => removeEventListener('resize', upd)
   }, [])
-  const lines = tool === 'pen' ? ['Draw on the frame.', 'Let go to write the note.'] : tool === 'arrow' ? ['Drag an arrow', 'from where it is to where it should go.'] : ['Click any part to comment on it.', 'Drag a box to cover several parts.', 'Scroll to pick a smaller or bigger part.']
+  const lines = tool === 'pen' ? ['Draw on the frame.', 'Let go to write the comment.'] : tool === 'arrow' ? ['Drag an arrow', 'from where it is to where it should go.'] : ['Click any part to comment on it.', 'Drag a box to cover several parts.', 'Scroll to pick a smaller or bigger part.']
   if (room) return (
     <div className="pointer-events-none absolute left-5 top-5 z-[6] flex max-w-[220px] flex-col gap-1.5 rounded-[12px] border border-ember/40 bg-ember/10 p-3 text-[12.5px] leading-snug text-fg">
       <b className="text-ember">Comment mode</b>

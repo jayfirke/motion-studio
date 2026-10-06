@@ -6,7 +6,7 @@ This is a local studio for motion-graphics videos made in code: product demos, a
 
 **The owner's preferences live in `OWNER.md`** (made from `OWNER.example.md` during setup; never committed): name, default voice, quality bar, sound taste, budget, how they like to review. Read it right after this file. Wherever this file says "the owner", it means the person in `OWNER.md`. If `OWNER.md` is missing, run the `workspace-setup` skill first.
 
-**Quality bar.** First drafts made by an agent tend to look like a slide deck with a thin synth soundtrack. Every new film must clear the "Motion Studio rules" below and pass the critique loop (8+ on every score) before the owner sees a render. The prompt is 10% of the result; the harness (brief, real assets, beat grid, sound, critique loop) is the other 90%.
+**Quality bar.** First drafts made by an agent tend to look like a slide deck with a thin synth soundtrack. Every new film must clear the "Motion Studio rules" below and pass the critique loop (every score at or above the owner's bar in `OWNER.md`; the example bar is 8) before the owner sees a render. The prompt is 10% of the result; the harness (brief, real assets, beat grid, sound, critique loop) is the other 90%.
 
 ## Precedence
 
@@ -180,7 +180,7 @@ These are what make an agent-made film sound cheap. The action itself is never b
 
 ## Keys and accounts
 
-- Keys live only in the macOS Keychain: `motiongraphics.fish-audio-api-key`, `motiongraphics.freesound-api-key`, `motiongraphics.freesound-client-id` (stored by `scripts/setup/keys.sh`). Tools read them with `security find-generic-password -s <item> -w` or from `FISH_API_KEY` / `FREESOUND_API_KEY`.
+- Keys are stored by the owner with `scripts/setup/keys.sh` (hidden typing): the macOS Keychain on macOS; on Linux and WSL 2 the secret store (`secret-tool`) or `~/.config/motion-studio/keys.env`. Items: `motiongraphics.fish-audio-api-key`, `motiongraphics.freesound-api-key`, `motiongraphics.freesound-client-id`. Tools read them through `_shared/tools/keystore.py` (environment variables `FISH_API_KEY` / `FREESOUND_API_KEY` / `FREESOUND_CLIENT_ID` first). In a Claude Code cloud session, keys come from the environment's API credentials or variables.
 - Never ask the owner to paste a key into the chat. Never print a key, put it in a command line that echoes, or write it to any file, log, brief or commit.
 - Freesound original-file downloads need OAuth2 (the owner signs in). Ask first; HQ previews are enough for SFX.
 
@@ -201,7 +201,7 @@ These are what make an agent-made film sound cheap. The action itself is never b
      - a phone test at 360 px wide;
      - a loop check.
    - Score 1–10 on: hook, readability at 360 px, motion, composition, depth, brand accuracy, sound sync, polish.
-   - Fix the 3 worst problems and repeat. Ship only when every score is 8 or higher after at least 3 rounds (or at the round cap in `OWNER.md`).
+   - Fix the 3 worst problems and repeat. Ship when every score reaches the owner's critic score bar (`OWNER.md` → Quality bar; 8 when unset), after the fewest rounds and within the most rounds set there. At the round limit, ship with the open problems listed. In our own films, first drafts scored about 6 and finals 7–9, so expect a few rounds.
    - Log every round in `VERIFY.md`. A fresh critic sub-agent gives the final verdict.
 5. Report what was actually verified, with numbers (LUFS, peak, sync offsets, scores).
 
@@ -255,5 +255,5 @@ These are what make an agent-made film sound cheap. The action itself is never b
 - edit a skill's own folder;
 - use a non-commercial or unlicensed asset in own-brand work;
 - commit renders, Mixkit files or creator-kit files;
-- run cloud renders;
+- use hosted render services (HyperFrames or HeyGen cloud render). A render inside a Claude Code cloud session runs on that session's own machine and is fine;
 - put API keys in files or ask for them in chat.

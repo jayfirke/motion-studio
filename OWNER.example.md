@@ -25,7 +25,9 @@ Write in plain words. Delete any line you don't care about; the house rules in `
 
 - Your bar in one line: `<e.g. "Must look like a premium product ad, never like a slide deck.">`
 - Things you have rejected before: `<e.g. thin synth sound; simple fades and pops; no voice-over>`
-- Critique loop: ship when every score is 8+ after at least 3 rounds; round cap `<e.g. 5>`.
+- Critic score bar (1–10): `<e.g. 8>`. The film ships when every critic score reaches this number.
+- Most critic rounds per film: `<e.g. 5>`. If the bar isn't reached by then, you get the film with the open problems listed.
+- Fewest rounds before shipping: `<e.g. 1>` (raise it if you want more polish even when the bar is met early).
 
 ## Sound taste
 

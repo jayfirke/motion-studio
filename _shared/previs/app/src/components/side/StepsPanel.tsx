@@ -12,10 +12,10 @@ export interface Step { id: string; title: string; body: string; keys: string[];
 
 export function buildSteps(M: Model): Step[] {
   const S: Step[] = [{ id: 'watch', title: 'Watch it once', body: 'Play the whole film with sound. Do not judge the details yet. Does the story make sense in one go?', keys: [], play: 'all' }]
-  if (M.DEC.direction) S.push({ id: 'look', title: 'Pick the look', body: 'Colours, type and surfaces. Each option repaints every shot. Click one and the frame changes right away.', keys: ['direction'] })
-  if (M.DEC.voice) S.push({ id: 'voice', title: 'Pick the voice', body: 'Who narrates, and in which language. Press the play button on a voice to hear its intro line; ask the director for more voices.', keys: ['voice'] })
-  if (M.DEC.music) S.push({ id: 'music', title: 'Pick the music', body: 'Click an option to hear it under the film from the start. The beats it brings set where the hits land.', keys: ['music'] })
-  const feel = ['motion', 'pacing'].filter(k => M.DEC[k])
+  if (M.ORDER.includes('direction')) S.push({ id: 'look', title: 'Pick the look', body: 'Colours, type and surfaces. Each option repaints every shot. Click one and the frame changes right away.', keys: ['direction'] })
+  if (M.ORDER.includes('voice')) S.push({ id: 'voice', title: 'Pick the voice', body: 'Who narrates, and in which language. Press the play button on a voice to hear its intro line; ask the director for more voices.', keys: ['voice'] })
+  if (M.ORDER.includes('music')) S.push({ id: 'music', title: 'Pick the music', body: 'Click an option to hear it under the film from the start. The beats it brings set where the hits land.', keys: ['music'] })
+  const feel = ['motion', 'pacing'].filter(k => M.ORDER.includes(k))
   if (feel.length) S.push({ id: 'feel', title: 'Motion and pace', body: 'How things move and how long each shot lasts. Faster pacing makes the whole film shorter.', keys: feel })
   M.D.scenes.forEach((sc, i) => S.push({ id: sc.id, title: `Shot ${i + 1}: ${sc.name}`, body: sc.purpose, keys: M.ORDER.filter(k => M.DEC[k].scene === sc.id), scene: sc.id, play: 'shot' }))
   S.push({ id: 'again', title: 'Watch it again', body: 'Play the whole film with your picks. Anything still off? Press Comment and click it, or drag across the timeline to mark a stretch of time.', keys: [], play: 'all' })
@@ -40,7 +40,7 @@ export function StepsPanel() {
       <div className="card flex flex-col gap-3 p-4">
         <ListChecks size={26} className="text-sky" />
         <h3 className="text-[18px] font-bold leading-tight">Review in {steps.length} short steps</h3>
-        <p className="text-[13.5px] leading-snug text-muted">One decision at a time, with the film playing right beside you. About five minutes. You can leave a note at any step and come back later.</p>
+        <p className="text-[13.5px] leading-snug text-muted">One decision at a time, with the film playing right beside you. About five minutes. You can leave a comment at any step and come back later.</p>
         <button type="button" className="btn btn-primary self-start" onClick={() => go(0)} data-testid="start-steps">Start the review<ArrowRight size={15} /></button>
       </div>
       <StepList steps={steps} cur={-1} go={go} />
@@ -66,7 +66,7 @@ export function StepsPanel() {
             <button type="button" className="btn btn-go self-start" onClick={() => ui.set({ overlay: 'approve' })}><BadgeCheck size={16} />{approval?.approved ? 'Review the approval' : 'Approve this version'}</button>
           </div>
         )}
-        <button type="button" className="btn btn-ghost btn-sm mt-4 text-muted" onClick={() => { if (ui.get().mode !== 'comment') toggleComment() }}><MessageSquarePlus size={14} />Something else? Leave a note</button>
+        <button type="button" className="btn btn-ghost btn-sm mt-4 text-muted" onClick={() => { if (ui.get().mode !== 'comment') toggleComment() }}><MessageSquarePlus size={14} />Something else? Leave a comment</button>
       </div>
       <div className="flex items-center gap-2 border-t border-line px-4 py-3">
         <Tip title="Back" desc="The previous step"><button type="button" className="btn" disabled={step === 0} onClick={() => go(step - 1)}><ArrowLeft size={15} /></button></Tip>

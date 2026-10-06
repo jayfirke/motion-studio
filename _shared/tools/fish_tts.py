@@ -24,13 +24,12 @@ KEYCHAIN_ITEM = 'motiongraphics.fish-audio-api-key'
 
 
 def api_key():
-    key = os.environ.get('FISH_API_KEY', '').strip()
+    # env var → macOS Keychain → Linux secret store → ~/.config/motion-studio/keys.env (see keystore.py)
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from keystore import get_key, where
+    key = get_key('FISH_API_KEY', KEYCHAIN_ITEM)
     if not key:
-        try:
-            key = subprocess.run(['security', 'find-generic-password', '-s', KEYCHAIN_ITEM, '-w'],
-                                 capture_output=True, text=True, check=True).stdout.strip()
-        except (subprocess.CalledProcessError, FileNotFoundError):
-            sys.exit(f'No Fish Audio key: set FISH_API_KEY or add Keychain item "{KEYCHAIN_ITEM}".')
+        sys.exit(f'No Fish Audio key: ' + where('FISH_API_KEY', KEYCHAIN_ITEM) + '.')
     return key
 
 

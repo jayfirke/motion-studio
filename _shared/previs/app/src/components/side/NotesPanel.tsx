@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Bot, Check, CircleHelp, Clipboard, Clock, Crosshair, Film, HelpCircle, Inbox, Loader2, MessageSquarePlus, Music, Pencil, RotateCcw, Scissors, Search, Send, SquareDashed, Trash2, Undo2, Wand2 } from 'lucide-react'
 import { toast } from 'sonner'
-import { deleteNote, patchNote, ui, useStudio } from '../../state/store'
+import { addPad, deleteNote, deletePad, patchNote, ui, useStudio } from '../../state/store'
 import { playback } from '../../engine/playback'
 import { toggleComment } from '../player/Controls'
 import { NoteThumb } from './NoteThumb'
-import type { Activity, Note, NoteCategory } from '../../data/types'
+import type { Activity, Note, NoteCategory, PadNote } from '../../data/types'
 import { optLabel } from '../../data/model'
 import { copyForClaude, sendState, sendToClaude, type SendState } from '../../lib/bridge'
 import { Empty, IconBtn, Kbd, Tip } from '../ui'
@@ -34,7 +34,8 @@ const ago = (iso?: string) => { if (!iso) return ''; const s = (Date.now() - Dat
 export function NotesPanel() {
   const notes = useStudio(s => s.notes)
   const sel = useStudio(s => s.selNote)
-  const [tab, setTab] = useState<'notes' | 'activity'>('notes')
+  const [tab, setTab] = useState<'notes' | 'pad' | 'activity'>('notes')
+  const padN = useStudio(s => s.pad.length)
   const [filter, setFilter] = useState<'open' | 'done' | 'all'>('all')
   const [cat, setCat] = useState<NoteCategory | 'all'>('all')
   const [q, setQ] = useState('')
@@ -52,21 +53,22 @@ export function NotesPanel() {
     <div className="flex min-h-0 flex-1 flex-col">
       <ClaudeCard />
       <div className="flex items-center gap-2 px-4 pb-2 pt-3">
-        <div className="seg flex-1" role="group" aria-label="Notes or activity">
-          <button type="button" aria-pressed={tab === 'notes'} onClick={() => setTab('notes')} className="flex-1 justify-center">Notes {notes.length}</button>
+        <div className="seg flex-1" role="group" aria-label="Comments or activity">
+          <button type="button" aria-pressed={tab === 'notes'} onClick={() => setTab('notes')} className="flex-1 justify-center">Comments {notes.length}</button>
+          <Tip title="Notes" desc="Free thoughts about the whole film: ideas, reminders, decisions. Claude reads them as background; they are not change requests."><button type="button" aria-pressed={tab === 'pad'} onClick={() => setTab('pad')} className="flex-1 justify-center" data-testid="pad-tab">Notes {padN}</button></Tip>
           <button type="button" aria-pressed={tab === 'activity'} onClick={() => setTab('activity')} className="flex-1 justify-center" data-testid="activity-tab">Activity</button>
         </div>
       </div>
-      {tab === 'activity' ? <ActivityFeed /> : (
+      {tab === 'activity' ? <ActivityFeed /> : tab === 'pad' ? <NotesPad /> : (
         <>
           <div className="flex flex-col gap-2 px-4 pb-3">
             <div className="flex items-center gap-2">
-              <div className="seg flex-1" role="group" aria-label="Filter notes">
+              <div className="seg flex-1" role="group" aria-label="Filter comments">
                 {(['all', 'open', 'done'] as const).map(f => <button key={f} type="button" aria-pressed={filter === f} onClick={() => setFilter(f)} className="flex-1 justify-center !px-2 text-[12.5px] capitalize">{f === 'open' ? `Open ${open}` : f === 'done' ? `Done ${notes.length - open}` : 'All'}</button>)}
               </div>
-              <IconBtn small label="Copy all notes" desc="Copies every note as plain text, in film order" disabled={!notes.length} onClick={async () => {
+              <IconBtn small label="Copy all comments" desc="Copies every comment as plain text, in film order" disabled={!notes.length} onClick={async () => {
                 const txt = [...notes].sort((a, b) => a.t - b.t).map((n, i) => `${i + 1}. [${tc(n.t)}${n.t2 != null ? `–${tc(n.t2)}` : ''}] ${n.target}: ${n.text}${n.status === 'done' ? ' (done)' : ''}`).join('\n')
-                try { await navigator.clipboard.writeText(txt); toast.success('Notes copied') } catch { toast.error('Copy is blocked here') }
+                try { await navigator.clipboard.writeText(txt); toast.success('Comments copied') } catch { toast.error('Copy is blocked here') }
               }}><Clipboard size={15} /></IconBtn>
             </div>
             {cats.length > 1 && (
@@ -78,13 +80,13 @@ export function NotesPanel() {
             {notes.length > 3 && (
               <label className="relative block">
                 <Search size={14} className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-dim" />
-                <input value={q} onChange={e => setQ(e.target.value)} placeholder="Search notes" className="field pl-8 text-[13px]" aria-label="Search notes" />
+                <input value={q} onChange={e => setQ(e.target.value)} placeholder="Search comments" className="field pl-8 text-[13px]" aria-label="Search comments" />
               </label>
             )}
           </div>
           <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-6" data-testid="notes">
             {!notes.length ? (
-              <Empty icon={<MessageSquarePlus size={28} />} title="No notes yet">
+              <Empty icon={<MessageSquarePlus size={28} />} title="No comments yet">
                 Press <Kbd>C</Kbd> or the Comment button, then click anything in the frame. Drag a box to cover several parts, or drag across the timeline to mark a stretch of time.
                 <button type="button" className="btn btn-ember btn-sm mt-3" onClick={() => { if (ui.get().mode !== 'comment') toggleComment() }}><MessageSquarePlus size={14} />Start commenting</button>
               </Empty>
@@ -111,8 +113,8 @@ function ClaudeCard() {
   const done = notes.filter(n => n.claude?.state === 'done').length
   const live = st === 'available'
   const status = claude
-    ? `${claude.state === 'working' ? 'Working on your notes' : claude.state === 'reading' ? 'Reading your notes' : claude.state === 'publishing' ? 'Publishing a new version' : claude.state === 'waiting' ? 'Waiting for you' : 'Idle'} · ${ago(claude.at)}${claude.message ? ` · ${claude.message}` : ''}`
-    : 'Has not picked up notes on this film yet.'
+    ? `${claude.state === 'working' ? 'Working on your comments' : claude.state === 'reading' ? 'Reading your comments' : claude.state === 'publishing' ? 'Publishing a new version' : claude.state === 'waiting' ? 'Waiting for you' : 'Idle'} · ${ago(claude.at)}${claude.message ? ` · ${claude.message}` : ''}`
+    : 'Has not picked up comments on this film yet.'
   const send = async () => {
     setBusy(true)
     const ok = await sendToClaude(card.current!, open)
@@ -128,10 +130,10 @@ function ClaudeCard() {
           <p className="text-[12.5px] leading-snug text-muted">{status}</p>
           <p className="mt-0.5 text-[12px] text-dim">{open.length} open · {unsent.length} not sent yet · {done} done by Claude</p>
         </div>
-        <IconBtn small label="How Claude works with your notes" desc="What happens after you send, and what each status means" onClick={() => ui.set({ overlay: 'claude' })}><CircleHelp size={16} /></IconBtn>
+        <IconBtn small label="How Claude works with your comments" desc="What happens after you send, and what each status means" onClick={() => ui.set({ overlay: 'claude' })}><CircleHelp size={16} /></IconBtn>
       </div>
       <div className="flex gap-1.5">
-        <Tip title={live ? 'Send to Claude Code now' : 'Send to Claude Code'} desc={live ? 'Posts your open notes as a comment on this page and sends it to the Claude Code session watching it.' : 'Copies a ready message to paste into your Claude Code chat (no session is watching this page live).'}>
+        <Tip title={live ? 'Send to Claude Code now' : 'Send to Claude Code'} desc={live ? 'Posts your open comments as a comment on this page and sends it to the Claude Code session watching it.' : 'Copies a ready message to paste into your Claude Code chat (no session is watching this page live).'}>
           <button type="button" className="btn btn-sky btn-sm flex-1" disabled={!open.length || busy} onClick={send} data-testid="send-claude">{busy ? <Loader2 size={14} className="animate-spin" /> : <Send size={14} />}Send {open.length || ''} to Claude Code</button>
         </Tip>
         <Tip title="Copy the message" desc="The same message, on your clipboard, to paste into Claude Code yourself">
@@ -148,8 +150,8 @@ function ActivityFeed() {
   // Claude's replies on notes are activity too, even before Claude writes a feed line.
   const merged: Activity[] = useMemo(() => {
     const fromNotes: Activity[] = notes.flatMap((n, i) => [
-      ...(n.replies || []).filter(r => r.by === 'claude').map((r, j) => ({ id: `${n.id}-r${j}`, at: r.at, by: 'claude', kind: 'reply', text: `On note ${i + 1} (${n.target}): ${r.text}` })),
-      ...(n.reply ? [{ id: `${n.id}-legacy`, at: n.claude?.at || n.at || '', by: 'claude', kind: 'reply', text: `On note ${i + 1}: ${n.reply}` }] : []),
+      ...(n.replies || []).filter(r => r.by === 'claude').map((r, j) => ({ id: `${n.id}-r${j}`, at: r.at, by: 'claude', kind: 'reply', text: `On comment ${i + 1} (${n.target}): ${r.text}` })),
+      ...(n.reply ? [{ id: `${n.id}-legacy`, at: n.claude?.at || n.at || '', by: 'claude', kind: 'reply', text: `On comment ${i + 1}: ${n.reply}` }] : []),
     ])
     return [...acts, ...fromNotes].sort((a, b) => (b.at || '').localeCompare(a.at || ''))
   }, [acts, notes])
@@ -198,13 +200,13 @@ function NoteItem({ n, num, on }: { n: Note; num: number; on: boolean }) {
             {n.category && n.category !== 'other' && <span className="tag px-1.5 py-0 text-[10.5px]">{CATS[n.category]}</span>}
             {n.priority === 'nice' && <span className="tag px-1.5 py-0 text-[10.5px]">nice to have</span>}
             {n.intent === 'question' && <span className="tag tag-sky px-1.5 py-0 text-[10.5px]"><HelpCircle size={10} />question</span>}
-            {n.version && ver && n.version !== ver && <Tip title={`Written on ${n.version}`} desc={`The film is now ${ver}. Check whether this note still applies.`}><span className="tag px-1.5 py-0 text-[10.5px]">{n.version}</span></Tip>}
-            {n.local && <Tip title="Saved in this browser" desc="The page database was not reachable, so this note lives only here. Copy it to Claude if needed."><span className="tag tag-amber px-1.5 py-0 text-[10.5px]">local</span></Tip>}
+            {n.version && ver && n.version !== ver && <Tip title={`Written on ${n.version}`} desc={`The film is now ${ver}. Check whether this comment still applies.`}><span className="tag px-1.5 py-0 text-[10.5px]">{n.version}</span></Tip>}
+            {n.local && <Tip title="Saved in this browser" desc="The page database was not reachable, so this comment lives only here. Copy it to Claude if needed."><span className="tag tag-amber px-1.5 py-0 text-[10.5px]">local</span></Tip>}
           </div>
           <div className="mt-0.5 truncate text-[13.5px] font-bold" title={n.target}>{n.target}</div>
           {edit != null ? (
             <div className="mt-1 flex flex-col gap-1.5" onClick={e => e.stopPropagation()}>
-              <textarea autoFocus rows={3} value={edit} onChange={e => setEdit(e.target.value)} onKeyDown={e => { e.stopPropagation(); if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); save() } if (e.key === 'Escape') setEdit(null) }} className="field resize-none text-[13px]" aria-label="Edit note" />
+              <textarea autoFocus rows={3} value={edit} onChange={e => setEdit(e.target.value)} onKeyDown={e => { e.stopPropagation(); if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); save() } if (e.key === 'Escape') setEdit(null) }} className="field resize-none text-[13px]" aria-label="Edit comment" />
               <div className="flex gap-1.5"><button type="button" className="btn btn-sm btn-primary" onClick={save}>Save</button><button type="button" className="btn btn-sm btn-ghost" onClick={() => setEdit(null)}>Cancel</button></div>
             </div>
           ) : <p className={cx('mt-1 whitespace-pre-wrap text-[13.5px] leading-snug', done && 'line-through decoration-dim')}>{n.text}{n.edited && <span className="ml-1 text-[11px] text-dim">(edited)</span>}</p>}
@@ -228,16 +230,50 @@ function NoteItem({ n, num, on }: { n: Note; num: number; on: boolean }) {
           <div className="mt-2 flex flex-wrap items-center gap-1 opacity-100 transition-opacity sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100" onClick={e => e.stopPropagation()}>
             <button type="button" className="btn btn-ghost btn-sm" onClick={() => setReply('')}>Reply</button>
             <button type="button" className="btn btn-ghost btn-sm" onClick={() => patchNote(n, { status: done ? 'open' : 'done' })}>{done ? <><RotateCcw size={13} />Reopen</> : <><Check size={13} />Resolve</>}</button>
-            <Tip title="Ask Claude about this note" desc="Sends just this note to Claude Code (live when a session is watching, otherwise copied)"><button type="button" className="btn btn-ghost btn-sm" onClick={async () => { if (await sendToClaude(el.current!, [n])) patchNote(n, { sent: new Date().toISOString() }) }}><Send size={13} />Ask Claude</button></Tip>
+            <Tip title="Ask Claude about this comment" desc="Sends just this comment to Claude Code (live when a session is watching, otherwise copied)"><button type="button" className="btn btn-ghost btn-sm" onClick={async () => { if (await sendToClaude(el.current!, [n])) patchNote(n, { sent: new Date().toISOString() }) }}><Send size={13} />Ask Claude</button></Tip>
             <span className="flex-1" />
-            <IconBtn small label="Edit note" desc="Change the wording of this note" onClick={() => setEdit(n.text)}><Pencil size={13} /></IconBtn>
+            <IconBtn small label="Edit comment" desc="Change the wording of this comment" onClick={() => setEdit(n.text)}><Pencil size={13} /></IconBtn>
             {sure ? (
               <span className="flex items-center gap-1 text-[12px]"><span className="text-muted">Delete?</span><button type="button" className="btn btn-sm btn-ember" onClick={() => deleteNote(n)}>Delete</button><button type="button" className="btn btn-ghost btn-sm" onClick={() => setSure(false)}>Keep</button></span>
-            ) : <IconBtn small label="Delete note" desc="Removes this note for everyone" onClick={() => setSure(true)}><Trash2 size={14} /></IconBtn>}
+            ) : <IconBtn small label="Delete comment" desc="Removes this comment for everyone" onClick={() => setSure(true)}><Trash2 size={14} /></IconBtn>}
             <IconBtn small label="Play from here" desc="Jump to this moment" onClick={jump}><Clock size={14} /></IconBtn>
           </div>
         </div>
       </div>
     </li>
+  )
+}
+
+/** Notes: free thoughts about the whole film. Unlike comments they point at nothing, have no status and are never tasks. */
+function NotesPad() {
+  const pad = useStudio(s => s.pad)
+  const me = useStudio(s => s.me)
+  const [text, setText] = useState('')
+  const save = async () => { if (!text.trim()) return; await addPad(text); setText('') }
+  return (
+    <div className="flex min-h-0 flex-1 flex-col" data-testid="pad">
+      <div className="flex flex-col gap-2 px-4 pb-3">
+        <p className="text-[12.5px] leading-snug text-muted"><b className="text-fg">Notes</b> are your thoughts about the whole film: an idea, a reminder, a decision. Claude reads them as background. To ask for a change, use <b className="text-fg">Comment</b> and point at the part instead.</p>
+        <textarea value={text} onChange={e => setText(e.target.value)} onKeyDown={e => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); save() } }}
+          rows={3} placeholder="e.g. The audience is people who have never made a video." aria-label="Write a note about the whole film"
+          className="w-full resize-none rounded-[10px] border border-line bg-panel2 px-3 py-2 text-[13.5px] leading-snug outline-none focus:border-sky" />
+        <div className="flex justify-end"><button type="button" className="btn btn-sm" disabled={!text.trim()} onClick={save} data-testid="pad-save"><Pencil size={13} />Save note</button></div>
+      </div>
+      <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-6">
+        {!pad.length ? <Empty icon={<Inbox size={20} />} title="No notes yet">Write down anything Claude should keep in mind for this film.</Empty> : (
+          <ul className="flex flex-col gap-2">
+            {pad.map((p: PadNote) => (
+              <li key={p.id} className="rounded-[12px] border border-line bg-panel2 px-3 py-2.5" data-testid="pad-note">
+                <p className="whitespace-pre-wrap text-[13.5px] leading-snug">{p.text}</p>
+                <div className="mt-1.5 flex items-center gap-2 text-[11.5px] text-dim">
+                  <span className="flex-1">{p.who === 'claude' ? 'Claude' : 'You'} · {ago(p.at)}{p.local ? ' · this browser only' : ''}</span>
+                  {(p.who !== 'claude' && (!p.by || p.by === me)) && <IconBtn small label="Delete note" onClick={() => deletePad(p)}><Trash2 size={13} /></IconBtn>}
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
   )
 }

@@ -90,7 +90,7 @@ export function Controls({ overlay }: { overlay?: boolean }) {
         <span className="truncate text-[11.5px] font-semibold text-muted">Shot {cur.i + 1} · {cur.sc.name}{rate !== 1 ? ` · ${rate}×` : ''}{loop ? ' · loop' : ''}</span>
       </div>
       <span className="flex-1" />
-      <Tip title={mode === 'comment' ? 'Stop commenting' : 'Comment'} desc={mode === 'comment' ? 'Back to watching. Your notes are saved.' : 'Pause and point at anything on the frame: click a part, drag a box around several, or draw.'} keys={['C']}>
+      <Tip title={mode === 'comment' ? 'Stop commenting' : 'Comment'} desc={mode === 'comment' ? 'Back to watching. Your comments are saved.' : 'Pause and point at anything on the frame: click a part, drag a box around several, or draw.'} keys={['C']}>
         <button type="button" onClick={toggleComment} aria-pressed={mode === 'comment'} data-testid="comment-toggle" data-tour="comment"
           className={cx('btn', mode === 'comment' ? 'btn-ember' : overlay ? 'border-white/20 bg-white/10 text-white hover:!bg-white/20' : '', phone && 'px-2.5')}>
           <MessageSquarePlus size={16} />{!phone && (mode === 'comment' ? 'Commenting' : 'Comment')}
@@ -98,15 +98,15 @@ export function Controls({ overlay }: { overlay?: boolean }) {
       </Tip>
       {mode === 'comment' && !phone && (
         <div className={cx('seg ml-0.5', overlay && 'border-white/15 bg-black/40')} role="group" aria-label="Comment tool">
-          <Tip title="Point" desc="Click a part to note it. Drag to box several parts. Scroll to pick a smaller or bigger part."><button type="button" aria-pressed={tool === 'point'} onClick={() => ui.set({ tool: 'point' })} aria-label="Point"><MousePointer2 size={14} /></button></Tip>
+          <Tip title="Point" desc="Click a part to comment it. Drag to box several parts. Scroll to pick a smaller or bigger part."><button type="button" aria-pressed={tool === 'point'} onClick={() => ui.set({ tool: 'point' })} aria-label="Point"><MousePointer2 size={14} /></button></Tip>
           <Tip title="Draw" desc="Draw freehand on the frame" keys={['P']}><button type="button" aria-pressed={tool === 'pen'} onClick={() => ui.set({ tool: 'pen' })} aria-label="Draw"><PenLine size={14} /></button></Tip>
           <Tip title="Arrow" desc="Drag an arrow to show where something should go" keys={['A']}><button type="button" aria-pressed={tool === 'arrow'} onClick={() => ui.set({ tool: 'arrow' })} aria-label="Arrow"><ArrowUpRight size={14} /></button></Tip>
         </div>
       )}
       {nNotes > 0 && !phone && (
         <>
-          <IconBtn label="Previous note" desc="Jump to the note before the playhead" keys={['⇧', 'N']} onClick={() => stepNote(-1)}><ChevronLeft size={18} /></IconBtn>
-          <IconBtn label="Next note" desc="Jump to the next note on the timeline" keys={['N']} onClick={() => stepNote(1)}><ChevronRight size={18} /></IconBtn>
+          <IconBtn label="Previous comment" desc="Jump to the comment before the playhead" keys={['⇧', 'N']} onClick={() => stepNote(-1)}><ChevronLeft size={18} /></IconBtn>
+          <IconBtn label="Next comment" desc="Jump to the next comment on the timeline" keys={['N']} onClick={() => stepNote(1)}><ChevronRight size={18} /></IconBtn>
         </>
       )}
       {changed && !phone && (
@@ -126,7 +126,7 @@ export function Controls({ overlay }: { overlay?: boolean }) {
       {!phone && <IconBtn label={mix.muted ? 'Unmute' : 'Mute'} desc="Turn all sound off or on" keys={['M']} onClick={() => setMix({ muted: !mix.muted })}>{mix.muted ? <VolumeX size={18} /> : <Volume2 size={18} />}</IconBtn>}
       {phone && more}
       <IconBtn label={full ? 'Exit full screen' : 'Full screen'} desc={full ? 'Back to the studio' : 'Watch and review on the whole screen'} keys={['F']} onClick={toggleFull} data-testid="fullscreen">{full ? <Minimize size={18} /> : <Maximize size={18} />}</IconBtn>
-      {full && <IconBtn label="Choices and notes" desc="Open the panel on the side without leaving full screen" onClick={() => ui.set({ drawer: !ui.get().drawer })}><PanelRight size={18} /></IconBtn>}
+      {full && <IconBtn label="Choices and comments" desc="Open the panel on the side without leaving full screen" onClick={() => ui.set({ drawer: !ui.get().drawer })}><PanelRight size={18} /></IconBtn>}
     </div>
   )
 }

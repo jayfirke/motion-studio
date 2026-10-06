@@ -11,7 +11,7 @@ import { cx, store as ls } from '../../lib/util'
 
 const TABS: { id: Side; name: string; icon: typeof Bot; desc: string }[] = [
   { id: 'choices', name: 'Choices', icon: SlidersHorizontal, desc: 'Every decision with three options. Pick one and the film changes and plays that moment.' },
-  { id: 'notes', name: 'Notes', icon: MessageSquare, desc: 'Your comments, in film order. Claude replies here.' },
+  { id: 'notes', name: 'Comments', icon: MessageSquare, desc: 'Comments are change requests pinned to a frame, a part, a stretch of time or a sound. Claude works through them and replies here. Free notes about the whole film live in the Notes tab inside.' },
   { id: 'steps', name: 'Guide', icon: ListChecks, desc: 'A short guided review, one decision at a time, ending in approval.' },
   { id: 'ask', name: 'Ask', icon: Bot, desc: 'Ask the director why something was chosen, or ask for a change.' },
 ]

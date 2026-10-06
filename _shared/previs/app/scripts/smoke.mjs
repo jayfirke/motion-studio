@@ -33,7 +33,7 @@ const server = createServer(async (req, res) => {
   } catch { res.writeHead(404); res.end('not found') }
 })
 await new Promise(r => server.listen(0, '127.0.0.1', r))
-const url = `http://127.0.0.1:${server.address().port}/`
+const url = `http://127.0.0.1:${server.address().port}/#011-crumb`   // the Studio may hold several films; test the demo
 
 const browser = await chromium.launch({ executablePath: CHROME, headless: true, args: ['--autoplay-policy=no-user-gesture-required'] })
 const results = []
@@ -100,6 +100,20 @@ const secs = s => { const m = s.match(/(\d+):(\d+\.\d)/); return m ? +m[1] * 60 
     await shot(page, '03-composer')
     await page.keyboard.press('Enter'); await sleep(300)
     ok('note saved', (await page.locator('[data-tab=notes]').textContent()).includes('1'))
+  }
+
+  // Notes (free thoughts about the whole film) are separate from comments.
+  {
+    await page.keyboard.press('Escape'); await sleep(150)
+    const before = await page.locator('[role=tab][data-tab][aria-selected=true]').first().getAttribute('data-tab')
+    await page.locator('[data-tab=notes]').click(); await sleep(200)
+    await page.click('[data-testid=pad-tab]'); await page.waitForSelector('[data-testid=pad]')
+    await page.fill('textarea[aria-label="Write a note about the whole film"]', 'Keep it warm, never techy.')
+    await page.click('[data-testid=pad-save]'); await sleep(250)
+    ok('a note saves in the Notes tab, apart from comments', (await page.locator('[data-testid=pad-note]').count()) === 1)
+    await page.locator(`[data-tab=${before || 'steps'}]`).click(); await sleep(150)
+    await page.evaluate(k => localStorage.setItem('studio2:side', JSON.stringify(k)), before || 'steps')
+    await page.evaluate(() => document.activeElement?.blur()); await page.keyboard.press('c'); await sleep(200)   // back to comment mode for the next checks
   }
 
   // Drag a box around several parts.
@@ -326,7 +340,7 @@ const secs = s => { const m = s.match(/(\d+):(\d+\.\d)/); return m ? +m[1] * 60 
     await db.doc(key).update({ claude: { state: 'done', at: new Date().toISOString(), msg: 'Headline is 8 % smaller.' }, status: 'done', replies: [{ by: 'claude', text: 'Done: headline 8 % smaller.', at: new Date().toISOString() }] })
     await db.collection('films/011-crumb/activity').add({ at: new Date().toISOString(), by: 'claude', kind: 'applied', text: 'Applied note 1 and published v0.4' })
   }); await sleep(500)
-  ok('runtime: Claude status shows in the card', /Working on your notes/.test(await page.locator('[data-testid=claude-card]').textContent()))
+  ok('runtime: Claude status shows in the card', /Working on your (notes|comments)/.test(await page.locator('[data-testid=claude-card]').textContent()))
   ok('runtime: a note shows Done by Claude', /Done by Claude/.test(await page.locator('[data-testid=claude-state]').first().textContent()))
   await page.click('[data-testid=activity-tab]'); await sleep(200)
   ok('runtime: activity shows what Claude did', /published v0.4/.test(await page.locator('[data-testid=activity]').textContent()))

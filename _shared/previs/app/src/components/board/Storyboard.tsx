@@ -140,8 +140,8 @@ function ShotCard({ sc, i, auto, onEnded }: { sc: Scene; i: number; auto: boolea
           {sfx.map(s => <Tip key={s.x.id} title={s.x.label} desc={optLabel(s.o)}><span className="tag"><Volume2 size={11} />{s.x.label}</span></Tip>)}
         </div>
         <div className="mt-auto flex items-center gap-1 pt-1">
-          <Tip title="Shot sheet" desc="Everything about this shot: a filmstrip, all its choices, its sounds and notes"><button type="button" className="btn btn-sm" onClick={() => ui.set({ sheet: sc.id })} data-testid={`sheet-${i + 1}`}><Maximize2 size={13} />Shot sheet</button></Tip>
-          <IconBtn small label="Comment on this shot" desc="A note about the whole shot: its idea, length or order" onClick={comment}><MessageSquarePlus size={15} /></IconBtn>
+          <Tip title="Shot sheet" desc="Everything about this shot: a filmstrip, all its choices, its sounds and comments"><button type="button" className="btn btn-sm" onClick={() => ui.set({ sheet: sc.id })} data-testid={`sheet-${i + 1}`}><Maximize2 size={13} />Shot sheet</button></Tip>
+          <IconBtn small label="Comment on this shot" desc="A comment about the whole shot: its idea, length or order" onClick={comment}><MessageSquarePlus size={15} /></IconBtn>
           <span className="flex-1" />
           <IconBtn small label="Open in the player" desc="Watch this shot in the full player with the timeline" onClick={open}><MonitorPlay size={15} /></IconBtn>
         </div>

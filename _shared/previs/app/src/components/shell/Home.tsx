@@ -15,7 +15,7 @@ export function Home() {
     <div className="h-full min-w-0 flex-1 overflow-y-auto" data-testid="home">
       <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-8">
         <h1 className="text-[28px] font-bold leading-tight">Films</h1>
-        <p className="mt-1 max-w-[60ch] text-[14.5px] text-muted">Each film here is a plan, not a render yet. Open one, watch it, change what you like, leave notes, then approve it so Claude builds the real video.</p>
+        <p className="mt-1 max-w-[60ch] text-[14.5px] text-muted">Each film here is a plan, not a render yet. Open one, watch it, change what you like, leave comments, then approve it so Claude builds the real video.</p>
         {!films.length ? <Empty icon={<Film size={28} />} title="No films yet">Claude adds a film here after it plans one.</Empty> : (
           <ul className="mt-6 grid gap-5" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(min(260px, 100%), 1fr))' }}>
             {films.map(f => <FilmCard key={f.id} f={f} />)}
