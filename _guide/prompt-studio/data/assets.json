@@ -1,0 +1,247 @@
+{
+ "fonts": [
+  "Inter",
+  "Space Grotesk",
+  "Archivo Black",
+  "Instrument Serif",
+  "Bricolage Grotesque",
+  "JetBrains Mono",
+  "Bebas Neue",
+  "Anton",
+  "Syne",
+  "Unbounded",
+  "Outfit",
+  "Sora",
+  "Manrope",
+  "Poppins",
+  "Montserrat",
+  "DM Sans",
+  "Playfair Display",
+  "Fraunces",
+  "Space Mono",
+  "Caveat",
+  "Oswald",
+  "DM Serif Display",
+  "Figtree",
+  "Plus Jakarta Sans",
+  "Rubik"
+ ],
+ "sources": [
+  {
+   "group": "Icons",
+   "name": "Lucide",
+   "licence": "ISC",
+   "redist": "yes",
+   "url": "https://lucide.dev",
+   "note": "1,857 icons. Previewed live in the Studio."
+  },
+  {
+   "group": "Icons",
+   "name": "Phosphor",
+   "licence": "MIT",
+   "redist": "yes",
+   "url": "https://phosphoricons.com",
+   "note": "9,072 icons in 6 weights"
+  },
+  {
+   "group": "Icons",
+   "name": "Tabler Icons",
+   "licence": "MIT",
+   "redist": "yes",
+   "url": "https://tabler.io/icons",
+   "note": "6,220 icons"
+  },
+  {
+   "group": "Icons",
+   "name": "Heroicons",
+   "licence": "MIT",
+   "redist": "yes",
+   "url": "https://heroicons.com",
+   "note": "1,288 icons"
+  },
+  {
+   "group": "Icons",
+   "name": "Material Symbols",
+   "licence": "Apache-2.0",
+   "redist": "yes",
+   "url": "https://fonts.google.com/icons",
+   "note": "15,717 icons"
+  },
+  {
+   "group": "Icons",
+   "name": "Fluent Emoji / Noto Emoji",
+   "licence": "MIT / Apache-2.0",
+   "redist": "yes",
+   "url": "https://github.com/microsoft/fluentui-emoji",
+   "note": "3D and flat emoji"
+  },
+  {
+   "group": "Illustrations",
+   "name": "Open Peeps",
+   "licence": "CC0",
+   "redist": "yes",
+   "url": "https://www.openpeeps.com",
+   "note": "Hand-drawn people, mix and match"
+  },
+  {
+   "group": "Illustrations",
+   "name": "Humaaans",
+   "licence": "CC0",
+   "redist": "yes",
+   "url": "https://www.humaaans.com",
+   "note": "Flat people illustrations"
+  },
+  {
+   "group": "Illustrations",
+   "name": "Open Doodles",
+   "licence": "CC0",
+   "redist": "yes",
+   "url": "https://www.opendoodles.com",
+   "note": "Sketchy doodles"
+  },
+  {
+   "group": "Textures",
+   "name": "Poly Haven",
+   "licence": "CC0",
+   "redist": "yes",
+   "url": "https://polyhaven.com/textures",
+   "note": "Textures and HDRIs"
+  },
+  {
+   "group": "Textures",
+   "name": "ambientCG",
+   "licence": "CC0",
+   "redist": "yes",
+   "url": "https://ambientcg.com",
+   "note": "PBR materials"
+  },
+  {
+   "group": "Textures",
+   "name": "Kenney Particle Pack",
+   "licence": "CC0",
+   "redist": "yes",
+   "url": "https://kenney.nl/assets/particle-pack",
+   "note": "512 particle sprites"
+  },
+  {
+   "group": "Animation",
+   "name": "LottieFiles free animations",
+   "licence": "Lottie Simple License (per file)",
+   "redist": "conditional",
+   "url": "https://lottiefiles.com/free-animations",
+   "note": "Check each file. Keep the licence text with the file; no bulk mirroring."
+  },
+  {
+   "group": "Animation",
+   "name": "lottie-web player",
+   "licence": "MIT",
+   "redist": "yes",
+   "url": "https://github.com/airbnb/lottie-web",
+   "note": "Plays Lottie JSON inside a composition"
+  },
+  {
+   "group": "Music",
+   "name": "Motion Reel Kit music.py (code-synth)",
+   "licence": "self-generated",
+   "redist": "yes",
+   "url": "",
+   "note": "Any BPM and seed. Allowed only when it sounds finished; judged too generic in the first showreel, so prefer a licensed bed."
+  },
+  {
+   "group": "Music",
+   "name": "Kenney Music Jingles",
+   "licence": "CC0",
+   "redist": "yes",
+   "url": "https://kenney.nl/assets/music-jingles",
+   "note": "85 short stingers (in the Sounds tab)"
+  },
+  {
+   "group": "Music",
+   "name": "incompetech (Kevin MacLeod)",
+   "licence": "CC BY 4.0",
+   "redist": "yes with credit",
+   "url": "https://incompetech.com/music/royalty-free/",
+   "note": "Needs a credit line in the caption"
+  },
+  {
+   "group": "Stock (link only)",
+   "name": "Pexels",
+   "licence": "Pexels License",
+   "redist": "no",
+   "url": "https://www.pexels.com",
+   "note": "Use in videos is fine; never re-host the files"
+  },
+  {
+   "group": "Stock (link only)",
+   "name": "Pixabay",
+   "licence": "Pixabay Content License",
+   "redist": "no",
+   "url": "https://pixabay.com",
+   "note": "Music can trigger Content ID claims"
+  },
+  {
+   "group": "Stock (link only)",
+   "name": "Unsplash",
+   "licence": "Unsplash License",
+   "redist": "conditional",
+   "url": "https://unsplash.com",
+   "note": "Photos only"
+  },
+  {
+   "group": "Avoid",
+   "name": "unDraw / DrawKit / Storyset",
+   "licence": "custom",
+   "redist": "no",
+   "url": "",
+   "note": "Licence bans embedding or AI use"
+  },
+  {
+   "group": "Avoid",
+   "name": "MusicGen / AudioGen / ElevenLabs",
+   "licence": "non-commercial / paid",
+   "redist": "no",
+   "url": "",
+   "note": "Never for monetized posts"
+  },
+  {
+   "group": "Music",
+   "name": "Freesound CC0 beds",
+   "url": "https://freesound.org/search/?f=license:%22Creative+Commons+0%22",
+   "licence": "CC0",
+   "redist": "yes",
+   "note": "FS 414441 Bell Beats (120 BPM, MIRA), FS 785817 Darkwave Reactor (PULSE). Measure the tempo yourself."
+  },
+  {
+   "group": "Music",
+   "name": "Mixkit stock music",
+   "url": "https://mixkit.co/free-stock-music/",
+   "licence": "Mixkit Stock Music Free License",
+   "redist": "no",
+   "note": "Render-only: inside the video, never in a web page, never as files, no Content ID (Flowboard, SHIFT)."
+  },
+  {
+   "group": "Sound",
+   "name": "Freesound CC0 foley",
+   "url": "https://freesound.org",
+   "licence": "CC0",
+   "redist": "yes",
+   "note": "Real clicks, keys, paper, whooshes. Fetch with _shared/tools/freesound.py; logged in SOURCES.tsv."
+  },
+  {
+   "group": "Sound",
+   "name": "Mixkit sound effects (via video-shotcraft)",
+   "url": "https://mixkit.co/free-sound-effects/",
+   "licence": "Mixkit Sound Effects Free License",
+   "redist": "no",
+   "note": "Render-only. Copy into the project, never into _shared or a page."
+  },
+  {
+   "group": "Voice",
+   "name": "Fish Audio s2.1-pro-free (voice Sarah)",
+   "url": "https://fish.audio",
+   "licence": "Fish S2.1 Pro Free grant",
+   "redist": "yes",
+   "note": "Free through 2026-11-30, commercial use OK. Re-check the terms after that date."
+  }
+ ]
+}

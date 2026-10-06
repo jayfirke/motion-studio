@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+/* Previs Studio. A screening room: the film sits in a theater, tools sit on panels around it.
+   One signal colour per meaning: ember = playhead, notes and "your attention"; sky = your choices;
+   mint = approved and done; amber = caution. Type: Hanken Grotesk for the interface, JetBrains Mono for time.
+   Two themes share every token name: dark (graphite) by default, light (paper) when the viewer or the
+   settings ask for it. Full screen always uses the dark theater (.force-dark). */
+@theme {
+  --color-ink: #0b0b0d;
+  --color-theater: #040405;
+  --color-panel: #141417;
+  --color-panel2: #1b1b1f;
+  --color-raise: #24242a;
+  --color-hover: #2c2c33;
+  --color-line: #2a2a31;
+  --color-line2: #383841;
+  --color-fg: #eeeef1;
+  --color-muted: #a7a7b0;
+  --color-dim: #8e8e98;
+  --color-ember: #ff6a3d;
+  --color-ember-ink: #1c0b04;
+  --color-sky: #8db3ff;
+  --color-sky-ink: #081530;
+  --color-mint: #4fcc8f;
+  --color-mint-ink: #04170d;
+  --color-amber: #f3b84c;
+  --font-sans: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  --radius-card: 14px;
+}
+
+/* Theme-only values that are not colours of the palette. */
+:root { --tip-bg: #f3f3f6; --tip-fg: #121216; --tip-kbd: #e3e3e9; --shadow: rgba(0,0,0,.55); --frame-shadow: 0 18px 60px rgba(0,0,0,.55); --hover-veil: rgba(255,255,255,.1); --scroll: #3a3a44; color-scheme: dark; }
+
+:root[data-studio-theme="light"] {
+  --color-ink: #f4f4f6;
+  --color-theater: #dedee3;
+  --color-panel: #ffffff;
+  --color-panel2: #f6f6f8;
+  --color-raise: #ececf0;
+  --color-hover: #e2e2e7;
+  --color-line: #e3e3e8;
+  --color-line2: #cfcfd7;
+  --color-fg: #16161a;
+  --color-muted: #55555f;
+  --color-dim: #686874;
+  --color-ember: #d2441a;
+  --color-ember-ink: #ffffff;
+  --color-sky: #2a5fd0;
+  --color-sky-ink: #ffffff;
+  --color-mint: #08613a;
+  --color-mint-ink: #ffffff;
+  --color-amber: #8a5700;
+  --tip-bg: #1c1c21; --tip-fg: #f4f4f6; --tip-kbd: #2c2c33; --shadow: rgba(20,20,40,.16); --frame-shadow: 0 14px 40px rgba(20,20,40,.18); --hover-veil: rgba(0,0,0,.06); --scroll: #c4c4cc;
+  color-scheme: light;
+}
+
+/* The dark palette, re-declared for a subtree (full screen keeps a dark screening room in light mode). */
+.force-dark {
+  --color-ink: #0b0b0d; --color-theater: #040405; --color-panel: #141417; --color-panel2: #1b1b1f; --color-raise: #24242a; --color-hover: #2c2c33;
+  --color-line: #2a2a31; --color-line2: #383841; --color-fg: #eeeef1; --color-muted: #a7a7b0; --color-dim: #8e8e98;
+  --color-ember: #ff6a3d; --color-ember-ink: #1c0b04; --color-sky: #8db3ff; --color-sky-ink: #081530; --color-mint: #4fcc8f; --color-mint-ink: #04170d; --color-amber: #f3b84c;
+  --hover-veil: rgba(255,255,255,.1); --frame-shadow: 0 18px 60px rgba(0,0,0,.55); color-scheme: dark; color: var(--color-fg);
+}
+
+@layer base {
+  html, body { background: var(--color-ink); color: var(--color-fg); }
+  body { margin: 0; font-family: var(--font-sans); font-size: 14px; line-height: 1.45; -webkit-font-smoothing: antialiased; }
+  #root { min-height: 100vh; }
+  button { cursor: pointer; font: inherit; color: inherit; }
+  button:disabled { cursor: default; opacity: .45; }
+  :focus-visible { outline: 2px solid var(--color-sky); outline-offset: 2px; border-radius: 6px; }
+  ::selection { background: color-mix(in oklab, var(--color-sky) 35%, transparent); }
+  * { scrollbar-width: thin; scrollbar-color: var(--scroll) transparent; }
+}
+
+@layer components {
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 38px; padding: 0 14px; border-radius: 10px; border: 1px solid var(--color-line); background: var(--color-panel2); font-weight: 600; font-size: 13.5px; white-space: nowrap; transition: background .15s, border-color .15s, transform .08s, filter .15s; }
+  .btn:hover:not(:disabled) { background: var(--color-raise); border-color: var(--color-line2); }
+  .btn:active:not(:disabled) { transform: translateY(1px); }
+  .btn-primary { background: var(--color-fg); color: var(--color-ink); border-color: var(--color-fg); }
+  .btn-primary:hover:not(:disabled) { background: var(--color-fg); border-color: var(--color-fg); filter: brightness(1.12); }
+  .btn-go { background: var(--color-mint); color: var(--color-mint-ink); border-color: var(--color-mint); }
+  .btn-go:hover:not(:disabled) { background: var(--color-mint); border-color: var(--color-mint); filter: brightness(1.1); }
+  .btn-ember { background: var(--color-ember); color: var(--color-ember-ink); border-color: var(--color-ember); }
+  .btn-ember:hover:not(:disabled) { background: var(--color-ember); border-color: var(--color-ember); filter: brightness(1.08); }
+  .btn-sky { background: var(--color-sky); color: var(--color-sky-ink); border-color: var(--color-sky); }
+  .btn-sky:hover:not(:disabled) { background: var(--color-sky); border-color: var(--color-sky); filter: brightness(1.08); }
+  .btn-ghost { background: transparent; border-color: transparent; }
+  .btn-ghost:hover:not(:disabled) { background: var(--color-raise); border-color: transparent; }
+  .btn-sm { min-height: 30px; padding: 0 10px; font-size: 12.5px; border-radius: 8px; }
+  .icon-btn { display: inline-grid; place-items: center; width: 38px; height: 38px; border-radius: 10px; border: 0; background: transparent; color: var(--color-fg); transition: background .15s; }
+  .icon-btn:hover:not(:disabled) { background: var(--hover-veil); }
+  .icon-btn[data-on="true"] { background: var(--color-ember); color: var(--color-ember-ink); }
+  .icon-btn-sm { width: 30px; height: 30px; border-radius: 8px; }
+  .kbd { font-family: var(--font-mono); font-size: 11px; padding: 1px 6px; border-radius: 5px; border: 1px solid var(--color-line2); background: var(--color-panel2); color: var(--color-muted); }
+  .card { background: var(--color-panel); border: 1px solid var(--color-line); border-radius: var(--radius-card); }
+  .tag { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 700; padding: 2px 9px; border-radius: 999px; background: var(--color-raise); color: var(--color-muted); white-space: nowrap; }
+  .tag-ember { background: color-mix(in oklab, var(--color-ember) 16%, transparent); color: var(--color-ember); }
+  .tag-sky { background: color-mix(in oklab, var(--color-sky) 15%, transparent); color: var(--color-sky); }
+  .tag-mint { background: color-mix(in oklab, var(--color-mint) 15%, transparent); color: var(--color-mint); }
+  .tag-amber { background: color-mix(in oklab, var(--color-amber) 15%, transparent); color: var(--color-amber); }
+  .seg { display: inline-flex; padding: 3px; gap: 2px; border-radius: 11px; background: var(--color-panel); border: 1px solid var(--color-line); }
+  .seg > button { border: 0; background: transparent; padding: 0 14px; min-height: 32px; border-radius: 8px; color: var(--color-muted); font-weight: 650; display: inline-flex; align-items: center; gap: 7px; }
+  .seg > button[aria-pressed="true"], .seg > button[aria-selected="true"] { background: var(--color-raise); color: var(--color-fg); box-shadow: 0 1px 0 rgba(255,255,255,.04) inset; }
+  .label { font-size: 11.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--color-dim); }
+  .mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+  .field { width: 100%; border: 1px solid var(--color-line); background: var(--color-ink); color: var(--color-fg); border-radius: 9px; padding: 8px 10px; font: inherit; }
+  .field:focus { outline: none; border-color: var(--color-sky); }
+  .tip { z-index: 130; max-width: 280px; border-radius: 10px; background: var(--tip-bg); color: var(--tip-fg); padding: 8px 11px; font-size: 12.5px; line-height: 1.4; box-shadow: 0 10px 30px var(--shadow); animation: tipIn .12s ease-out; }
+  .tip b { display: block; font-size: 13px; }
+  .tip .kbd { background: var(--tip-kbd); border-color: transparent; color: var(--tip-fg); }
+  .pop { z-index: 90; border-radius: 14px; background: var(--color-panel); border: 1px solid var(--color-line2); box-shadow: 0 20px 50px var(--shadow); animation: popIn .14s ease-out; }
+  .scrim { position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 80; animation: fadeIn .15s ease-out; }
+  .frame-shadow { box-shadow: var(--frame-shadow); }
+}
+@keyframes tipIn { from { opacity: 0; transform: translateY(2px); } to { opacity: 1; transform: none; } }
+@keyframes popIn { from { opacity: 0; transform: translateY(4px) scale(.985); } to { opacity: 1; transform: none; } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pulseRing { 0% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--color-ember) 55%, transparent); } 100% { box-shadow: 0 0 0 14px transparent; } }
+.pulse { animation: pulseRing 1.6s ease-out infinite; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; } .pulse { animation: none; } }

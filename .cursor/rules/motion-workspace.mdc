@@ -1,0 +1,5 @@
+---
+description: MotionGraphics workspace rules (single source of truth is AGENTS.md)
+alwaysApply: true
+---
+Read and follow `AGENTS.md` at the workspace root before any work, and `AGENTS-tooling.md` before running any CLI.md`.

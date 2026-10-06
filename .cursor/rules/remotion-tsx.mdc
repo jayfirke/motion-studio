@@ -1,0 +1,9 @@
+---
+description: Remotion composition rules for TSX video projects (personal use only)
+globs: projects/**/*.tsx, engines/remotion-starter/**/*.tsx
+alwaysApply: false
+---
+- Drive all motion from `useCurrentFrame()` and `useVideoConfig()` with `spring()` and `interpolate()`. Clamp extrapolation.
+- Media and fonts come from `public/` through `staticFile()`. Use Remotion's `random(seed)`, never `Math.random()`.
+- Timing comes from `<Sequence>` / `<Series>`, never timers or CSS transitions.
+- Remotion is free for individuals and companies of up to 3 people. Never copy Remotion's own files into `_shared` or a published page.

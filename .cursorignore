@@ -1,0 +1,14 @@
+# Cursor: keep heavy or generated paths out of indexing
+.venv/
+node_modules/
+_kits/
+**/renders/
+**/snapshots/
+**/frames/
+**/videos/
+.hyperframes/
+*.mp4
+*.mov
+*.wav
+*.mp3
+*.ogg

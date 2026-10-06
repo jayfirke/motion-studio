@@ -1,0 +1,38 @@
+# Your machine and your preferences (never committed)
+.motion-studio-export
+OWNER.md
+.local/
+CLAUDE.local.md
+.claude/settings.local.json
+.env
+.env.*
+
+# Generated / heavy (no trailing slash on node_modules: motion-reel projects link it as a symlink)
+node_modules
+.venv/
+**/renders/
+**/out/
+**/frames/
+**/snapshots/
+**/review/
+**/videos/
+**/smoke-out/
+**/dist/
+.hyperframes/
+*.mp4
+*.mov
+*.webm
+*.wav.tmp
+*.tsbuildinfo
+.DS_Store
+.impeccable/
+.code-review-graph/
+
+# Creator kits and render-only audio never go into the repo
+_kits/
+projects/**/*mixkit*
+projects/*/auditions/
+
+# Your films: commit them only if you mean to (delete this line to track projects/)
+projects/*
+!projects/_template/

@@ -1,0 +1,1381 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Motion Prompt Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: an edit-suite control surface with tabs. Blue = picture/motion, green = sound, amber = estimate/caution, red = banned. Prompt slots get their own colour so you see which input wrote which line. */
+:root {
+  --bg: #f3f4f7; --surface: #ffffff; --surface-2: #e9ebf1; --fg: #161821; --muted: #5b6070; --line: #d5d8e1;
+  --accent: #2f5bea; --accent-soft: #e3e9fd; --audio: #17875a; --audio-soft: #ddf2e8; --warn: #9a5b00; --warn-soft: #fbecd2; --bad: #b5302f; --bad-soft: #f8dfdf;
+  --s1: #6d4fd8; --s2: #2f5bea; --s3: #0f8a8a; --s4: #17875a; --s5: #9a5b00; --s6: #b5302f;
+  --code-bg: #1b1e28; --code-fg: #e6e8f0;
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif; --body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif; --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0f1117; --surface: #171a22; --surface-2: #1f2330; --fg: #e8eaf1; --muted: #9aa0b2; --line: #2c3140;
+  --accent: #86a2ff; --accent-soft: #1d2647; --audio: #4fcf97; --audio-soft: #12302a; --warn: #f0b45a; --warn-soft: #3a2a10; --bad: #ff8a87; --bad-soft: #3d1a1c;
+  --s1: #b39cff; --s2: #86a2ff; --s3: #5fd3d3; --s4: #4fcf97; --s5: #f0b45a; --s6: #ff8a87; --code-bg: #0a0c11; --code-fg: #e6e8f0; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #0f1117; --surface: #171a22; --surface-2: #1f2330; --fg: #e8eaf1; --muted: #9aa0b2; --line: #2c3140;
+  --accent: #86a2ff; --accent-soft: #1d2647; --audio: #4fcf97; --audio-soft: #12302a; --warn: #f0b45a; --warn-soft: #3a2a10; --bad: #ff8a87; --bad-soft: #3d1a1c;
+  --s1: #b39cff; --s2: #86a2ff; --s3: #5fd3d3; --s4: #4fcf97; --s5: #f0b45a; --s6: #ff8a87; --code-bg: #0a0c11; --code-fg: #e6e8f0; color-scheme: dark; }
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 15px; line-height: 1.55; padding-inline: 16px; padding-block: 0 72px; }
+.wrap { max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; line-height: 1.1; }
+h1 { font-size: clamp(2rem, 5.5vw, 3.2rem); font-weight: 850; font-variation-settings: "wdth" 118; }
+h3 { font-size: 1rem; font-weight: 750; font-variation-settings: "wdth" 105; }
+p { margin: 0; }
+a { color: var(--accent); text-underline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+code { font-family: var(--mono); font-size: 0.86em; background: var(--surface-2); padding: 1px 5px; border-radius: 4px; }
+.eyebrow { font-family: var(--mono); font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.note { color: var(--muted); font-size: 0.9rem; max-width: 76ch; }
+header { display: flex; flex-direction: column; gap: 12px; padding-top: 36px; }
+.lede { font-size: 1.04rem; color: var(--muted); max-width: 72ch; }
+.chips-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.stat { font-family: var(--mono); font-size: 0.74rem; border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; color: var(--muted); background: var(--surface); }
+.stat b { color: var(--audio); font-weight: 500; }
+nav.tabs { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); padding-block: 8px; display: flex; gap: 6px; overflow-x: auto; border-bottom: 1px solid var(--line); }
+nav.tabs button { font: inherit; font-size: 0.9rem; font-weight: 600; background: transparent; color: var(--muted); border: 1px solid transparent; border-radius: 8px; padding: 7px 12px; cursor: pointer; white-space: nowrap; }
+nav.tabs button[aria-selected="true"] { background: var(--surface); color: var(--fg); border-color: var(--line); }
+nav.tabs .count { font-family: var(--mono); font-size: 0.7rem; color: var(--audio); margin-left: 4px; }
+section.tab { display: flex; flex-direction: column; gap: 18px; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 16px; align-items: start; }
+@media (max-width: 980px) { .cols { grid-template-columns: 1fr; } }
+.sticky { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 60px); }
+@media (max-width: 980px) { .sticky { position: static; } }
+.field { display: flex; flex-direction: column; gap: 7px; min-width: 0; }
+.lbl { font-family: var(--mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); }
+.opts { display: flex; flex-wrap: wrap; gap: 6px; }
+.opt { font: inherit; font-size: 0.85rem; border: 1px solid var(--line); background: var(--surface); color: var(--fg); border-radius: 8px; padding: 6px 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; text-align: left; }
+.opt[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+.opt small { font-family: var(--mono); font-size: 0.68rem; color: var(--muted); }
+.opt.big { flex-direction: column; align-items: flex-start; gap: 2px; padding: 9px 12px; min-width: 150px; flex: 1; }
+.opt.big b { font-size: 0.92rem; }
+.opt.big span { font-size: 0.78rem; color: var(--muted); }
+.two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+@media (max-width: 560px) { .two { grid-template-columns: 1fr; } }
+input[type="text"], input[type="search"], textarea, select { font: inherit; font-size: 0.9rem; width: 100%; border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px; background: var(--bg); color: var(--fg); }
+textarea { min-height: 86px; resize: vertical; }
+input[type="range"] { accent-color: var(--accent); width: 100%; }
+.row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.row output { font-family: var(--mono); font-variant-numeric: tabular-nums; min-width: 5ch; }
+.check { display: flex; gap: 8px; align-items: center; font-size: 0.88rem; }
+button.btn { font: inherit; font-size: 0.82rem; font-weight: 600; background: var(--accent); color: #fff; border: 0; border-radius: 7px; padding: 7px 12px; cursor: pointer; }
+button.btn.ghost { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+button.btn.green { background: var(--audio); }
+.mini { font-family: var(--mono); font-size: 0.7rem; background: transparent; color: var(--accent); border: 1px solid var(--line); border-radius: 6px; padding: 3px 8px; cursor: pointer; text-decoration: none; }
+.mini.on { background: var(--audio-soft); color: var(--audio); border-color: var(--audio); }
+.play { width: 28px; height: 28px; border-radius: 50%; border: 1px solid currentColor; background: transparent; color: var(--audio); cursor: pointer; display: inline-grid; place-items: center; font-size: 0.72rem; flex: none; padding: 0; }
+.badge { font-family: var(--mono); font-size: 0.66rem; padding: 1px 6px; border-radius: 999px; white-space: nowrap; }
+.b-native { background: var(--audio-soft); color: var(--audio); }
+.b-port { background: var(--accent-soft); color: var(--accent); }
+.b-banned { background: var(--bad-soft); color: var(--bad); }
+.b-lic { background: var(--surface-2); color: var(--muted); }
+.b-warn { background: var(--warn-soft); color: var(--warn); }
+.slots { display: flex; flex-direction: column; gap: 6px; }
+.slot { border-left: 4px solid var(--c); background: var(--surface-2); border-radius: 6px; padding: 8px 10px; font-family: var(--mono); font-size: 0.78rem; white-space: pre-wrap; word-break: break-word; }
+.slot b { display: block; font-family: var(--body); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c); margin-bottom: 2px; }
+.tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+@media (max-width: 640px) { .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.tile { background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.tile .k { font-family: var(--mono); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); }
+.tile .v { font-family: var(--display); font-weight: 800; font-size: 1.1rem; font-variation-settings: "wdth" 110; font-variant-numeric: tabular-nums; }
+.tile.est .v { color: var(--warn); }
+.tile .s { font-size: 0.72rem; color: var(--muted); }
+.picks { display: flex; flex-wrap: wrap; gap: 6px; }
+.pick { font-size: 0.78rem; background: var(--surface-2); border-radius: 999px; padding: 3px 4px 3px 10px; display: inline-flex; gap: 6px; align-items: center; }
+.pick button { border: 0; background: transparent; color: var(--muted); cursor: pointer; font-size: 0.9rem; padding: 0 4px; }
+.pick select { width: auto; font-size: 0.72rem; padding: 1px 4px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.card .top { display: flex; gap: 8px; align-items: center; justify-content: space-between; }
+.card b { font-size: 0.9rem; }
+.card p { font-size: 0.8rem; color: var(--muted); }
+.card .tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.card code { font-size: 0.74rem; align-self: flex-start; }
+.toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.toolbar input[type="search"] { max-width: 280px; }
+.kit { border-left: 4px solid var(--kc, var(--accent)); }
+.cmp { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 6px; }
+.cmp button { font: inherit; font-size: 0.78rem; border: 1px solid var(--line); border-left: 4px solid var(--kc); background: var(--surface); color: var(--fg); border-radius: 6px; padding: 6px 8px; cursor: pointer; text-align: left; }
+.list { display: flex; flex-direction: column; max-height: 460px; overflow: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+.li { display: flex; gap: 10px; align-items: center; padding: 6px 10px; border-bottom: 1px solid var(--line); font-size: 0.85rem; }
+.li:last-child { border-bottom: 0; }
+.li span.n { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sliders { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px 16px; }
+.sliders label { display: flex; flex-direction: column; gap: 2px; font-size: 0.78rem; color: var(--muted); }
+pre { margin: 0; background: var(--code-bg); color: var(--code-fg); padding: 14px; border-radius: 10px; overflow: auto; font-family: var(--mono); font-size: 0.78rem; line-height: 1.55; white-space: pre-wrap; word-break: break-word; max-height: 480px; }
+canvas { width: 100%; max-width: 100%; border-radius: 8px; background: var(--surface-2); display: block; }
+.engines { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 860px) { .engines { grid-template-columns: 1fr; } }
+.engine { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.engine.on { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+.engine video { width: 100%; aspect-ratio: 16 / 9; border-radius: 8px; background: var(--surface-2); }
+.engine .time { font-family: var(--mono); font-size: 0.74rem; background: var(--audio-soft); color: var(--audio); padding: 2px 7px; border-radius: 6px; align-self: flex-start; }
+.engine .mini { align-self: flex-start; }
+.moves { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; }
+.move { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 8px; display: flex; flex-direction: column; gap: 4px; }
+.stage { height: 56px; border-radius: 6px; background: var(--surface-2); display: grid; place-items: center; overflow: hidden; }
+.chip { font-family: var(--display); font-weight: 800; background: var(--accent); color: var(--surface); padding: 3px 9px; border-radius: 6px; font-size: 0.8rem; }
+.move .name { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); }
+.a-rise { animation: rise 2.6s cubic-bezier(.22,1,.36,1) infinite; } .a-pop { animation: pop 2.6s cubic-bezier(.34,1.56,.64,1) infinite; }
+.a-slide { animation: slide 2.6s cubic-bezier(.22,1,.36,1) infinite; } .a-blur { animation: blur 2.6s ease-out infinite; } .a-punch { animation: punch 2.6s cubic-bezier(.16,1,.3,1) infinite; }
+.mbar { width: 76%; height: 8px; border-radius: 99px; background: var(--line); overflow: hidden; } .mbar i { display: block; height: 100%; background: var(--audio); transform-origin: left; animation: fill 2.6s cubic-bezier(.65,0,.35,1) infinite; }
+.type { font-family: var(--mono); font-size: 0.76rem; white-space: nowrap; overflow: hidden; border-right: 2px solid var(--accent); width: 11ch; animation: type 2.6s steps(11) infinite; }
+.reframe { width: 70%; height: 70%; border-radius: 6px; background: linear-gradient(135deg, var(--accent), var(--audio)); animation: reframe 2.6s cubic-bezier(.65,0,.35,1) infinite; }
+.ticks { list-style: none; margin: 0; padding: 0; font-size: 0.7rem; } .ticks li::before { content: "✓ "; color: var(--audio); font-weight: 700; } .ticks li { animation: tick 2.6s ease-out infinite; } .ticks li:nth-child(2) { animation-delay: .25s; }
+@keyframes rise { 0%,12% { transform: none; opacity: 1 } 16% { transform: translateY(14px); opacity: 0 } 45%,100% { transform: none; opacity: 1 } }
+@keyframes pop { 0%,12% { transform: none } 16% { transform: scale(.3); opacity: 0 } 40%,100% { transform: none; opacity: 1 } }
+@keyframes slide { 0%,12% { transform: none } 16% { transform: translateX(-140%) } 45%,100% { transform: none } }
+@keyframes blur { 0%,12% { filter: none; opacity: 1 } 16% { filter: blur(10px); opacity: .2 } 50%,100% { filter: none; opacity: 1 } }
+@keyframes punch { 0%,12% { transform: none } 16% { transform: scale(.7) } 30% { transform: scale(1.12) } 45%,100% { transform: none } }
+@keyframes fill { 0%,12% { transform: scaleX(1) } 16% { transform: scaleX(0) } 60%,100% { transform: scaleX(1) } }
+@keyframes type { 0%,12% { width: 11ch } 16% { width: 0 } 65%,100% { width: 11ch } }
+@keyframes tick { 0%,12% { opacity: 1 } 16% { opacity: 0 } 40%,100% { opacity: 1 } }
+@keyframes reframe { 0%,12% { width: 70%; height: 70% } 16% { width: 100%; height: 100%; border-radius: 0 } 55%,100% { width: 70%; height: 70%; border-radius: 6px } }
+@media (prefers-reduced-motion: reduce) { .move *, .engine video { animation: none !important; } }
+.icons { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 6px; max-height: 420px; overflow: auto; }
+.icons button { font: inherit; font-size: 0.66rem; border: 1px solid var(--line); background: var(--surface); color: var(--fg); border-radius: 8px; padding: 8px 4px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; overflow: hidden; min-width: 0; }
+.icons button span { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.icons button[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.icons svg { width: 24px; height: 24px; flex: none; }
+.fonts { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 8px; }
+.fonts button { font-size: 1.35rem; border: 1px solid var(--line); background: var(--surface); color: var(--fg); border-radius: 10px; padding: 10px 12px; cursor: pointer; text-align: left; display: flex; flex-direction: column; gap: 2px; min-width: 0; overflow: hidden; }
+.fonts button small { font-family: var(--mono); font-size: 0.68rem; color: var(--muted); }
+.fonts button[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+table { border-collapse: collapse; width: 100%; font-size: 0.85rem; }
+th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+th { font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); background: var(--surface-2); }
+.tw { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+.tw table { min-width: 640px; }
+.bench .brow { display: grid; grid-template-columns: minmax(120px, 230px) minmax(0, 1fr) 70px; gap: 10px; align-items: center; font-size: 0.85rem; }
+.bench .track { height: 12px; background: var(--surface-2); border-radius: 4px; overflow: hidden; } .bench .fb { display: block; height: 100%; background: var(--accent); }
+.bench .val { font-family: var(--mono); text-align: right; }
+.fu { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 10px; }
+.fu .card q { quotes: none; font-size: 0.85rem; }
+.fu .card .mini { align-self: flex-start; }
+.toast { position: fixed; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) + 20px); transform: translateX(-50%); background: var(--fg); color: var(--bg); font-size: 0.85rem; padding: 8px 14px; border-radius: 8px; z-index: 20; }
+footer { font-size: 0.8rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 14px; }
+ul.note { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; }
+.engine video { object-fit: contain; background: var(--code-bg); }
+.b-house { font-weight: 600; }
+.films { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); gap: 12px; }
+.film { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.film video { width: 100%; max-width: 100%; aspect-ratio: 16 / 10; object-fit: contain; background: var(--code-bg); border-radius: 8px; display: block; }
+.film .head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.film h3 { font-size: 1.3rem; font-weight: 800; font-variation-settings: "wdth" 112; }
+.film .meta { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); }
+.film .line { font-size: 0.92rem; }
+.film ul { margin: 0; padding-left: 18px; font-size: 0.84rem; display: flex; flex-direction: column; gap: 4px; }
+.film .foot { display: flex; gap: 8px; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-top: auto; padding-top: 4px; border-top: 1px solid var(--line); }
+.scores { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; }
+.scores span { display: flex; align-items: baseline; justify-content: space-between; gap: 4px; padding: 3px 7px; border-radius: 5px; font-size: 0.7rem; min-width: 0; }
+.scores span b { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 0.86rem; }
+.sc-hi { background: var(--audio-soft); color: var(--audio); } .sc-mid { background: var(--warn-soft); color: var(--warn); } .sc-lo { background: var(--bad-soft); color: var(--bad); }
+.lessons { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); gap: 10px; }
+.lesson { border-top: 3px solid var(--c, var(--accent)); background: var(--bg); border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.lesson ul { margin: 0; padding-left: 18px; font-size: 0.84rem; display: flex; flex-direction: column; gap: 5px; }
+.card .act { font-family: var(--mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">v3.1 · 2026-10-06 · local-first · this workspace · follows AGENTS.md</div>
+  <h1>Motion Prompt Studio</h1>
+  <p class="lede">Pick what the video is, how it should feel and what it says. The Studio picks the engine and writes the prompt in six labelled parts, with the house rules, Sarah's voice, recorded foley and the critique loop built in. Version 3 adds what five finished films taught: six engines, the carries that passed the critics, a real-click sound palette, and measured render times and costs.</p>
+  <div class="chips-row">
+    <span class="stat"><b>6</b> engines</span><span class="stat"><b>11</b> proven carries</span><span class="stat"><b>19</b> recorded CC0 foley</span><span class="stat"><b>1,658</b> library sounds</span><span class="stat"><b>184</b> named animations</span><span class="stat"><b>386</b> HyperFrames blocks</span><span class="stat"><b>1,900+</b> icons</span>
+  </div>
+</header>
+
+<nav class="tabs" role="tablist" aria-label="Studio sections">
+  <button role="tab" type="button" data-tab="quick" aria-selected="true">Quick prompt</button>
+  <button role="tab" type="button" data-tab="full" aria-selected="false">Full builder</button>
+  <button role="tab" type="button" data-tab="sounds" aria-selected="false">Sounds<span class="count" id="cSounds"></span></button>
+  <button role="tab" type="button" data-tab="music" aria-selected="false">Music</button>
+  <button role="tab" type="button" data-tab="motion" aria-selected="false">Motion<span class="count" id="cMotion"></span></button>
+  <button role="tab" type="button" data-tab="assets" aria-selected="false">Assets<span class="count" id="cAssets"></span></button>
+  <button role="tab" type="button" data-tab="guide" aria-selected="false">Guide</button>
+</nav>
+
+<section class="tab" id="tab-quick">
+  <div class="cols">
+    <div class="panel">
+      <div class="field"><span class="lbl">1 · What is it</span><div class="opts" data-group="type"></div></div>
+      <div class="field"><span class="lbl">2 · How should it feel</span><div class="opts" data-group="vibe"></div></div>
+      <div class="field"><label class="lbl" for="qText">3 · What it says (one line per screen, used word for word)</label><textarea id="qText"></textarea></div>
+      <div class="two">
+        <div class="field"><label class="lbl" for="qDur">4 · Length</label><div class="row"><input type="range" id="qDur" min="5" max="60" step="1"><output id="qDurOut"></output></div></div>
+        <div class="field"><label class="lbl" for="qBrand">Product or channel name</label><input type="text" id="qBrand"></div>
+      </div>
+      <div class="two">
+        <div class="field"><span class="lbl">Format</span><div class="opts" data-group="format"></div></div>
+        <div class="field"><span class="lbl">Engine (the type sets it; change it if you like)</span><div class="opts" data-group="engine"></div><p class="note" id="engNote"></p></div>
+      </div>
+      <div class="field"><span class="lbl">How much design detail to write</span><div class="opts" data-group="dial"></div></div>
+      <div class="field"><span class="lbl">Audio (independent switches)</span><div class="opts" data-group="audio"></div></div>
+      <div class="field"><span class="lbl">Critique rounds before you see a render</span><div class="opts" data-group="cap"></div></div>
+      <div class="field"><span class="lbl">Before anything renders</span><div class="opts" data-group="previs"></div></div>
+      <p class="note">Sounds, music, animations, blocks, icons and fonts you add in the other tabs land in the Technique part of the prompt.</p>
+      <div class="field"><span class="lbl">Added from other tabs</span><div class="picks" id="picksQuick"></div></div>
+    </div>
+    <div class="panel sticky">
+      <div class="tiles" id="tilesQuick"></div>
+      <div class="row" style="justify-content:space-between"><span class="eyebrow">Paste into Claude Code (or any agent) opened in this workspace</span><button class="btn" type="button" data-copy="quick">Copy prompt</button></div>
+      <div class="slots" id="slotsQuick"></div>
+      <p class="note" id="warnQuick"></p>
+    </div>
+  </div>
+</section>
+
+<section class="tab" id="tab-full" hidden>
+  <div class="engines">
+    <article class="engine" data-engine="shotcraft"><h3>video-shotcraft</h3><span class="time">38.4 s film · about 2 min render + master</span><p class="note">Product demos and ads from real UI: 2.5D camera, shot recipes, beat-synced cuts. Remotion 4.0.484 inside.</p><button class="mini" type="button" data-pick-engine="shotcraft">Use this engine</button></article>
+    <article class="engine" data-engine="hyperframes"><h3>HyperFrames</h3><span class="time">24.5 s 9:16 · 39 s render</span><p class="note">Reels, kinetic type, captions and three.js heroes. HTML + GSAP. Audio lands with 0 ms lag.</p><button class="mini" type="button" data-pick-engine="hyperframes">Use this engine</button></article>
+    <article class="engine" data-engine="remotion"><h3>Remotion</h3><span class="time">27.6 s 1080p30 · 41 s render</span><p class="note">React. Charts, lower thirds and templates you will reuse. Personal use.</p><button class="mini" type="button" data-pick-engine="remotion">Use this engine</button></article>
+    <article class="engine" data-engine="motionreel"><h3>motion-reel</h3><span class="time">6 s at 60 fps · 61 s + audio</span><p class="note">Kit 3. Beat-synced reels with springs, a measured grid and critique scripts.</p><button class="mini" type="button" data-pick-engine="motionreel">Use this engine</button></article>
+    <article class="engine" data-engine="bang"><h3>bang-motion</h3><span class="time">27.9 s · about 2 min frames + mux</span><p class="note">Openers, bumpers, kinetic type. One index.html, one world the camera travels.</p><button class="mini" type="button" data-pick-engine="bang">Use this engine</button></article>
+    <article class="engine" data-engine="diffusion"><h3>Diffusion Studio</h3><span class="time">24.5 s 9:16 · 18 s export</span><p class="note">Cut, caption and mask real footage in JSX. Its audio lands about 44 ms late: trim the WAV.</p><button class="mini" type="button" data-pick-engine="diffusion">Use this engine</button></article>
+  </div>
+  <div class="cols">
+    <div class="panel">
+      <div class="two">
+        <div class="field"><span class="lbl">Frame rate</span><div class="opts" data-group="fps"></div></div>
+        <div class="field"><span class="lbl">Style block</span><div class="opts" data-group="style"></div></div>
+      </div>
+      <div class="field"><label class="lbl" for="fTrans">Primary transition (one per video)</label><select id="fTrans"></select></div>
+      <div class="field"><label class="lbl" for="fEase">Default ease</label><select id="fEase"></select></div>
+      <div class="field"><span class="lbl">Voice (when the Voiceover switch is on)</span><div class="opts" data-group="voice"></div></div>
+      <div class="field"><span class="lbl">Critique rounds before you see a render</span><div class="opts" data-group="cap"></div></div>
+      <div class="field"><label class="lbl" for="fPurpose">What it is for (one line)</label><input type="text" id="fPurpose"></div>
+      <div class="two">
+        <div class="field"><label class="lbl" for="fColours">Brand colours</label><input type="text" id="fColours" placeholder="#111111 background, #ff5a1f accent"></div>
+        <div class="field"><label class="lbl" for="fRef">Reference video link</label><input type="text" id="fRef" placeholder="https://… pacing you love"></div>
+      </div>
+      <div class="field"><label class="lbl" for="fSpectacle">One "wow" moment (optional)</label><input type="text" id="fSpectacle" placeholder="e.g. the number explodes into the logo on the drop"></div>
+      <label class="check"><input type="checkbox" id="fShots"> Screenshots are in the project's <code>screenshots/</code> folder</label>
+      <label class="check"><input type="checkbox" id="fPreamble"> Add the HyperFrames "motion preamble" (depth layers, staggered entrances, one spectacle beat)</label>
+      <div class="field"><span class="lbl">Everything added</span><div class="picks" id="picksFull"></div></div>
+    </div>
+    <div class="panel sticky">
+      <div class="tiles" id="tilesFull"></div>
+      <div class="row" style="justify-content:space-between"><span class="eyebrow">Full prompt with every setting</span><button class="btn" type="button" data-copy="full">Copy prompt</button></div>
+      <div class="slots" id="slotsFull"></div>
+      <p class="note" id="warnFull"></p>
+    </div>
+  </div>
+</section>
+
+<section class="tab" id="tab-sounds" hidden>
+  <div class="toolbar">
+    <div class="opts" data-group="sndsrc"></div>
+    <input type="search" id="sndSearch" placeholder="Search: success, whoosh, coin, error…" aria-label="Search sounds">
+  </div>
+  <div id="sndFoley" class="panel">
+    <div class="row" style="justify-content:space-between"><h3>Recorded foley: the ad palette</h3><span class="badge b-native">house default for ads</span></div>
+    <p class="note">A real click for every press, one switch for toggles, key taps on visible typing, airy whooshes on moves, a riser into the reveal and one impact as the loudest moment. Every sample here was used in the test films. Freesound files are CC0 and come from <code>_shared/tools/freesound.py get &lt;id&gt;</code>. Mixkit files are render-only, so they have no preview on this page.</p>
+    <div class="grid" id="foleyGrid"></div>
+    <div class="tw"><table id="foleyMixkit"></table></div>
+    <ul class="note">
+      <li>Fewer sounds than beats, in one shared room (a light common reverb).</li>
+      <li>Runs: alternate two samples, step the volume down and tighten the gaps; when hits blur, play one swoosh instead.</li>
+      <li>Whooshes: a slow swell (attack 300 ms or more), dark (centroid under 1.3 kHz), low-passed near 6 kHz, under the voice.</li>
+      <li>Pin each sound to its shot start plus an offset, after picture lock. Check the hits on an SFX-only stem, not the full mix.</li>
+      <li>Never in an ad: synth plucks, bloops, notification tones, success chimes, cartoon bounces.</li>
+    </ul>
+  </div>
+  <div id="sndUisfx" class="panel" hidden>
+    <div class="row" style="justify-content:space-between"><h3>UI SFX: 12 kits × 78 named cues</h3><span class="row"><span class="badge b-warn">synthesized: drafts only</span><span class="badge b-lic">CC0 · uisfx.com</span></span></div>
+    <p class="note">These are synthesized, so in a product ad they are drafts only, or a deliberate "the system is speaking" moment written into the brief. Pick a kit to set the feel; "Compare kits" plays one cue across all 12.</p>
+    <div class="opts" id="kitChips"></div>
+    <div class="opts" id="catChips"></div>
+    <div id="cmpBox" class="panel" hidden><div class="row" style="justify-content:space-between"><h3 id="cmpTitle"></h3><button class="mini" type="button" id="cmpClose">Close</button></div><div class="cmp" id="cmpRow"></div></div>
+    <div class="grid" id="cueGrid"></div>
+  </div>
+  <div id="sndKenney" class="panel" hidden>
+    <div class="row" style="justify-content:space-between"><h3>Kenney audio: 9 packs, 706 sounds</h3><span class="badge b-lic">CC0 · kenney.nl</span></div>
+    <p class="note">Recorded and designed sounds. For ads use interface, ui, impact and digital; RPG, casino, voice-over and jingles are game timbres and never go in an ad. Search looks across all packs.</p>
+    <div class="opts" id="kenPacks"></div>
+    <div class="list" id="kenList"></div>
+  </div>
+  <div id="sndStarter" class="panel" hidden>
+    <div class="row" style="justify-content:space-between"><h3>Synth starter set (7)</h3><span class="badge b-warn">drafts only · made with the Motion Reel Kit's sfx.mjs</span></div>
+    <div class="grid" id="starterGrid"></div>
+  </div>
+  <div id="sndMaker" class="panel" hidden>
+    <div class="row" style="justify-content:space-between"><h3>Sound maker (ZzFX)</h3><span class="badge b-lic">MIT · code-generated</span></div>
+    <p class="note">For sketches and deliberate "system" sounds only: synth plucks, bloops and chimes are what made the first showreel sound cheap. Adding one puts the exact parameters in the prompt, so the agent can render the same sound to a WAV.</p>
+    <div class="opts" id="zzPresets"></div>
+    <div class="sliders" id="zzSliders"></div>
+    <div class="row"><button class="btn green" type="button" id="zzPlay">▶ Play</button><button class="btn ghost" type="button" id="zzRand">Randomize</button><button class="btn ghost" type="button" id="zzMut">Mutate</button><input type="text" id="zzName" value="pop" style="max-width:160px" aria-label="Sound name"><button class="btn" type="button" id="zzAdd">+ Add to prompt</button></div>
+    <pre id="zzOut"></pre>
+  </div>
+</section>
+
+<section class="tab" id="tab-music" hidden>
+  <div class="panel">
+    <div class="row" style="justify-content:space-between"><h3>Licensed beds from the films</h3><span class="badge b-native">house default</span></div>
+    <p class="note">A strong, clean drum bed whose energy follows the storyboard. Audition it under the picture, then measure its tempo from the kick onsets before writing the grid: on three of these beds the tag or the beat tracker was wrong.</p>
+    <div class="grid" id="licBeds"></div>
+  </div>
+  <div class="panel">
+    <div class="row" style="justify-content:space-between"><h3>Synth beds made with Kit 3 (14 s loops)</h3><span class="badge b-warn">drafts · judged too generic</span></div>
+    <div class="grid" id="musicBeds"></div>
+  </div>
+  <div class="panel">
+    <div class="row" style="justify-content:space-between"><h3>Generate a new bed</h3><span class="badge b-lic">browser sketch · real track by music.py</span></div>
+    <p class="note">This plays a quick sketch of the groove in your browser. "Use this music" puts the same settings in the prompt, and the agent renders the real track with Kit 3's <code>music.py</code>, seeded so it is repeatable.</p>
+    <div class="sliders">
+      <label>BPM <input type="range" id="gBpm" min="80" max="140" step="1"><output id="gBpmOut"></output></label>
+      <label>Seed <input type="range" id="gSeed" min="1" max="9999" step="1"><output id="gSeedOut"></output></label>
+    </div>
+    <div class="field"><span class="lbl">Mood (chords)</span><div class="opts" data-group="gmood"></div></div>
+    <div class="field"><span class="lbl">Shape</span><div class="opts" data-group="gshape"></div></div>
+    <div class="row"><button class="btn green" type="button" id="gPlay">▶ Play sketch</button><button class="btn ghost" type="button" id="gStop">Stop</button><button class="btn" type="button" id="gUse">Use this music</button></div>
+  </div>
+  <div class="panel">
+    <div class="row" style="justify-content:space-between"><h3>Short stingers: Kenney Music Jingles (86)</h3><span class="badge b-warn">CC0 · game timbre, not for ads</span></div>
+    <div class="list" id="jingleList"></div>
+  </div>
+  <div class="panel"><h3>Other music sources</h3><div class="tw"><table id="musicSrc"></table></div></div>
+</section>
+
+<section class="tab" id="tab-motion" hidden>
+  <div class="panel">
+    <h3>The 10 starter moves</h3>
+    <div class="moves">
+      <div class="move"><div class="stage"><span class="chip a-rise">₹499</span></div><span class="name">rise</span></div>
+      <div class="move"><div class="stage"><span class="chip a-pop">NEW</span></div><span class="name">pop</span></div>
+      <div class="move"><div class="stage"><span class="chip">100</span></div><span class="name">count-up</span></div>
+      <div class="move"><div class="stage"><ul class="ticks"><li>Fees</li><li>Ads</li></ul></div><span class="name">checklist tick</span></div>
+      <div class="move"><div class="stage"><span class="type">Made in code</span></div><span class="name">typewriter</span></div>
+      <div class="move"><div class="stage"><span class="chip a-slide">Slide</span></div><span class="name">slide-in</span></div>
+      <div class="move"><div class="stage"><span class="chip a-blur">Focus</span></div><span class="name">blur-in</span></div>
+      <div class="move"><div class="stage"><span class="chip a-punch">WOW</span></div><span class="name">punch-in</span></div>
+      <div class="move"><div class="stage"><span class="reframe"></span></div><span class="name">reframe</span></div>
+      <div class="move"><div class="stage"><span class="mbar"><i></i></span></div><span class="name">bar fill</span></div>
+    </div>
+  </div>
+  <div class="toolbar"><div class="opts" id="motCats"></div></div>
+  <div class="toolbar">
+    <input type="search" id="motSearch" placeholder="Search animations…" aria-label="Search animations">
+    <label class="check"><input type="checkbox" id="motEngineOnly" checked> Hide what the house rules or my engine ban</label>
+    <div class="opts" data-group="energy"></div>
+  </div>
+  <p class="note">Badges: <span class="badge b-native">✓ native</span> the engine has it built in · <span class="badge b-port">~ port</span> the agent rebuilds it from the description · <span class="badge b-banned">✕ banned</span> that engine's rules forbid it · <span class="badge b-banned b-house">house ✕</span> AGENTS.md bans it in every engine. HF = HyperFrames, RM = Remotion, MR = motion-reel. video-shotcraft follows the RM column; bang-motion and Diffusion follow HF (both are GSAP), where "native" still means the agent builds it by hand. Carries are the moves that passed the critics in 006–010.</p>
+  <div class="grid" id="motGrid"></div>
+  <div class="panel" id="hfPanel" hidden>
+    <div class="row" style="justify-content:space-between"><h3>HyperFrames ready-made blocks and components (386)</h3><span class="badge b-lic">Apache-2.0 · names only</span></div>
+    <p class="note">Adding one puts its exact catalog name in the prompt, so the agent installs it with <code>hyperframes add</code> instead of guessing. Previews open on HeyGen's site.</p>
+    <div class="toolbar"><input type="search" id="hfSearch" placeholder="Search blocks: lower third, chart, glass…" aria-label="Search blocks"><select id="hfTag" style="max-width:220px" aria-label="Filter by tag"></select></div>
+    <div class="grid" id="hfGrid"></div>
+  </div>
+  <div class="panel">
+    <div class="row" style="justify-content:space-between"><h3>Ease preview</h3><select id="easeSel" style="max-width:240px" aria-label="Ease"></select></div>
+    <canvas id="easeCanvas" width="900" height="220" aria-label="Ease curve and moving dot"></canvas>
+  </div>
+</section>
+
+<section class="tab" id="tab-assets" hidden>
+  <div class="panel">
+    <div class="row" style="justify-content:space-between"><h3>Fonts (Google Fonts, all OFL)</h3><span class="badge b-lic">OFL-1.1</span></div>
+    <input type="text" id="fontSample" value="Real profit, every morning." aria-label="Sample text">
+    <div class="fonts" id="fontGrid"></div>
+  </div>
+  <div class="panel">
+    <div class="row" style="justify-content:space-between"><h3>Icons (Lucide)</h3><span class="badge b-lic">ISC</span></div>
+    <input type="search" id="iconSearch" placeholder="Search icons: chart, bell, wallet, sparkles…" aria-label="Search icons">
+    <div class="icons" id="iconGrid"><p class="note">Loading icons…</p></div>
+  </div>
+  <div class="panel">
+    <h3>Where to get more (with licence status)</h3>
+    <p class="note">Green means the files can be bundled into the workspace. Amber means check each file. Red means link-only or avoid. Add a row to <code>_shared/ASSETS.md</code> before using any file.</p>
+    <div class="tw"><table id="srcTable"></table></div>
+  </div>
+</section>
+
+<section class="tab" id="tab-guide" hidden>
+  <div class="panel bench">
+    <h3>How long renders take on an M1 Max (measured)</h3>
+    <div class="brow"><span>Diffusion export · PULSE 24.5 s 9:16</span><span class="track"><span class="fb" style="width:14%"></span></span><span class="val">18 s</span></div>
+    <div class="brow"><span>HyperFrames · PULSE 24.5 s 9:16, high</span><span class="track"><span class="fb" style="width:30%"></span></span><span class="val">39 s</span></div>
+    <div class="brow"><span>Remotion · 27.6 s 1080p30</span><span class="track"><span class="fb" style="width:32%"></span></span><span class="val">41 s</span></div>
+    <div class="brow"><span>motion-reel · 6 s 1080p60 + blur</span><span class="track"><span class="fb" style="width:47%"></span></span><span class="val">61 s</span></div>
+    <div class="brow"><span>bang-motion frames + mux · SHIFT 27.9 s</span><span class="track"><span class="fb" style="width:92%"></span></span><span class="val">~2 min</span></div>
+    <div class="brow"><span>video-shotcraft render + master + kit · Flowboard 38.4 s</span><span class="track"><span class="fb" style="width:92%"></span></span><span class="val">~2 min</span></div>
+    <div class="brow"><span>Word timings, 18 s clip</span><span class="track"><span class="fb" style="width:2%"></span></span><span class="val">~3 s</span></div>
+    <p class="note">Claude's build time is the bigger number: each film took two to three hours with five critique rounds. One fresh critic round took 8–14 minutes and $5–9 API-equivalent; a whole film came to about $90–145.</p>
+  </div>
+  <div class="panel">
+    <div class="row" style="justify-content:space-between"><h3>Previs first: see and hear it before anything renders</h3><span class="mini">Demo: <code>_shared/previs/studio</code></span></div>
+    <p class="note">Added 2026-10-06 after five films showed that most critic notes could have been caught before a render. The <code>video-director-previs</code> skill plans the film as one director and publishes a playable page; the engine only builds what you approve there.</p>
+    <ul class="note">
+      <li>A playable animatic with Sarah's lines, the music bed (ducked under the voice) and the foley, on the measured beat grid.</li>
+      <li>Three options, A/B/C, on every decision: direction, music, motion feel, pacing, and per scene the transition, camera, voice line and each sound. The director's pick is marked; any swap replays at once.</li>
+      <li>Pause on a frame or drag across the timeline, press N, and write what you want. Claude changes only that, logs it, and republishes the same link.</li>
+      <li>Approve in the page. Claude freezes <code>approved-video-spec.json</code>, writes SHOTLIST.md from it, and the engine builds exactly that.</li>
+      <li>Cost: one session, no workflows or critic agents, voice on Fish's free model. The first sample is the fictional Crumb app film (9:16, 21 s).</li>
+    </ul>
+  </div>
+  <div class="panel">
+    <h3>What five films taught</h3>
+    <p class="note">The notes fresh critics gave round after round on 006–010, and the fixes that passed. The prompts above already ask for these; check stills for them before round 1.</p>
+    <div class="lessons">
+      <div class="lesson" style="--c:var(--s1)"><span class="eyebrow">Carry, don't swap</span><ul>
+        <li>No one-frame swaps and no empty boxes: morph the container (size, place and radius together) while old content leaves upward and new content rises in, 2 frames of overlap.</li>
+        <li>Start each shot from the exact last frame of the one before, camera transform included.</li>
+        <li>Make the carry literal: PULSE's gauge only worked once the arc was drawn on the ring itself, and SHIFT's red row became line 42.</li>
+        <li>Groups move as one rigid stack; landed cards draw on top and nothing crosses in flight.</li>
+      </ul></div>
+      <div class="lesson" style="--c:var(--s2)"><span class="eyebrow">Text that reads on a phone</span><ul>
+        <li>UI text under 3 % of the frame failed every time. Push the camera in; don't enlarge the fonts.</li>
+        <li>At most two text levels, and never a line alone on empty paper.</li>
+        <li>Mask exits leave glyph slivers: keep them under 2 frames, give masks descender room, and start serif rises at least 200 % below.</li>
+        <li>The CTA is the most legible line and reads for 1.5 s before the press.</li>
+      </ul></div>
+      <div class="lesson" style="--c:var(--s3)"><span class="eyebrow">Camera and composition</span><ul>
+        <li>A third of the frame empty for more than 1 s caps the composition score, dark plinths and macros included.</li>
+        <li>A locked camera for a whole act reads as dead; a camera that follows a falling object turns the fall into a lift. Cut on the beat into a held hero frame instead.</li>
+        <li>The press must visibly cause the effect: about 4 % squash and a shadow drop, held, then the UI reacts. The cursor tip sits at the button's edge, never on the label.</li>
+        <li>A full-frame veil eases out before a cut; switched off, it reads as a flash.</li>
+      </ul></div>
+      <div class="lesson" style="--c:var(--s4)"><span class="eyebrow">Sound</span><ul>
+        <li>Recorded foley, airy whooshes, and the impact as the loudest moment: step the bed down into it, and keep it at least 2 LU over the loudest voice line.</li>
+        <li>Measure the tempo from the kick onsets: the Flowboard bed needed a comb fit (122.0), Cat Walk is 129.98 not 129.2, and Bell Beats is 120 where the tracker said 96.</li>
+        <li>Measure render-vs-mix lag by cross-correlation, not nearest onset; that hid a 43 ms and a 77 ms error. Score hits on an SFX-only stem.</li>
+        <li>A 4× oversampled limiter drops the last 0.15 s: pad the master (apad, atrim) before muxing.</li>
+      </ul></div>
+      <div class="lesson" style="--c:var(--s5)"><span class="eyebrow">Render contract in practice</span><ul>
+        <li>Seek-anywhere renders leak state: reset every element every frame, and never set a child to <code>visibility: visible</code> (it beats a hidden parent; use <code>inherit</code>).</li>
+        <li>Sub-pixel glyphs paint differently depending on the previous frame: round text offsets to whole pixels and grow an end card with <code>font-size</code>, not a transform.</li>
+        <li>three.js: a transparent shadow catcher needs <code>depthWrite: false</code>; a clipping plane at the desk lets an object rise out of the page.</li>
+        <li>motion-reel's <code>C.seg</code>, <code>sp</code> and <code>spHit</code> take beats, never seconds.</li>
+      </ul></div>
+      <div class="lesson" style="--c:var(--s6)"><span class="eyebrow">Budget and process</span><ul>
+        <li>Plan for 5 rounds: Flowboard needed 9 to reach SHIP; capped films ended at 7–8 and got a self-checked polish pass, reported as unscored.</li>
+        <li>A port to a second engine is cheap: PULSE moved to Diffusion in about 30 minutes with four engine-specific changes.</li>
+        <li>Delete PNG frame dumps after the mux (SHIFT's 836 frames were about 2 GB) and keep one render running at a time.</li>
+      </ul></div>
+    </div>
+    <div class="tw"><table>
+      <tr><th>Engine</th><th>Audio vs picture</th><th>Export</th><th>Gotcha that cost a round</th></tr>
+      <tr><td>video-shotcraft (Remotion 4.0.484)</td><td>AAC delay compensated by 1.28 frames (~43 ms)</td><td>render + <code>master.sh</code> + <code>kit.py</code>, about 2 min</td><td>Wrap font loading in <code>delayRender</code> with a 120 s timeout; clamp lifted cards to z ≥ 1.5 px.</td></tr>
+      <tr><td>HyperFrames 0.8.134</td><td>0 ms: don't pre-shift the mix</td><td>24.5 s 9:16 in 35–39 s</td><td>Run <code>hyperframes check</code> before every render; shader transitions show blank in <code>snapshot</code>.</td></tr>
+      <tr><td>Diffusion Studio 0.209.1</td><td>about 44 ms late: trim the WAV (clip starts snap to frames)</td><td>24.5 s in 18 s</td><td>Writes one frame fewer than the duration unless the scene has a frame of headroom.</td></tr>
+      <tr><td>bang-motion 1.19.0</td><td>0 ms with an ffmpeg mux</td><td><code>export-frames.mjs</code> at FPS=30, about 2 min</td><td>Defaults to 60 fps; serve the folder over http for module imports.</td></tr>
+      <tr><td>motion-reel (Kit 3)</td><td>0 ms after the limiter pad</td><td>60 fps, both formats from one timeline</td><td><code>init.sh</code> refuses a non-empty folder; <code>beats.py</code> can lock to the wrong tempo.</td></tr>
+    </table></div>
+  </div>
+  <div class="panel"><h3>After the first render: follow-up prompts</h3><div class="fu" id="fuGrid"></div></div>
+  <div class="panel">
+    <h3>The prompt's six parts (from the HyperFrames prompting guide)</h3>
+    <div class="slots">
+      <div class="slot" style="--c:var(--s1)"><b>Route</b>Which skill or workflow, and where to work.</div>
+      <div class="slot" style="--c:var(--s2)"><b>Spec</b>Length, size and frame rate, plus the mood (or a full style).</div>
+      <div class="slot" style="--c:var(--s3)"><b>Beats</b>What happens when, second by second.</div>
+      <div class="slot" style="--c:var(--s4)"><b>Copy</b>The exact on-screen words.</div>
+      <div class="slot" style="--c:var(--s5)"><b>Technique</b>Exact names: animations, blocks, sounds, music, fonts, icons.</div>
+      <div class="slot" style="--c:var(--s6)"><b>Negatives</b>What must not happen, plus the review steps.</div>
+    </div>
+  </div>
+  <div class="panel">
+    <h3>Which agent reads what in this workspace</h3>
+    <div class="tw"><table>
+      <tr><th>Agent</th><th>Rules</th><th>Skills</th></tr>
+      <tr><td>Claude Code</td><td><code>CLAUDE.md</code> → <code>@AGENTS.md</code></td><td><code>.claude/skills</code> (workspace) + <code>~/.claude/skills</code></td></tr>
+      <tr><td>Codex · OpenCode</td><td><code>AGENTS.md</code></td><td><code>.agents/skills</code> + <code>~/.agents/skills</code></td></tr>
+      <tr><td>Cursor</td><td><code>AGENTS.md</code> + <code>.cursor/rules/*.mdc</code></td><td><code>.agents/skills</code>, <code>~/.claude/skills</code></td></tr>
+      <tr><td>Copilot</td><td><code>AGENTS.md</code> + <code>.github/instructions</code></td><td><code>.agents/skills</code>, <code>~/.agents/skills</code></td></tr>
+      <tr><td>Junie</td><td><code>AGENTS.md</code></td><td><code>.junie/skills</code>, <code>~/.junie/skills</code></td></tr>
+      <tr><td>Antigravity (agy)</td><td><code>AGENTS.md</code> (+ <code>GEMINI.md</code>)</td><td><code>.agents/skills</code></td></tr>
+    </table></div>
+  </div>
+  <div class="panel">
+    <h3>Licence rules and credits</h3>
+    <ul class="note">
+      <li>Only CC0, MIT, ISC, Apache-2.0, OFL, Unlicense, code-generated items or Fish <code>s2.1-pro-free</code> voice. CC-BY needs a credit line in ASSETS-USED.md and in the post caption.</li>
+      <li>Mixkit (video-shotcraft's SFX and music) is render-only: inside the video, never in a web page or <code>_shared</code>, never as files, never in Content ID. That is why the Mixkit rows here have no preview.</li>
+      <li>Fish Audio <code>s2.1-pro-free</code> is free through 2026-11-30 with commercial use; re-check the terms after that date. Never the paid model without asking.</li>
+      <li>Never MusicGen, ElevenLabs, or Pixabay and YouTube library music; never onetake code in own-brand films. Stock video is link-only.</li>
+      <li>Credits: foley and bed previews from Freesound (CC0; ids on each card), UI SFX audio by Yuki Capital (CC0, uisfx.com), Kenney audio (CC0, kenney.nl), ZzFX © Frank Force (MIT), Lucide (ISC), HyperFrames catalog names (Apache-2.0, HeyGen). The six-part prompt follows the HyperFrames prompting guide.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>Motion Prompt Studio · part of <a href="https://github.com/jayfirke/motion-studio">motion-studio</a> · render times and scores come from test films on an M1 Max; ranges for a new film are estimates. The same options (carries, house bans, foley and beds included) are in <code>_shared/catalog.json</code> for every agent.</footer>
+</div>
+
+<script>
+/* ZzFX v1.4.0 — Zuper Zmall Zound Zynth by Frank Force — MIT License — https://github.com/KilledByAPixel/ZzFX */
+/*
+
+ZzFX - Zuper Zmall Zound Zynth v1.4.0 by Frank Force
+https://github.com/KilledByAPixel/ZzFX
+
+ZzFX Features
+
+- Tiny synth engine with 20 controllable parameters.
+- Play sounds via code, no need for sound assed files!
+- Compatible with most modern web browsers.
+- Small code footprint, the micro version is under 1 kilobyte.
+- Can produce a huge variety of sound effect types.
+- Sounds can be played with a short call. zzfx(...[,,,,.1,,,,9])
+- A small bit of randomness appied to sounds when played.
+- Use ZZFX.GetNote to get frequencies on a standard diatonic scale.
+- Sounds can be saved out as wav files for offline playback.
+- No additional libraries or dependencies are required.
+
+*/
+/*
+
+  ZzFX MIT License
+  
+  Copyright (c) 2019 - Frank Force
+  
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+  
+*/
+
+'use strict';
+
+// play a zzfx sound
+function zzfx(...parameters) { return ZZFX.play(...parameters) }
+
+///////////////////////////////////////////////////////////////////////////////
+// ZZFX API for playing sounds
+const ZZFX =
+{
+    // master volume scale
+    volume: .3,
+    
+    // sample rate for audio
+    sampleRate: 44100,
+    
+    // create shared audio context
+    audioContext: new AudioContext,
+
+    // play a sound from zzfx paramerters
+    play: function(...parameters)
+    {
+        // build samples and start sound
+        return this.playSamples([this.buildSamples(...parameters)]);
+    },
+
+    // play an array of samples
+    playSamples: function(sampleChannels, volumeScale=1, rate=1, pan=0, loop=false)
+    {
+        // create buffer and source
+        const channelCount = sampleChannels.length;
+        const sampleLength = sampleChannels[0].length;
+        const buffer = this.audioContext.createBuffer(channelCount, sampleLength, this.sampleRate);
+        const source = this.audioContext.createBufferSource();
+
+        // copy samples to buffer and setup source
+        sampleChannels.forEach((c,i)=> buffer.getChannelData(i).set(c));
+        source.buffer = buffer;
+        source.playbackRate.value = rate;
+        source.loop = loop;
+
+        // create and connect gain node
+        const gainNode = this.audioContext.createGain();
+        gainNode.gain.value = this.volume*volumeScale;
+        gainNode.connect(this.audioContext.destination);
+        source.gainNode = gainNode; // expose so callers can adjust or fade
+
+        // connect source to stereo panner and gain
+        const pannerNode = new StereoPannerNode(this.audioContext, {'pan':pan});
+        source.connect(pannerNode).connect(gainNode);
+        source.start();
+
+        // return sound
+        return source;
+    },
+
+    // build an array of samples
+    buildSamples: function
+    (
+        volume = 1, 
+        randomness = .05,
+        frequency = 220,
+        attack = 0,
+        sustain = 0,
+        release = .1,
+        shape = 0,
+        shapeCurve = 1,
+        slide = 0, 
+        deltaSlide = 0, 
+        pitchJump = 0, 
+        pitchJumpTime = 0, 
+        repeatTime = 0, 
+        noise = 0,
+        modulation = 0,
+        bitCrush = 0,
+        delay = 0,
+        sustainVolume = 1,
+        decay = 0,
+        tremolo = 0,
+        filter = 0
+    )
+    {
+        // init parameters
+        let sampleRate = this.sampleRate,
+            PI2 = Math.PI*2, 
+            abs = Math.abs, 
+            sign = v => v<0?-1:1, 
+            startSlide = slide *= 500 * PI2 / sampleRate / sampleRate,
+            startFrequency = frequency *= 
+                (1 + randomness*2*Math.random() - randomness) * PI2 / sampleRate,
+            modOffset = 0, // modulation offset  
+            repeat = 0,    // repeat offset
+            crush = 0,     // bit crush offset
+            jump = 1,      // pitch jump timer
+            length,        // sample length
+            b,             // sample buffer
+            t = 0,         // sample time
+            i = 0,         // sample index 
+            s = 0,         // sample value
+        f,             // wave frequency
+
+        // biquad LP/HP filter
+        quality = 2, w = PI2 * abs(filter) * 2 / sampleRate,
+        cos = Math.cos(w), alpha = Math.sin(w) / 2 / quality,
+        a0 = 1 + alpha, a1 = -2*cos / a0, a2 = (1 - alpha) / a0,
+        b0 = (1 + sign(filter) * cos) / 2 / a0, 
+        b1 = -(sign(filter) + cos) / a0, b2 = b0,
+        x2 = 0, x1 = 0, y2 = 0, y1 = 0;
+
+        // scale by sample rate
+        const minAttack = 9; // prevent pop if attack is 0
+        attack = attack * sampleRate || minAttack;
+        decay *= sampleRate;
+        sustain *= sampleRate;
+        release *= sampleRate;
+        delay *= sampleRate;
+        deltaSlide *= 500 * PI2 / sampleRate**3;
+        modulation *= PI2 / sampleRate;
+        pitchJump *= PI2 / sampleRate;
+        pitchJumpTime *= sampleRate;
+        repeatTime = repeatTime * sampleRate | 0;
+
+        // allocate the full sample buffer up front, much faster than growing an array
+        length = attack + decay + sustain + release + delay | 0;
+        b = new Float32Array(length > 0 ? length : 0);
+
+        // generate waveform
+        for(; i < length; b[i++] = s * volume)                 // sample
+        {
+            if (!(++crush%(bitCrush*100|0)))                   // bit crush
+            {
+                s = shape? shape>1? shape>2? shape>3? shape>4? // wave shape
+                    (t/PI2%1 < shapeCurve/2? 1 : -1) :         // 5 square duty
+                    Math.sin(t**3) :                           // 4 noise
+                    Math.max(Math.min(Math.tan(t),1),-1):      // 3 tan
+                    1-(2*t/PI2%2+2)%2:                         // 2 saw
+                    1-4*abs(Math.round(t/PI2)-t/PI2):          // 1 triangle
+                    Math.sin(t);                               // 0 sin
+
+                s = (repeatTime ?
+                        1 - tremolo + tremolo*Math.sin(PI2*i/repeatTime) // tremolo
+                        : 1) *
+                    (shape>4?s:sign(s)*abs(s)**shapeCurve) * // shape curve
+                    (i < attack ? i/attack :                 // attack
+                    i < attack + decay ?                     // decay
+                    1-((i-attack)/decay)*(1-sustainVolume) : // decay falloff
+                    i < attack  + decay + sustain ?          // sustain
+                    sustainVolume :                          // sustain volume
+                    i < length - delay ?                     // release
+                    (length - i - delay)/release *           // release falloff
+                    sustainVolume :                          // release volume
+                    0);                                      // post release
+
+                s = delay ? s/2 + (delay > i ? 0 :           // delay
+                    (i<length-delay? 1 : (length-i)/delay) * // release delay 
+                    b[i-delay|0]/2/volume) : s;              // sample delay
+
+                if (filter)                                  // apply filter
+                    s = y1 = b2*x2 + b1*(x2=x1) + b0*(x1=s) - a2*y2 - a1*(y2=y1);
+            }
+
+            f = (frequency += slide += deltaSlide) *// frequency
+                Math.cos(modulation*modOffset++);   // modulation
+            t += f + f*noise*(i*i*PI2%2-1);         // noise
+
+            if (jump && ++jump > pitchJumpTime)     // pitch jump
+            { 
+                frequency += pitchJump;             // apply pitch jump
+                startFrequency += pitchJump;        // also apply to start
+                jump = 0;                           // stop pitch jump time
+            } 
+
+            if (repeatTime && !(++repeat % repeatTime)) // repeat
+            { 
+                frequency = startFrequency;   // reset frequency
+                slide = startSlide;           // reset slide
+                jump ||= 1;                   // reset pitch jump time
+            }
+        }
+
+        return b; // return sample buffer
+    },
+
+    // get frequency of a musical note on a diatonic scale
+    getNote: function(semitoneOffset=0, rootNoteFrequency=440)
+    {
+        return rootNoteFrequency * 2**(semitoneOffset/12);
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Sound object that can precache and play ZZFX sounds
+class ZZFXSound
+{
+    constructor(zzfxSound=[])
+    {
+        this.zzfxSound = zzfxSound;
+        
+        // extract randomness parameter from zzfxSound
+        this.randomness = zzfxSound[1] != undefined ? zzfxSound[1] : .05;
+        zzfxSound[1] = 0; // generate without frequency randomness
+        
+        // cache the sound samples
+        this.samples = ZZFX.buildSamples(...zzfxSound);
+    }
+
+    play(volume=1, pitch=1, randomnessScale=1, pan=0, loop=false)
+    {
+        if (!this.samples) return;
+
+        // play the sound
+        const playbackRate = pitch + pitch * this.randomness*randomnessScale*(Math.random()*2-1);
+        this.source = ZZFX.playSamples([this.samples], volume, playbackRate, pan, loop);
+        return this.source;
+    }
+}
+
+</script>
+<script>
+(function () {
+  'use strict';
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var store = { get: function (k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } }, set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
+  function toast(t) { var d = document.createElement('div'); d.className = 'toast'; d.setAttribute('role', 'status'); d.textContent = t; document.body.appendChild(d); setTimeout(function () { d.remove(); }, 1500); }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+  var ENGINES = {
+    shotcraft: { name: 'video-shotcraft', key: 'rm', perSec: 2.4, fixed: 15, baseFps: 30, why: 'real product UI, a 2.5D camera and shot recipes (006 Flowboard)' },
+    hyperframes: { name: 'HyperFrames', key: 'hf', perSec: 1.6, fixed: 0, baseFps: 30, why: 'reels, kinetic type, captions and three.js heroes (007 PULSE)' },
+    remotion: { name: 'Remotion', key: 'rm', perSec: 1.5, fixed: 6, baseFps: 30, why: 'charts, lower thirds and templates you will reuse' },
+    motionreel: { name: 'motion-reel', key: 'mr', perSec: 10.2, fixed: 20, baseFps: 60, why: 'a beat-synced reel with springs and critique scripts (010 MIRA)' },
+    bang: { name: 'bang-motion', key: 'hf', perSec: 4.3, fixed: 10, baseFps: 30, why: 'openers, bumpers and one world the camera travels (009 SHIFT)' },
+    diffusion: { name: 'Diffusion Studio', key: 'hf', perSec: 0.75, fixed: 5, baseFps: 30, why: 'cutting, captioning and masking real footage (008 PULSE)' }
+  };
+  var TYPES = [
+    { id: 'saas', label: 'Product demo from UI', agent: [10, 25], cx: 1.7, eng: 'shotcraft' }, { id: 'product', label: 'Product launch film', agent: [8, 20], cx: 1.6, eng: 'shotcraft' },
+    { id: 'reel', label: 'Beat-synced launch reel', agent: [8, 20], cx: 1.6, eng: 'motionreel' }, { id: 'text', label: 'Kinetic type reel', agent: [3, 8], cx: 1.2, eng: 'hyperframes' },
+    { id: 'intro', label: 'Opener / logo sting', agent: [5, 15], cx: 1.4, eng: 'bang' }, { id: 'explainer', label: 'Explainer', agent: [8, 20], cx: 1.5, eng: 'hyperframes' },
+    { id: 'overlay', label: 'Graphics over my clip', agent: [10, 25], cx: 2.0, eng: 'diffusion' }, { id: 'chart', label: 'Animated chart', agent: [3, 8], cx: 1.3, eng: 'remotion' },
+    { id: 'lower', label: 'Lower-third name card', agent: [1, 3], cx: 1.0, eng: 'remotion' }
+  ];
+  var VIBES = [
+    { id: 'calm', label: 'Calm & premium', sub: 'product UI, slow springs', words: 'calm, premium, airy, confident', style: 'brand', trans: 'carry-container-morph', ease: 'spring-default', energy: 'calm' },
+    { id: 'confident', label: 'Confident & clean', sub: 'camera push-ins, crisp', words: 'clean, confident, precise, modern', style: 'product', trans: 'carry-push-through', ease: 'ease-standard', energy: 'medium' },
+    { id: 'punchy', label: 'Punchy & loud', sub: 'kinetic type on the beat', words: 'punchy, fast, bold, rhythmic', style: 'kinetic', trans: 'v-bar-line-cut', ease: 'ease-snappy', energy: 'high' },
+    { id: 'playful', label: 'Playful', sub: 'pop colour, small pops', words: 'playful, bright, lively, fun', style: 'pop', trans: 'carry-flood-from-cause', ease: 'spring-snappy', energy: 'medium' },
+    { id: 'editorial', label: 'Editorial', sub: 'paper, serif, grain', words: 'editorial, thoughtful, tactile, unhurried', style: 'grain', trans: 'carry-masked-handoff', ease: 'ease-smooth', energy: 'calm' }
+  ];
+  var FORMATS = [{ id: '9x16', label: 'Reel 9:16', w: 1080, h: 1920 }, { id: '16x9', label: 'YouTube 16:9', w: 1920, h: 1080 }, { id: '1x1', label: 'Square', w: 1080, h: 1080 }, { id: '4x5', label: 'Feed 4:5', w: 1080, h: 1350 }];
+  var DIALS = [{ id: 'mood', label: 'Mood words', sub: 'shortest; the agent designs' }, { id: 'tokens', label: 'Style tokens', sub: 'style name, palette, font' }, { id: 'full', label: 'Full style spec', sub: 'every visual rule spelled out' }];
+  var AUDIO = [{ id: 'music', label: 'Music' }, { id: 'sfx', label: 'Sound effects' }, { id: 'voice', label: 'Voiceover' }, { id: 'captions', label: 'Captions' }];
+  var VOICES = [{ id: 'sarah', label: 'Sarah (Fish, default)' }, { id: 'mine', label: 'My recording' }, { id: 'clip', label: 'Words from my clip' }];
+  var PREVIS = [{ id: 'on', label: 'Previs page first (house rule)' }, { id: 'off', label: 'Straight to the build' }];
+  var CAPS = [{ id: '3', label: '3 rounds (the minimum)' }, { id: '5', label: "5 rounds (a common cap)" }, { id: 'ship', label: 'Until every score is 8+' }];
+  var FPS = [{ id: '30', label: '30 fps' }, { id: '60', label: '60 fps' }];
+  var STYLES = {
+    brand: { label: "Product's own", tokens: "the product's own design tokens: its display and UI fonts, colours and radii, measured from its site or screenshots; one accent", full: "STYLE: the product's own tokens\n- Measure the real fonts, colours, radii and spacing from the product (site capture or my screenshots). For a made-up brand, design them once to publish quality and keep them in every shot.\n- One display face, one UI face, one accent colour. Real UI and logo only; never redraw UI that exists.\n- Premium means subtract: no decorative cards, borders or dividers unless they do a job.\n- Springs with weight and follow-through; carry something through every boundary." },
+    glass: { label: 'Liquid Glass', tokens: 'Liquid Glass: frosted white cards (80%, 30px blur, 32px radius, soft shadow) on a pale blue/lilac/peach blob gradient; Inter; text #1d1d1f; green #34c759 only for ticks', full: 'STYLE: Liquid Glass\n- Frosted glass cards: white at ~80% opacity, 30px background blur, thin white border, 32px corners, soft shadow.\n- Background: soft light gradient with 2–3 blurred colour blobs (pale blue, lilac, peach) drifting slowly.\n- Font: Inter (_shared/fonts/Inter-700.woff2 headings, Inter-400 small text). Dark grey text #1d1d1f, small uppercase grey labels.\n- Accent: green #34c759, only for ticks and checks.\n- Motion: calm. Cards rise into their slots on a critically damped spring (no opacity-only entrances). Nothing bounces.' },
+    product: { label: 'Product Minimal', tokens: 'Product Minimal: warm neutral canvas, real product UI, one display + one UI face, one accent; springs (tiny overshoot on UI, none on type)', full: 'STYLE: Product Minimal (Kit 3 house rules)\n- Warm neutral canvas, one display face and one UI face, one accent colour.\n- Real product UI and logo only; never redraw UI that exists.\n- Springs for everything that enters, exits or retargets. Tiny overshoot on UI, none on type.\n- Push the camera in on the UI (text at least 3 % of the frame) instead of enlarging fonts; carry something through every boundary.\n- Banned: centred title on a gradient, everything fading in, crossfades, glows, particle bursts, spins, glitches, light leaks, dead time.' },
+    kinetic: { label: 'Kinetic Type', tokens: 'Kinetic Type: black background, huge white all-caps Archivo Black, one lime #c6ff3d accent word per screen, cuts on the beat', full: 'STYLE: Kinetic Type\n- The text is the whole video. No cards, no boxes.\n- Font: Archivo Black (_shared/fonts/ArchivoBlack-400.woff2), all caps, huge.\n- Colours: black background, white text, one accent #c6ff3d for the key word on each screen.\n- Motion: words slam in one by one, fast and snappy (0.25–0.4 s); mix slide-in, stretch from squashed, letters splitting apart. Each screen exits fast.\n- Cut the screens on the rhythm of the words, like a beat.' },
+    pop: { label: 'Pop Bold', tokens: 'Pop Bold: flat lime/purple/pink blocks, Bricolage Grotesque ExtraBold, 4px black outlines, hard offset shadows, stickers that slap down on the beat', full: 'STYLE: Pop Bold\n- Loud, playful, flat colour. No gradients, no glass.\n- Font: Bricolage Grotesque ExtraBold (_shared/fonts/BricolageGrotesque-800.woff2).\n- Colours: flat #c6ff3d, #8a3cff, #ff4fd8, #111111; 4px black outlines; hard 8px offset shadows.\n- Extras: star and circle stickers that slap down on the beat, little arrows.\n- Motion: snappy springs, at most 4 % overshoot on UI pops and none on type; a little squash on landings. No spins.' },
+    grain: { label: 'Editorial Grain', tokens: 'Editorial Grain: warm paper #efe8dc with film grain, Instrument Serif headlines (upright + italic), ink #1a1a1a, one red #c2412d accent', full: 'STYLE: Editorial Grain\n- Looks like a printed magazine page.\n- Background: warm paper #efe8dc with ~12% animated SVG film grain.\n- Font: Instrument Serif (_shared/fonts/InstrumentSerif-400.woff2 + italic) for headlines; small uppercase labels in Inter.\n- Colours: ink #1a1a1a and one deep red #c2412d.\n- Shapes: cut-out paper rectangles rotated 1–3°, thin rules, page numbers.\n- Motion: unhurried, uneven staggers, gentle slides and wipes, no bounces. Render with --crf 23 (grain makes big files).' }
+  };
+  var ROLES = ['on pop-ins', 'on each list item / tick', 'while numbers count', 'on the CTA', 'on scene transitions', 'when the logo lands', 'on the hook word', 'on clicks / taps', 'at the very end'];
+  var MOODS = { launch: { label: 'Launch', chords: ['Am', 'F', 'C', 'G'] }, bright: { label: 'Bright', chords: ['C', 'G', 'Am', 'F'] }, chill: { label: 'Chill', chords: ['Dm', 'Bb', 'F', 'C'] }, dark: { label: 'Dark', chords: ['F#m', 'D', 'A', 'E'] } };
+  var SHAPES = { drop: { label: 'Build and drop', sections: 'intro → build → gap → drop' }, steady: { label: 'Steady groove', sections: 'intro → full → outro' }, minimal: { label: 'Minimal under voice', sections: 'dark → outro' } };
+  var BEDS = [{ id: 'launch-drop-120', label: 'Launch drop · 120 BPM', d: 'intro, build, stop, drop' }, { id: 'chill-groove-96', label: 'Chill groove · 96 BPM', d: 'intro, full groove, outro' }, { id: 'dark-tech-90', label: 'Dark tech · 90 BPM', d: 'sparse, build, drop' }, { id: 'upbeat-full-128', label: 'Upbeat · 128 BPM', d: 'full energy, outro' }];
+  var LIC = [
+    { id: 'fs414441', label: 'Bell Beats', bpm: '120 BPM; the tracker said 96', src: 'Freesound 414441 · CC0', film: '010 MIRA', fetch: 'python3 _shared/tools/freesound.py get 414441', prev: 'media/music/fs414441.mp3' },
+    { id: 'fs785817', label: 'Darkwave Reactor', bpm: 'not measured yet', src: 'Freesound 785817 · CC0', film: '007 and 008 PULSE', fetch: 'python3 _shared/tools/freesound.py get 785817', prev: 'media/music/fs785817.mp3' },
+    { id: 'fs561190', label: 'Tropicorp Advertisement', bpm: 'not measured yet', src: 'Freesound 561190 · CC0', film: 'the 010 alternate', fetch: 'python3 _shared/tools/freesound.py get 561190', prev: 'media/music/fs561190.mp3' },
+    { id: 'mx-house-vibez', label: 'House Vibez', bpm: '122.0 BPM by comb fit', src: 'Mixkit 745 · render-only', film: '006 Flowboard', fetch: 'copy ~/video-shotcraft/assets/audio/bgm/house-vibez.mp3 into the project' },
+    { id: 'mx-cat-walk', label: 'Cat Walk', bpm: '129.98 BPM; the tag says 129.2', src: 'Mixkit 371 · render-only', film: '009 SHIFT', fetch: 'copy ~/video-shotcraft/assets/audio/bgm/cat-walk.mp3 into the project' }
+  ];
+  var FOLEY = [
+    ['256455', 'Cursor press', 'Mouse Click', '006 · 009 · 010'], ['534103', 'Short press', 'mouse-click-single', '006'], ['332713', 'Touch tap', 'Tap', '007'],
+    ['378085', 'Key or Enter', 'mechanical key hard', '006 · 009'], ['570754', 'Key press', 'Keyboard - Press down', '006'], ['421583', 'Soft key', 'qKey (pair it with 421581)', '009 · 010'],
+    ['447909', 'Typing run', 'Keyboard typing (trim to the span)', '006 · 009 · 010'], ['349698', 'Camera push, long move', 'light slow swoosh', '006'], ['71852', 'Morph, quick move', 'digital_whoosh_soft', '006'],
+    ['614153', 'Gentle swish', 'Swishes_11_gentle', '006'], ['701104', 'Screen change', 'Whoosh stereo light', '006'], ['388958', 'Small item lands', 'Soft Two-Finger Snap', '006'],
+    ['406586', 'Card drops', 'Picture Drop, heavy paper', '009 · 010'], ['131337', 'Hard cut in a burst', 'Rolled paper, slapping', '009'], ['554208', 'Restack, riffle', 'cardsound', '009'],
+    ['651514', 'Paper handling', 'paper', '009 · 010'], ['767613', 'Product lands (metal)', 'Ring Drop', '007'], ['541434', 'Heartbeat', 'heartbeat', '007'],
+    ['685256', 'Riser into the reveal', 'Riser sound effect short', '006']
+  ];
+  var MIXKIT = [['Logo lands (the loudest moment)', 'impact-deep-whoosh or impact-dense, low-passed near 3.2 kHz', '006 · 007 · 009 · 010'], ['Light tail after the logo (once)', 'shimmer-sparkle-sweep', '006 · 009 · 010'], ['Toggle or switch', 'ui/switch-tap', 'palette'], ['Page transition', 'transition/transition-soft', 'palette']];
+  var CRIT = ['Hook', 'Read 360', 'Motion', 'Layout', 'Depth', 'Brand', 'Sync', 'Polish'];
+  var FILMS = [];
+  var STARTER = [['k3-click', 'click', 'Kit 3 synth'], ['k3-tick', 'tick', 'Kit 3 synth'], ['k3-pop', 'pop', 'Kit 3 synth'], ['k3-whoosh', 'whoosh', 'Kit 3 synth'], ['k3-riser', 'riser', 'Kit 3 synth'], ['k3-thump', 'thump', 'Kit 3 synth'], ['k3-shutter', 'shutter', 'Kit 3 synth']];
+  var ZZP = [['Pop', [1, 0, 600, 0, .01, .06, 0, 1, 30]], ['Tick', [.6, 0, 1800, 0, 0, .02, 1]], ['Click', [.7, 0, 1200, 0, 0, .015, 3]], ['Coin', [1, .05, 1675, 0, .06, .24, 1, 1.82, 0, 0, 837, .06]], ['Success', [1, 0, 880, .01, .1, .4, 0, 1, 0, 0, 440, .1]], ['Notify', [1, 0, 1046, 0, .05, .2, 0, 1, 0, 0, 523, .07]], ['Error', [1, 0, 150, 0, .1, .2, 2, 1, 0, 0, 0, 0, .05]], ['Whoosh', [1, 0, 200, .05, .1, .3, 4, 1, 10, 0, 0, 0, 0, 1.5]], ['Riser', [1, 0, 200, .6, .3, .1, 1, 1, 40]], ['Thump', [1.5, 0, 60, 0, .05, .4, 0, 1, -5, 0, 0, 0, 0, .5]], ['Laser', [1, 0, 1500, 0, .05, .15, 2, 1, -80]], ['Jump', [1, 0, 300, 0, .05, .2, 0, 1, 60]], ['Power-up', [1, 0, 400, 0, .2, .3, 1, 1, 0, 0, 200, .08, .08]], ['Key', [.8, 0, 2400, 0, 0, .01, 4, 1, 0, 0, 0, 0, 0, 2]], ['Explosion', [1.5, .1, 80, 0, .2, .8, 4, 1, -1, 0, 0, 0, 0, 1]], ['Glitch', [1, 0, 300, 0, .05, .2, 2, 1, 0, 0, 0, 0, .02, 0, 0, .5]]];
+  var ZZK = [['volume', 0, 2, .05], ['randomness', 0, .3, .01], ['frequency', 40, 2500, 1], ['attack', 0, .6, .01], ['sustain', 0, .6, .01], ['release', 0, 1.2, .01], ['shape', 0, 5, 1], ['shapeCurve', 0, 3, .05], ['slide', -100, 100, 1], ['deltaSlide', -10, 10, .1], ['pitchJump', -1200, 1200, 1], ['pitchJumpTime', 0, .4, .01], ['repeatTime', 0, .3, .01], ['noise', 0, 5, .1], ['modulation', 0, 20, .1], ['bitCrush', 0, 1, .01], ['delay', 0, .3, .01], ['sustainVolume', 0, 1, .05], ['decay', 0, .4, .01], ['tremolo', 0, 1, .05]];
+  var ZZD = [1, .05, 220, 0, 0, .1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0];
+  var FOLLOW = [
+    ['Something looks off', 'Make a copy of this composition first and change only the copy. Change: [what you don\'t like]. Keep everything else exactly the same and render a draft again.'],
+    ['Protect what works', 'I like [the way the logo lands]. Keep it exactly as it is. Only change [one thing].'],
+    ['Carry, don\'t swap', 'At [12.4 s] the [card] swaps in one frame. Make it one object: morph the container (size, place and radius together) while the old content leaves upward and the new rises in. Check a still at every frame of the change.'],
+    ['Timing on a word', 'Make the [card] appear when Sarah says "[word]", not at a fixed time. Use the word timings (AGENTS-tooling.md, word timings).'],
+    ['Swap a sound', 'Replace the sound on [the CTA press] with a recorded click (freesound:256455 from _shared/sfx/UI-AD-PALETTE.md), landing on the frame the button visibly depresses. Keep everything else.'],
+    ['Impact too quiet', 'Make the logo landing the loudest moment: step the bed down into it, high-pass and pre-limit the boom, layer a real foley knock, and show me its momentary LUFS against the loudest other moment.'],
+    ['Tempo check', 'Before the beat grid, measure the bed\'s tempo from its kick onsets (autocorrelation of a low-band onset envelope). Don\'t trust the tag or the tracker. Tell me the BPM and the drift over the film.'],
+    ['Sync check', 'Cross-correlate the render against mix.wav (the lag should be 0 ms) and measure every designed hit on the SFX-only stem, not the full mix. Report the offsets in VERIFY.md.'],
+    ['One critique round', 'Run one critique round: draft render, then the kit (2 fps contact sheet, 12-frame strip around the fastest action, 360 px phone sheet, loop check), a fresh critic sub-agent with Kit 3 CRITIQUE.md scoring the 8 criteria, fix the 3 worst problems, log it in VERIFY.md.'],
+    ['Licence check', 'Run the motion-asset-check skill on this project and fill ASSETS-USED.md.'],
+    ['Final export', 'Render the final at high quality with one worker, master to −14 LUFS and ≤ −1 dBTP, and give me renders/final.mp4 with the loudness and sync numbers.'],
+    ['Wrap up', 'Write HANDOFF.md and finish VERIFY.md (scores per round, loudness, sync), then list the drafts you kept.']
+  ];
+
+  var def = { tab: 'quick', type: 'saas', vibe: 'calm', text: "Most shops don't know their real profit.\nTally shows it after fees, ads and refunds.\nOne number. Every morning.\nJoin the waitlist.", dur: 20, brand: 'Tally', format: '16x9', engine: 'shotcraft', dial: 'mood', audio: ['music', 'sfx', 'voice'], fps: '30', style: '', trans: '', ease: '', voice: 'sarah', cap: '5', previs: 'on', purpose: 'An app that shows online shops what they really earn after fees.', colours: '', ref: '', spectacle: '', shots: false, preamble: false, sounds: [], motion: ['carry-press-cause', 'carry-ui-push', 'count-up'], blocks: [], icons: [], fonts: [], music: { kind: 'lic', id: 'fs414441' }, kit: 'glass', cat: 'all', sndsrc: 'foley', ken: 'impact', mcat: 'Carries', energy: 'all', gmood: 'launch', gshape: 'drop', gbpm: 120, gseed: 4242 };
+  var S = Object.assign({}, def, store.get('mps3') || {});
+  if (!ENGINES[S.engine]) S.engine = 'hyperframes';
+  function save() { store.set('mps3', S); }
+  var DATA = { sfx: null, motion: null, hf: null, assets: null };
+
+  var AC = (typeof ZZFX !== 'undefined' && ZZFX.audioContext) ? ZZFX.audioContext : new (window.AudioContext || window.webkitAudioContext)();
+  var bufCache = {}, current = null;
+  function resume() { if (AC.state === 'suspended') AC.resume(); }
+  function loadSprite(name) {
+    if (!bufCache[name]) bufCache[name] = fetch('media/sprites/' + name + '.mp3').then(function (r) { return r.arrayBuffer(); }).then(function (b) { return new Promise(function (res, rej) { AC.decodeAudioData(b, res, rej); }); });
+    return bufCache[name];
+  }
+  function stopCurrent() { try { if (current && current.stop) current.stop(); if (current && current.pause) current.pause(); } catch (e) {} current = null; }
+  function playSlice(sprite, s, d) { resume(); stopCurrent(); loadSprite(sprite).then(function (buf) { var src = AC.createBufferSource(); src.buffer = buf; src.connect(AC.destination); src.start(0, s, d + 0.02); current = src; }).catch(function () { toast('Could not load ' + sprite); }); }
+  function playFile(path) { resume(); stopCurrent(); try { var a = new Audio(path); a.play().catch(function () {}); current = a; } catch (e) {} }
+
+  function hasSound(id) { return S.sounds.some(function (x) { return x.id === id; }); }
+  function addSound(o) { if (hasSound(o.id)) { S.sounds = S.sounds.filter(function (x) { return x.id !== o.id; }); toast('Removed'); } else { o.role = o.role || ROLES[0]; S.sounds.push(o); toast('Added to prompt'); } save(); renderSounds(); refreshPrompts(); }
+  function toggleList(key, val) { var i = S[key].indexOf(val); if (i > -1) S[key].splice(i, 1); else S[key].push(val); save(); refreshPrompts(); }
+
+  function opts(group, items, multi, big) {
+    $$('[data-group="' + group + '"]').forEach(function (box) {
+      box.innerHTML = '';
+      items.forEach(function (it) {
+        var b = document.createElement('button'); b.type = 'button'; b.className = 'opt' + (big ? ' big' : '');
+        var on = multi ? S[group].indexOf(it.id) > -1 : S[group] === it.id; b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        if (big) { b.innerHTML = '<b></b><span></span>'; b.querySelector('b').textContent = it.label; b.querySelector('span').textContent = it.sub || ''; } else b.textContent = it.label;
+        b.addEventListener('click', function () { if (multi) { var i = S[group].indexOf(it.id); if (i > -1) S[group].splice(i, 1); else S[group].push(it.id); } else { S[group] = it.id; if (group === 'type' && it.eng) S.engine = it.eng; } save(); refresh(); });
+        box.appendChild(b);
+      });
+    });
+  }
+
+  function lc(s) { return /^[A-Z][a-z]/.test(s) ? s.charAt(0).toLowerCase() + s.slice(1) : s; }
+  function T() { return TYPES.filter(function (x) { return x.id === S.type; })[0] || TYPES[0]; }
+  function F() { return FORMATS.filter(function (x) { return x.id === S.format; })[0] || FORMATS[0]; }
+  function Vb() { return VIBES.filter(function (x) { return x.id === S.vibe; })[0] || VIBES[0]; }
+  function mItem(id) { return DATA.motion ? DATA.motion.items.filter(function (x) { return x.id === id; })[0] : null; }
+  function styleId() { return S.style || Vb().style; }
+  function transId() { return S.trans || Vb().trans; }
+  function easeId() { return S.ease || Vb().ease; }
+  function slug() { var b = (S.brand || 'video').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'video'; return 'NNN-' + b + '-' + S.type; }
+  function lines() { return (S.text || '').split('\n').map(function (l) { return l.trim(); }).filter(Boolean); }
+  function t1(x) { return (Math.round(x * 10) / 10).toFixed(1); }
+
+  function beats() {
+    var b = beats0();
+    if (S.type === 'lower' || S.type === 'chart') return b;
+    return b + '\nCarry, don\'t replace: at every boundary something survives into the next beat (a container that morphs, a camera that pushes through, a cursor). Vary shot length at least 4×, something new every 2–4 s with rests, wordmark held 1 s or more.';
+  }
+  function beats0() {
+    var d = S.dur, brand = S.brand || 'the product', hook = Math.min(2, d * 0.15);
+    switch (S.type) {
+      case 'text': return 'One line per screen, in order, each held long enough to read on a phone. Hook lands by ' + t1(hook) + ' s.';
+      case 'product': return '0.0–' + t1(d * 0.2) + ' s: the hook line (the viewer\'s problem), in their words.\n' + t1(d * 0.2) + '–' + t1(d * 0.75) + ' s: ' + brand + ' appears and shows itself doing the thing; one feature moment per line.\n' + t1(d * 0.75) + '–' + t1(d) + ' s: end card with the name and the call to action, held still.';
+      case 'saas': return 'Real UI only: my screenshots in screenshots/ or a Playwright capture; for a made-up product, build the UI to publish quality. Hook by ' + t1(hook) + ' s, then one feature per beat: the cursor presses, the UI reacts, the camera pushes in until UI text is at least 3 % of the frame. End on wordmark + CTA; the CTA reads for 1.5 s before the press.';
+      case 'reel': return 'Hook by ' + t1(hook) + ' s on the first downbeat. One state per beat on the measured grid; the hero hit lands on the drop; end card ' + t1(Math.min(2, d * 0.15)) + ' s with the wordmark held.';
+      case 'overlay': return 'Keep my clip.mp4 exactly as it is; add graphics on top. Nothing in the first 3 s. Each graphic starts on the exact spoken word (word timings). Off my face, out of the bottom third.';
+      case 'explainer': return 'One idea per scene, in order. Each scene shows the idea as a diagram or UI moment, connected by one camera move. Last ' + t1(Math.min(3, d * 0.2)) + ' s: the takeaway, held.';
+      case 'chart': return 'Bars or line build one by one, values count as they grow, then zoom into the winner and highlight it. Hold the final chart ' + t1(Math.min(2, d * 0.2)) + ' s.';
+      case 'lower': return '0.0–0.6 s: bar slides in, name then title rise after it. Hold until ' + t1(d - 0.8) + ' s. Fast exit in reverse. Also export a transparent .mov.';
+      case 'intro': return '0.0–' + t1(d * 0.6) + ' s: build-up on the beat inside one world the camera travels (no slides). ' + t1(d * 0.6) + ' s: the logo lands on a downbeat, the loudest moment of the mix. Hold the logo and one line to the end.';
+    }
+    return '';
+  }
+
+  function licBed(id) { return LIC.filter(function (b) { return b.id === id; })[0] || LIC[0]; }
+  function soundLines() {
+    var a = [];
+    if (S.audio.indexOf('voice') > -1) {
+      if (S.voice === 'mine') a.push('Voice: my recording in _shared/voice/ (I will name it). Word timings from my OpenSuperWhisper model (whisper-cli -ojf).');
+      else if (S.voice === 'clip') a.push('Voice: the words already in my clip. Word timings from my OpenSuperWhisper model (whisper-cli -ojf), never Diffusion media_transcribe.');
+      else a.push('Voice: Sarah (Fish Audio voice 933563129e564b19a115bedd57b7406a, model s2.1-pro-free) via _shared/tools/fish_tts.py. One line per beat, steered with [soft], [emphasis] and [pause]; cut phrases onto the grid, never speed up whole takes. The voice leads; music ducks 8–10 dB under it.');
+    }
+    if (S.audio.indexOf('music') > -1) {
+      if (S.music.kind === 'lic') { var b = licBed(S.music.id); a.push('Music: ' + b.label + ' (' + b.src + '; ' + b.fetch + '). Audition it under the picture. Measure its tempo from the kick onsets before writing the beat grid (so far: ' + b.bpm + '), time-stretch with atempo if needed, and anchor the drop on the hero hit.'); }
+      if (S.music.kind === 'bed') a.push('Music (draft only): _shared/music/synth/' + S.music.id + '.mp3 (synth-music:' + S.music.id + '). Replace it with a licensed bed before the final.');
+      if (S.music.kind === 'gen') a.push('Music: synthesize a new bed with Kit 3 music.py: bpm ' + S.music.bpm + ', chords ' + MOODS[S.music.mood].chords.join(' ') + ', sections ' + SHAPES[S.music.shape].sections + ', seed ' + S.music.seed + ', length ' + S.dur + ' s. Keep it only if it sounds finished; otherwise use a licensed bed.');
+      if (S.music.kind === 'jingle') a.push('Music: Kenney jingle _shared/sfx/kenney/jingles/' + S.music.file + ' (CC0) as a stinger at the end.');
+    }
+    if (S.audio.indexOf('sfx') > -1) {
+      if (S.sounds.length) { a.push('Sound effects (small and on the action, under the voice):'); S.sounds.forEach(function (x) { a.push('  - ' + x.id + (x.params ? ' = ZzFX [' + x.params.map(function (v) { return +(+v).toFixed(3); }).join(',') + '] rendered to assets/audio/' + x.label + '.wav' : ' (' + x.path + ')') + ', ' + x.role); }); }
+      else a.push('Sound effects: recorded foley from _shared/sfx/UI-AD-PALETTE.md. A real mouse click on every press (freesound:256455), one switch sample for toggles, key taps on visible typing, a soft airy whoosh on camera moves and morphs (freesound:349698 or 71852: slow swell, low-passed near 6 kHz), and a closing riser, impact and one shimmer. Fewer sounds than beats; alternate two samples on runs and step them down.');
+    }
+    if (S.audio.indexOf('captions') > -1) a.push('Captions: word-level, from whisper-cli -ojf with my large-v3-turbo model, imported with hyperframes transcribe; at least 5 % of the frame height, in the safe band.');
+    if (S.audio.some(function (x) { return x !== 'captions'; })) a.push('Mix: the impact is the loudest moment (step the bed down into it). Master to −14 LUFS, true peak ≤ −1 dBTP. Check render-vs-mix lag by cross-correlation (it should be 0 ms) and every designed hit on an SFX-only stem.');
+    if (!S.audio.length) a.push('Silent video: no music, no SFX, no voice.');
+    return a.join('\n');
+  }
+
+  function technique(full) {
+    var eng = ENGINES[S.engine].key, out = [], warn = [];
+    var mv = S.motion.map(mItem).filter(Boolean);
+    if (mv.length) out.push('Motion (by name): ' + mv.map(function (m) { if (m.house) warn.push(m.name + ' breaks the house rules (' + m.house + ')'); else if (m.eng[eng] === 'banned') warn.push(m.name + ' is banned for ' + ENGINES[S.engine].name); return m.name.toLowerCase() + ' (' + m.ask + ')'; }).join('; ') + '.');
+    var tr = mItem(transId()); if (tr) { out.push('Signature carry or transition: ' + tr.name.toLowerCase() + ' (' + tr.ask + ')' + (tr.energy ? ', ' + tr.energy + ' energy' : '') + '. Bare hard cuts only in bursts of hits and on the end card.'); if (tr.house) warn.push(tr.name + ' breaks the house rules (' + tr.house + ')'); else if (tr.eng[eng] === 'banned') warn.push(tr.name + ' is banned for ' + ENGINES[S.engine].name); }
+    var ez = mItem(easeId()); if (ez) { out.push('Default ease: ' + ez.ask + '.'); if (ez.house) warn.push(ez.name + ' breaks the house rules (' + ez.house + ')'); }
+    if (S.blocks.length) out.push('HyperFrames catalog items to install (exact names): ' + S.blocks.join(', ') + '.');
+    if (S.fonts.length) out.push('Fonts (Google Fonts, OFL): ' + S.fonts.join(', ') + '.');
+    if (S.icons.length) out.push('Icons (Lucide, ISC): ' + S.icons.join(', ') + '.');
+    if (full && S.spectacle) out.push('Spectacle beat: ' + S.spectacle + '.');
+    if (full && S.preamble) out.push('Motion preamble: dense frames with 3 depth layers, a continuous subtle camera, staggered entrances, overshoot on transforms only, one spectacle beat.');
+    var snd = soundLines(); if (snd) out.push(snd);
+    if (S.audio.indexOf('sfx') > -1) S.sounds.forEach(function (x) { if (/^(uisfx|zzfx|synth):/.test(x.id)) warn.push(x.label + ' is synthesized: drafts only in an ad'); else if (/^kenney:(rpg|casino|jingles|voiceover)\//.test(x.id)) warn.push(x.label + ' is a game timbre'); });
+    if (S.audio.indexOf('music') > -1 && S.music.kind === 'bed') warn.push('the Kit 3 synth bed is a draft; pick a licensed bed for the final');
+    if (S.audio.indexOf('music') > -1 && S.music.kind === 'jingle') warn.push('Kenney jingles are game timbres, not for ads');
+    return { text: out.join('\n'), warn: warn };
+  }
+
+  function negatives() {
+    var n = ['No centred title on a gradient', 'no everything-fading-in or pure opacity fades', 'no crossfades', 'no corner labels or frame borders', 'no glow on UI chrome', 'no particles, confetti, spins, glitches or light leaks', 'no bouncy easing on UI (overshoot at most 4 % on playful pops, never on type)', 'no one-frame swaps or empty containers', 'no dead time', 'at most two text levels on screen', 'no synth plucks, bloops, notification tones or success chimes'];
+    if (S.format === '9x16') n.push('text inside x 108–972 and y 200–1250, out of the bottom third and the right icon column');
+    if (S.vibe === 'punchy') n.push('no slow pacing');
+    if (S.vibe === 'playful') n.push('no dark moody palette', 'no tiny text');
+    if (S.type === 'saas' || S.type === 'product') n.push('no handheld camera shake', 'no redrawn UI where real UI exists');
+    return n.join('; ') + '. No MusicGen, ElevenLabs, Pixabay or YouTube library music, or unlicensed assets.';
+  }
+
+  function route(full) {
+    var e = S.engine, r;
+    if (e === 'shotcraft') r = 'Use the video-shotcraft skill and ask me first: template mode, autonomous or co-creation. Copy the template into the project (never build inside ~/video-shotcraft). For a made-up product, build the UI as React DOM and film it with a 2.5D CSS-zoom camera like 006 Flowboard (src/World.tsx), and reuse its stills.mjs, master.sh and kit.py.';
+    else if (e === 'hyperframes') r = 'Use the /hyperframes skill' + ((S.type === 'product' || S.type === 'saas') ? ' (product-launch-video route, no-capture unless I give a URL)' : '') + '. Pin npx hyperframes@0.8.134, run hyperframes check before every render, render with --workers 1. One render(t) drives DOM and WebGL, like 007 PULSE.';
+    else if (e === 'remotion') r = 'Use the remotion-best-practices skill (Remotion 4.0.532, personal use). Everything from useCurrentFrame() with spring() and interpolate().';
+    else if (e === 'bang') r = 'Use the bang-motion skill: one index.html, one world the camera travels (no <section> slides), a paused GSAP timeline driven by the seek time. Export with tools/export-frames.mjs at FPS=30 over http and mux with ffmpeg, like 009 SHIFT; delete the PNG frames after the mux.';
+    else if (e === 'diffusion') r = 'Use Diffusion Studio 0.209.1 and read the app\'s skills/editor.md first. No generate.*, media_listen or media_transcribe without asking me (they cost credits). Trim the mix WAV for the ~44 ms export lag and give the scene one extra frame of headroom, like 008 PULSE.';
+    else r = '/motion-reel with presets/blank; activate .venv for every python3 step. Place recorded SFX with 010 MIRA\'s scripts/sfx-samples.py instead of sfx.mjs, write beats.json by hand if the tracker disagrees with the measured tempo, and pad the master after the limiter (apad, atrim).';
+    if (S.previs !== 'off') r = 'First use the video-director-previs skill: publish a previs page (animatic with Sarah, the bed and foley on the measured grid, three options on every decision) and wait until I approve it in the page. Then build exactly approved-video-spec.json. ' + r;
+    r += ' Work in this workspace and follow AGENTS.md. Start the project with the motion-new-project skill as projects/' + slug() + '.';
+    if (full && S.ref) r += ' Reference: ' + S.ref + ' (take its pacing and layout, never its content).';
+    return r;
+  }
+
+  function spec(full) {
+    var f = F(), st = STYLES[styleId()] || STYLES.glass, v = Vb();
+    var s = S.dur + '-second ' + lc(T().label) + ' for ' + (S.brand || 'my product') + ', ' + f.w + '×' + f.h + ' at ' + (full ? S.fps : '30') + ' fps.';
+    if (full && S.purpose) s += ' What it is for: ' + S.purpose;
+    var dial = full ? 'full' : S.dial;
+    if (dial === 'mood') s += '\nMood: ' + v.words + '.';
+    if (dial === 'tokens') s += '\nMood: ' + v.words + '.\nStyle: ' + st.tokens + '.';
+    if (dial === 'full') s += '\n' + st.full;
+    if (full && S.colours) s += '\nBrand colours override: ' + S.colours + '.';
+    if (S.type === 'saas' || S.type === 'product') s += '\nReal product UI, logo and fonts (Playwright capture or my screenshots); for a made-up brand, build the UI to publish quality and keep it consistent in every shot.';
+    return s;
+  }
+  function copySlot() { var L = lines(); return L.length ? 'Use my exact words, in order:\n' + L.map(function (l, i) { return (i + 1) + '. ' + l; }).join('\n') : 'No on-screen text given: write at most 5 short lines and show them to me first.'; }
+  function workflowLine() {
+    var cap = S.cap === 'ship' ? 'until every score is 8 or higher' : 'for ' + (S.cap === '3' ? '3 rounds' : 'at least 3 rounds, capped at ' + S.cap) + ' (keep the drafts)';
+    return (S.previs !== 'off' ? 'After I approve the previs, write SHOTLIST.md from the approved spec. ' : (S.dur > 10 ? 'Show me SHOTLIST.md first, as a state list on the measured beat grid, and wait for my OK. ' : '')) + 'Build one scene at a time and check stills before moving on. Before I see a render, run the critique loop ' + cap + ': a 2 fps contact sheet, a 12-frame strip around the fastest action, a 360 px phone sheet and a loop check; a fresh critic sub-agent scores hook, readability at 360 px, motion, composition, depth, brand, sound sync and polish; fix the 3 worst problems and log every round in VERIFY.md. Draft renders with one worker, never two renders at once.';
+  }
+  function slots(full) { var tq = technique(full); return { parts: [['Route', 's1', route(full)], ['Spec', 's2', spec(full)], ['Beats', 's3', beats()], ['Copy', 's4', copySlot()], ['Technique', 's5', tq.text], ['Negatives', 's6', negatives() + '\n' + workflowLine()]], warn: tq.warn }; }
+  function promptText(full) { return slots(full).parts.map(function (p) { return '[' + p[0].toUpperCase() + ']\n' + p[2]; }).join('\n\n'); }
+
+  function nRounds() { return S.cap === 'ship' ? 8 : +S.cap; }
+  function estimates() {
+    var E = ENGINES[S.engine], f = F(), t = T(), n = nRounds(), pix = f.w * f.h / (1920 * 1080), fpsF = (+S.fps) / E.baseFps;
+    var r = E.fixed + E.perSec * S.dur * pix * fpsF * t.cx * (styleId() === 'grain' ? 1.4 : 1);
+    var k = S.dur <= 15 ? 1 : S.dur <= 30 ? 1.5 : 2.5, lo = Math.round(t.agent[0] * k) + n * 20, hi = Math.round(t.agent[1] * k) + n * 32;
+    if (S.engine === 'motionreel') { lo += 20; hi += 45; }
+    var c = 6 + 8 * t.cx + n * (8 + 0.35 * S.dur), clo = Math.round(c * 0.8 / 5) * 5, chi = Math.round(c * 1.25 / 5) * 5;
+    var mb = 0.07 * pix * ((+S.fps) / 30) * t.cx * S.dur;
+    var fmt = function (s) { return s < 90 ? Math.max(5, Math.round(s / 5) * 5) + ' s' : (s / 60).toFixed(1) + ' min'; };
+    var fm = function (m) { return m < 90 ? m + ' min' : (m / 60).toFixed(1) + ' h'; };
+    return [['You get', f.w + '×' + f.h, S.fps + ' fps · ' + S.dur + ' s · ~' + (mb < 1 ? Math.max(0.1, Math.round(mb * 10) / 10) : Math.round(mb)) + '–' + Math.round(mb * 10 + 1) + ' MB', ''], ['Render', '~' + fmt(r) + '–' + fmt(r * 2.5), 'one worker, scaled from the films', 'est'], ['Build + critique', fm(lo) + '–' + fm(hi), n + ' critic rounds', 'est'], ['Cost', '$' + clo + '–' + chi, 'API-equivalent; plan usage on a subscription', 'est']];
+  }
+
+  function renderSlots(id, full) { var r = slots(full), box = $(id); box.innerHTML = ''; r.parts.forEach(function (p) { var d = document.createElement('div'); d.className = 'slot'; d.style.setProperty('--c', 'var(--' + p[1] + ')'); var b = document.createElement('b'); b.textContent = p[0]; d.appendChild(b); d.appendChild(document.createTextNode(p[2])); box.appendChild(d); }); return r.warn; }
+  function renderTiles(id) { var box = $(id); box.innerHTML = ''; estimates().forEach(function (t) { var d = document.createElement('div'); d.className = 'tile' + (t[3] ? ' est' : ''); d.innerHTML = '<span class="k"></span><span class="v"></span><span class="s"></span>'; d.querySelector('.k').textContent = t[0]; d.querySelector('.v').textContent = t[1]; d.querySelector('.s').textContent = t[2]; box.appendChild(d); }); }
+
+  function renderPicks(id) {
+    var box = $(id); box.innerHTML = '';
+    var add = function (label, onRemove, extra) { var s = document.createElement('span'); s.className = 'pick'; s.appendChild(document.createTextNode(label)); if (extra) s.appendChild(extra); var b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', 'Remove ' + label); b.textContent = '×'; b.addEventListener('click', onRemove); s.appendChild(b); box.appendChild(s); };
+    S.sounds.forEach(function (x) { var sel = document.createElement('select'); sel.setAttribute('aria-label', 'Where ' + x.label + ' plays'); ROLES.forEach(function (r) { var o = document.createElement('option'); o.textContent = r; o.selected = r === x.role; sel.appendChild(o); }); sel.addEventListener('change', function () { x.role = sel.value; save(); refreshPrompts(); }); add('♪ ' + x.label, function () { addSound(x); }, sel); });
+    S.motion.forEach(function (m) { var it = mItem(m); add('↗ ' + (it ? it.name : m), function () { toggleList('motion', m); renderMotion(); }); });
+    S.blocks.forEach(function (b) { add('▦ ' + b, function () { toggleList('blocks', b); renderMotion(); }); });
+    S.icons.forEach(function (b) { add('◇ ' + b, function () { toggleList('icons', b); renderIcons(); }); });
+    S.fonts.forEach(function (b) { add('Aa ' + b, function () { toggleList('fonts', b); renderFonts(); }); });
+    if (!box.children.length) { var p = document.createElement('span'); p.className = 'note'; p.textContent = 'Nothing yet. Add sounds, animations, blocks, icons or fonts from the other tabs.'; box.appendChild(p); }
+  }
+
+  function refreshPrompts() {
+    renderTiles('#tilesQuick'); renderTiles('#tilesFull');
+    var w1 = renderSlots('#slotsQuick', false), w2 = renderSlots('#slotsFull', true);
+    $('#warnQuick').textContent = w1.length ? '⚠ ' + w1.join('; ') + '. Remove it or switch engine.' : '';
+    $('#warnFull').textContent = w2.length ? '⚠ ' + w2.join('; ') + '.' : '';
+    renderPicks('#picksQuick'); renderPicks('#picksFull');
+    $('#cSounds').textContent = S.sounds.length ? ' ' + S.sounds.length : '';
+    $('#cMotion').textContent = (S.motion.length + S.blocks.length) ? ' ' + (S.motion.length + S.blocks.length) : '';
+    $('#cAssets').textContent = (S.icons.length + S.fonts.length) ? ' ' + (S.icons.length + S.fonts.length) : '';
+  }
+
+  function refresh() {
+    opts('type', TYPES); opts('vibe', VIBES, false, true); opts('format', FORMATS); opts('dial', DIALS, false, true);
+    opts('engine', Object.keys(ENGINES).map(function (k) { return { id: k, label: ENGINES[k].name }; }));
+    opts('audio', AUDIO, true); opts('fps', FPS); opts('voice', VOICES); opts('cap', CAPS); opts('previs', PREVIS);
+    opts('style', [{ id: '', label: 'From vibe' }].concat(Object.keys(STYLES).map(function (k) { return { id: k, label: STYLES[k].label }; })));
+    opts('sndsrc', [{ id: 'foley', label: 'Recorded foley (19 + 4)' }, { id: 'uisfx', label: 'UI SFX (936, synth)' }, { id: 'kenney', label: 'Kenney (706)' }, { id: 'starter', label: 'Starter (7)' }, { id: 'maker', label: 'Sound maker' }]);
+    opts('energy', [{ id: 'all', label: 'Any energy' }, { id: 'calm', label: 'Calm' }, { id: 'medium', label: 'Medium' }, { id: 'high', label: 'High' }]);
+    opts('gmood', Object.keys(MOODS).map(function (k) { return { id: k, label: MOODS[k].label + ' (' + MOODS[k].chords.join(' ') + ')' }; }));
+    opts('gshape', Object.keys(SHAPES).map(function (k) { return { id: k, label: SHAPES[k].label }; }));
+    $$('.engine').forEach(function (e) { e.classList.toggle('on', e.dataset.engine === S.engine); var b = e.querySelector('[data-pick-engine]'); b.textContent = e.dataset.engine === S.engine ? '✓ Selected' : 'Use this engine'; b.classList.toggle('on', e.dataset.engine === S.engine); });
+    $('#qDur').value = S.dur; $('#qDurOut').textContent = S.dur + ' s';
+    $('#engNote').textContent = ENGINES[S.engine].name + ' is best for ' + ENGINES[S.engine].why + '.' + (T().eng !== S.engine ? ' The usual pick for a ' + lc(T().label) + ' is ' + ENGINES[T().eng].name + '.' : '');
+    ['foley', 'uisfx', 'kenney', 'starter', 'maker'].forEach(function (k) { $('#snd' + k.charAt(0).toUpperCase() + k.slice(1)).hidden = k !== S.sndsrc; });
+    renderSounds(); renderMotion(); fillSelects(); renderGen(); refreshPrompts();
+  }
+
+  function renderSounds() {
+    var q = ($('#sndSearch').value || '').toLowerCase().trim();
+    if (S.sndsrc === 'foley') renderFoley(q);
+    var D = DATA.sfx; if (!D) return;
+    if (S.sndsrc === 'uisfx') {
+      var kc = $('#kitChips'); kc.innerHTML = '';
+      D.uisfx.packs.forEach(function (p) { var b = document.createElement('button'); b.type = 'button'; b.className = 'opt kit'; b.style.setProperty('--kc', p.color); b.setAttribute('aria-pressed', S.kit === p.name ? 'true' : 'false'); b.title = p.description + ' Best for: ' + p.bestFor; b.textContent = p.label; b.addEventListener('click', function () { S.kit = p.name; save(); renderSounds(); }); kc.appendChild(b); });
+      var cc = $('#catChips'); cc.innerHTML = '';
+      [{ id: 'all', label: 'All categories' }].concat(D.uisfx.categories).forEach(function (c) { var b = document.createElement('button'); b.type = 'button'; b.className = 'opt'; b.setAttribute('aria-pressed', S.cat === c.id ? 'true' : 'false'); b.textContent = c.label; b.addEventListener('click', function () { S.cat = c.id; save(); renderSounds(); }); cc.appendChild(b); });
+      var pack = D.uisfx.packs.filter(function (p) { return p.name === S.kit; })[0] || D.uisfx.packs[0], idx = {};
+      D.uisfx.sprites[pack.name].forEach(function (x) { idx[x.cue] = x; });
+      var g = $('#cueGrid'); g.innerHTML = '';
+      D.uisfx.cues.filter(function (c) { return (S.cat === 'all' || c.cat === S.cat) && (!q || (c.id + ' ' + c.label + ' ' + c.desc + ' ' + c.cat).toLowerCase().indexOf(q) > -1); }).forEach(function (c) {
+        var sl = idx[c.id]; if (!sl) return; var id = 'uisfx:' + pack.name + '/' + c.id;
+        var d = document.createElement('div'); d.className = 'card kit'; d.style.setProperty('--kc', pack.color);
+        d.innerHTML = '<div class="top"><button class="play" type="button">▶</button><b style="flex:1"></b><span class="badge b-lic">CC0</span></div><p></p><div class="row"><button class="mini add" type="button"></button><button class="mini cmpb" type="button">Compare kits</button></div>';
+        d.querySelector('b').textContent = c.label; d.querySelector('p').textContent = c.desc + ' (' + c.cat + ')';
+        var pb = d.querySelector('.play'); pb.setAttribute('aria-label', 'Play ' + c.label); pb.addEventListener('click', function () { playSlice('uisfx-' + pack.name, sl.s, sl.d); });
+        var ab = d.querySelector('.add'); ab.textContent = hasSound(id) ? '✓ Added' : '+ Add'; ab.classList.toggle('on', hasSound(id));
+        ab.addEventListener('click', function () { addSound({ id: id, label: c.id + '-' + pack.name, path: '_shared/sfx/uisfx/' + pack.name + '/' + c.id + '.mp3' }); });
+        d.querySelector('.cmpb').addEventListener('click', function () { showCompare(c); });
+        g.appendChild(d);
+      });
+      if (!g.children.length) g.innerHTML = '<p class="note">No cue matches. Clear the search or pick another category.</p>';
+    }
+    if (S.sndsrc === 'kenney') {
+      var kp = $('#kenPacks'); kp.innerHTML = '';
+      D.kenney.packs.forEach(function (p) { var b = document.createElement('button'); b.type = 'button'; b.className = 'opt'; b.setAttribute('aria-pressed', S.ken === p.name ? 'true' : 'false'); var s1 = document.createElement('span'); s1.textContent = p.label.replace('Kenney ', ''); var s2 = document.createElement('small'); s2.textContent = p.count; b.appendChild(s1); b.appendChild(s2); b.addEventListener('click', function () { S.ken = p.name; $('#sndSearch').value = ''; save(); renderSounds(); }); kp.appendChild(b); });
+      var list = $('#kenList'); list.innerHTML = '';
+      var packs = q ? D.kenney.packs.map(function (p) { return p.name; }) : [S.ken];
+      packs.forEach(function (pn) {
+        D.kenney.sprites[pn].filter(function (x) { return !q || x.n.indexOf(q) > -1 || pn.indexOf(q) > -1; }).forEach(function (x) {
+          var id = 'kenney:' + pn + '/' + x.file.replace(/^.*\//, '').replace(/\.[^.]+$/, '');
+          var li = document.createElement('div'); li.className = 'li';
+          li.innerHTML = '<button class="play" type="button">▶</button><span class="n"></span><span class="badge b-lic"></span><button class="mini" type="button"></button>';
+          li.querySelector('.n').textContent = x.n; li.querySelector('.badge').textContent = pn; li.querySelector('.play').setAttribute('aria-label', 'Play ' + x.n);
+          li.querySelector('.play').addEventListener('click', function () { playSlice('kenney-' + pn, x.s, x.d); });
+          var b = li.querySelector('.mini'); b.textContent = hasSound(id) ? '✓' : '+ Add'; b.classList.toggle('on', hasSound(id));
+          b.addEventListener('click', function () { addSound({ id: id, label: x.n.replace(/\s+/g, '-'), path: '_shared/sfx/kenney/' + pn + '/' + x.file }); });
+          list.appendChild(li);
+        });
+      });
+      if (!list.children.length) list.innerHTML = '<div class="li note">No match.</div>';
+    }
+    if (S.sndsrc === 'starter') {
+      var sg = $('#starterGrid'); sg.innerHTML = '';
+      STARTER.filter(function (x) { return !q || x[1].indexOf(q) > -1; }).forEach(function (x) {
+        var k2 = x[0].indexOf('k2') === 0, nm = x[0].slice(3), id = 'synth:' + nm, path = k2 ? '_shared/sfx/' + nm + '.wav' : '_shared/sfx/synth/' + nm + '.mp3';
+        var d = document.createElement('div'); d.className = 'card'; d.innerHTML = '<div class="top"><button class="play" type="button">▶</button><b style="flex:1"></b><span class="badge"></span></div><button class="mini" type="button"></button>';
+        d.querySelector('b').textContent = x[1]; var bd = d.querySelector('.badge'); bd.textContent = x[2]; bd.className = 'badge ' + (k2 ? 'b-warn' : 'b-lic');
+        d.querySelector('.play').setAttribute('aria-label', 'Play ' + x[1]); d.querySelector('.play').addEventListener('click', function () { playFile('media/sfx/' + x[0] + '.mp3'); });
+        var b = d.querySelector('.mini'); b.style.alignSelf = 'flex-start'; b.textContent = hasSound(id) ? '✓ Added' : '+ Add'; b.classList.toggle('on', hasSound(id)); b.addEventListener('click', function () { addSound({ id: id, label: 'synth-' + nm, path: path }); });
+        sg.appendChild(d);
+      });
+    }
+  }
+  function renderFoley(q) {
+    var fg = $('#foleyGrid'); fg.innerHTML = '';
+    FOLEY.filter(function (x) { return !q || (x[1] + ' ' + x[2] + ' ' + x[0]).toLowerCase().indexOf(q) > -1; }).forEach(function (x) {
+      var id = 'freesound:' + x[0], d = document.createElement('div'); d.className = 'card';
+      d.innerHTML = '<span class="act"></span><div class="top"><button class="play" type="button">▶</button><b style="flex:1"></b><span class="badge b-lic">CC0</span></div><p></p><button class="mini" type="button"></button>';
+      d.querySelector('.act').textContent = x[1]; d.querySelector('b').textContent = x[2]; d.querySelector('p').textContent = 'FS ' + x[0] + ' · used in ' + x[3];
+      var pb = d.querySelector('.play'); pb.setAttribute('aria-label', 'Play ' + x[2]); pb.addEventListener('click', function () { playFile('media/foley/fs' + x[0] + '.mp3'); });
+      var b = d.querySelector('.mini'); b.style.alignSelf = 'flex-start'; b.textContent = hasSound(id) ? '✓ Added' : '+ Add'; b.classList.toggle('on', hasSound(id));
+      b.addEventListener('click', function () { addSound({ id: id, label: x[1].toLowerCase().replace(/[^a-z0-9]+/g, '-'), path: 'python3 _shared/tools/freesound.py get ' + x[0] }); });
+      fg.appendChild(d);
+    });
+    if (!fg.children.length) fg.innerHTML = '<p class="note">No foley matches. Clear the search.</p>';
+    var mt = $('#foleyMixkit'); mt.innerHTML = '<tr><th>Action</th><th>Mixkit file (render-only, no preview)</th><th>Used in</th></tr>';
+    MIXKIT.forEach(function (r) { var tr = document.createElement('tr'); tr.innerHTML = '<td></td><td></td><td></td>'; r.forEach(function (v, i) { tr.children[i].textContent = v; }); mt.appendChild(tr); });
+  }
+  function showCompare(c) {
+    var D = DATA.sfx; $('#cmpBox').hidden = false; $('#cmpTitle').textContent = '"' + c.label + '" across all 12 kits';
+    var row = $('#cmpRow'); row.innerHTML = '';
+    D.uisfx.packs.forEach(function (p) { var sl = D.uisfx.sprites[p.name].filter(function (x) { return x.cue === c.id; })[0]; if (!sl) return; var b = document.createElement('button'); b.type = 'button'; b.style.setProperty('--kc', p.color); b.textContent = '▶ ' + p.label; b.addEventListener('click', function () { playSlice('uisfx-' + p.name, sl.s, sl.d); }); row.appendChild(b); });
+    $('#cmpBox').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  var zz = ZZP[0][1].slice();
+  function zzFull() { var a = []; for (var i = 0; i < ZZK.length; i++) a[i] = (zz[i] === undefined || zz[i] === null) ? ZZD[i] : zz[i]; return a; }
+  function zzRender() {
+    var pr = $('#zzPresets'); pr.innerHTML = '';
+    ZZP.forEach(function (p) { var b = document.createElement('button'); b.type = 'button'; b.className = 'opt'; b.textContent = p[0]; b.addEventListener('click', function () { zz = p[1].slice(); $('#zzName').value = p[0].toLowerCase(); zzRender(); zzPlay(); }); pr.appendChild(b); });
+    var sl = $('#zzSliders'); sl.innerHTML = ''; var full = zzFull();
+    ZZK.forEach(function (k, i) { var l = document.createElement('label'); var sp = document.createElement('span'); var inp = document.createElement('input'); inp.type = 'range'; inp.min = k[1]; inp.max = k[2]; inp.step = k[3]; inp.value = full[i]; inp.id = 'zz-' + k[0]; sp.textContent = k[0] + ': ' + (+full[i]).toFixed(2); l.appendChild(sp); l.appendChild(inp); inp.addEventListener('input', function () { zz = zzFull(); zz[i] = +inp.value; sp.textContent = k[0] + ': ' + (+inp.value).toFixed(2); zzOut(); }); inp.addEventListener('change', zzPlay); sl.appendChild(l); });
+    zzOut();
+  }
+  function zzOut() { $('#zzOut').textContent = 'zzfx(...[' + zzFull().map(function (v) { return +(+v).toFixed(3); }).join(',') + '])  // ZzFX by Frank Force, MIT'; }
+  function zzPlay() { resume(); try { zzfx.apply(null, zzFull()); } catch (e) { toast('Sound maker unavailable here'); } }
+
+  var gNodes = [];
+  var NOTE = { C: 0, 'C#': 1, Db: 1, D: 2, 'D#': 3, Eb: 3, E: 4, F: 5, 'F#': 6, Gb: 6, G: 7, 'G#': 8, Ab: 8, A: 9, 'A#': 10, Bb: 10, B: 11 };
+  function chordNotes(name) { var m = name.match(/^([A-G][#b]?)(m?)/); var r = NOTE[m[1]], minor = m[2] === 'm'; return [r, r + (minor ? 3 : 4), r + 7]; }
+  function hz(semi, oct) { return 440 * Math.pow(2, (semi - 9) / 12 + (oct - 4)); }
+  function gStop() { gNodes.forEach(function (n) { try { n.stop(); } catch (e) {} }); gNodes = []; }
+  function tone(type, f, t, d, vol) { var o = AC.createOscillator(), g = AC.createGain(); o.type = type; o.frequency.value = f; g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.0001, t + d); o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t + d + 0.02); gNodes.push(o); }
+  function noise(t, d, vol, seed) { var len = Math.floor(AC.sampleRate * d), b = AC.createBuffer(1, len, AC.sampleRate), ch = b.getChannelData(0), s = seed || 1; for (var i = 0; i < len; i++) { s = (s * 16807) % 2147483647; ch[i] = (s / 2147483647 * 2 - 1) * (1 - i / len); } var src = AC.createBufferSource(), g = AC.createGain(), hp = AC.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 6000; src.buffer = b; g.gain.value = vol; src.connect(hp); hp.connect(g); g.connect(AC.destination); src.start(t); gNodes.push(src); }
+  function gPlay() {
+    resume(); gStop();
+    var beat = 60 / S.gbpm, chords = MOODS[S.gmood].chords, shape = S.gshape, t0 = AC.currentTime + 0.1, seed = S.gseed;
+    for (var bar = 0; bar < 8; bar++) {
+      var ch = chordNotes(chords[bar % chords.length]), bt = t0 + bar * 4 * beat;
+      var energy = shape === 'minimal' ? 1 : shape === 'drop' ? (bar < 3 ? 1 : bar < 5 ? 2 : 3) : 2;
+      ch.forEach(function (n) { tone('triangle', hz(n, 4), bt, beat * 3.8, 0.05); });
+      for (var b = 0; b < 4; b++) {
+        var t = bt + b * beat;
+        if (shape !== 'minimal' || b % 2 === 0) { tone('sine', 120, t, 0.18, 0.5); tone('sine', 55, t, 0.25, 0.35); }
+        if (energy >= 2) noise(t + beat / 2, 0.05, 0.12, seed + bar * 4 + b);
+        if (energy >= 3) { noise(t + beat / 4, 0.03, 0.06, seed + 7 * b); noise(t + 3 * beat / 4, 0.03, 0.06, seed + 11 * b); tone('sawtooth', hz(ch[0], 2), t + beat / 2, beat * 0.4, 0.06); }
+        if (energy >= 2 && b % 2 === 1) tone('square', hz(ch[(bar + b + seed) % 3], 5), t, beat * 0.3, 0.025);
+      }
+    }
+  }
+  function renderGen() { $('#gBpm').value = S.gbpm; $('#gBpmOut').textContent = S.gbpm; $('#gSeed').value = S.gseed; $('#gSeedOut').textContent = S.gseed; }
+  function renderMusic() {
+    var lb = $('#licBeds'); lb.innerHTML = '';
+    LIC.forEach(function (b) {
+      var d = document.createElement('div'); d.className = 'card';
+      d.innerHTML = '<div class="top"><b></b><span class="badge"></span></div><p></p>' + (b.prev ? '<audio controls preload="none"></audio>' : '<p class="note">No preview: the licence is render-only.</p>') + '<button class="mini" type="button"></button>';
+      d.querySelector('b').textContent = b.label; var bd = d.querySelector('.badge'); bd.textContent = b.src; bd.className = 'badge ' + (b.prev ? 'b-lic' : 'b-warn');
+      d.querySelector('p').textContent = b.bpm + ' · used in ' + b.film;
+      if (b.prev) { var au = d.querySelector('audio'); au.src = b.prev; au.style.width = '100%'; }
+      var on = S.music.kind === 'lic' && S.music.id === b.id, btn = d.querySelector('button'); btn.style.alignSelf = 'flex-start'; btn.textContent = on ? '✓ Using' : 'Use this'; btn.classList.toggle('on', on);
+      btn.addEventListener('click', function () { S.music = { kind: 'lic', id: b.id }; if (S.audio.indexOf('music') < 0) S.audio.push('music'); save(); renderMusic(); refresh(); toast('Music set'); });
+      lb.appendChild(d);
+    });
+    var mb = $('#musicBeds'); mb.innerHTML = '';
+    BEDS.forEach(function (b) { var d = document.createElement('div'); d.className = 'card'; d.innerHTML = '<b></b><p></p><audio controls preload="none"></audio><button class="mini" type="button"></button>'; d.querySelector('b').textContent = b.label; d.querySelector('p').textContent = b.d + ' · _shared/music/synth/' + b.id + '.mp3'; var au = d.querySelector('audio'); au.src = 'media/music/' + b.id + '.mp3'; au.style.width = '100%'; var btn = d.querySelector('button'); btn.style.alignSelf = 'flex-start'; var on = S.music.kind === 'bed' && S.music.id === b.id; btn.textContent = on ? '✓ Using' : 'Use this'; btn.classList.toggle('on', on); btn.addEventListener('click', function () { S.music = { kind: 'bed', id: b.id }; if (S.audio.indexOf('music') < 0) S.audio.push('music'); save(); renderMusic(); refresh(); toast('Music set'); }); mb.appendChild(d); });
+    var jl = $('#jingleList'); jl.innerHTML = '';
+    if (DATA.sfx) DATA.sfx.kenney.sprites.jingles.forEach(function (x) { var li = document.createElement('div'); li.className = 'li'; li.innerHTML = '<button class="play" type="button">▶</button><span class="n"></span><button class="mini" type="button"></button>'; li.querySelector('.n').textContent = x.n; li.querySelector('.play').setAttribute('aria-label', 'Play ' + x.n); li.querySelector('.play').addEventListener('click', function () { playSlice('kenney-jingles', x.s, x.d); }); var on = S.music.kind === 'jingle' && S.music.file === x.file; var b = li.querySelector('.mini'); b.textContent = on ? '✓ Using' : 'Use as stinger'; b.classList.toggle('on', on); b.addEventListener('click', function () { S.music = { kind: 'jingle', file: x.file }; if (S.audio.indexOf('music') < 0) S.audio.push('music'); save(); renderMusic(); refresh(); toast('Stinger set'); }); jl.appendChild(li); });
+    var ms = $('#musicSrc'); ms.innerHTML = '<tr><th>Source</th><th>Licence</th><th>Use</th></tr>';
+    if (DATA.assets) DATA.assets.sources.filter(function (s) { return s.group === 'Music' || /Pixabay|MusicGen/.test(s.name); }).forEach(function (s) { var tr = document.createElement('tr'); tr.innerHTML = '<td></td><td></td><td></td>'; tr.children[0].textContent = s.name; tr.children[1].textContent = s.licence; tr.children[2].textContent = s.note; ms.appendChild(tr); });
+  }
+
+  function badge(v, eng) { var cls = v === 'native' ? 'b-native' : v === 'port' ? 'b-port' : 'b-banned'; var label = { hf: 'HF', rm: 'RM', mr: 'MR' }[eng]; return '<span class="badge ' + cls + '" title="' + label + ': ' + v + '">' + label + ' ' + (v === 'native' ? '✓' : v === 'port' ? '~' : '✕') + '</span>'; }
+  function renderMotion() {
+    var M = DATA.motion; if (!M) return;
+    var mc = $('#motCats'); mc.innerHTML = '';
+    M.categories.concat(['Ready-made blocks']).forEach(function (c) { var b = document.createElement('button'); b.type = 'button'; b.className = 'opt'; b.setAttribute('aria-pressed', S.mcat === c ? 'true' : 'false'); b.textContent = c; b.addEventListener('click', function () { S.mcat = c; save(); renderMotion(); }); mc.appendChild(b); });
+    var blocks = S.mcat === 'Ready-made blocks'; $('#hfPanel').hidden = !blocks; $('#motGrid').hidden = blocks;
+    if (blocks) { renderHF(); return; }
+    var q = ($('#motSearch').value || '').toLowerCase(), eng = ENGINES[S.engine].key, hide = $('#motEngineOnly').checked;
+    var g = $('#motGrid'); g.innerHTML = '';
+    M.items.filter(function (m) { return m.cat === S.mcat && (!q || (m.name + ' ' + m.ask + ' ' + m.tags).toLowerCase().indexOf(q) > -1) && (!hide || (m.eng[eng] !== 'banned' && !m.house)) && (S.energy === 'all' || !m.energy || m.energy === S.energy); }).forEach(function (m) {
+      var d = document.createElement('div'); d.className = 'card';
+      d.innerHTML = '<div class="top"><b></b><span class="tags">' + (m.house ? '<span class="badge b-banned b-house" title="' + esc(m.house) + '">house ✕</span>' : '') + badge(m.eng.hf, 'hf') + badge(m.eng.rm, 'rm') + badge(m.eng.mr, 'mr') + '</span></div><p></p><div class="row"><button class="mini add" type="button"></button>' + (m.energy ? '<span class="badge b-warn">' + esc(m.energy) + '</span>' : '') + '<span class="badge b-lic src"></span></div>';
+      d.querySelector('b').textContent = m.name; d.querySelector('p').textContent = 'Ask: "' + m.ask + '"' + (m.house ? ' · The house rules ban it: ' + m.house + '.' : ''); d.querySelector('.src').textContent = m.src;
+      var isTrans = m.cat === 'Transitions' || !!m.trans, isEase = m.cat === 'Eases & springs';
+      var on = isTrans ? S.trans === m.id : isEase ? S.ease === m.id : S.motion.indexOf(m.id) > -1;
+      var b = d.querySelector('.add'); b.textContent = on ? '✓ ' + (isTrans ? 'Primary' : isEase ? 'Default ease' : 'Added') : (isTrans ? 'Set as primary' : isEase ? 'Set as default' : '+ Add'); b.classList.toggle('on', on);
+      b.addEventListener('click', function () { if (isTrans) S.trans = on ? '' : m.id; else if (isEase) S.ease = on ? '' : m.id; else { toggleList('motion', m.id); renderMotion(); return; } save(); refresh(); toast(isTrans ? 'Primary transition set' : 'Default ease set'); });
+      g.appendChild(d);
+    });
+    if (!g.children.length) g.innerHTML = '<p class="note">Nothing matches. Clear the search, pick "Any energy", or untick "Hide what my engine bans".</p>';
+  }
+  function renderHF() {
+    var R = DATA.hf; if (!R) return; var q = ($('#hfSearch').value || '').toLowerCase(), tag = $('#hfTag').value;
+    var g = $('#hfGrid'); g.innerHTML = ''; var all = R.filter(function (r) { return (!tag || r.g.indexOf(tag) > -1) && (!q || (r.n + ' ' + r.ti + ' ' + r.d + ' ' + r.g.join(' ')).toLowerCase().indexOf(q) > -1); });
+    all.slice(0, 120).forEach(function (r) {
+      var d = document.createElement('div'); d.className = 'card';
+      d.innerHTML = '<div class="top"><b></b><span class="badge b-lic"></span></div><code></code><p></p><div class="tags"></div><div class="row"><button class="mini add" type="button"></button><button class="mini cp" type="button">Copy name</button></div>';
+      d.querySelector('b').textContent = r.ti; d.querySelector('.badge').textContent = r.t; d.querySelector('code').textContent = r.n; d.querySelector('p').textContent = r.d;
+      var tg = d.querySelector('.tags'); r.g.slice(0, 4).forEach(function (t) { var s = document.createElement('span'); s.className = 'badge b-port'; s.textContent = t; tg.appendChild(s); });
+      if (r.pv) { var a = document.createElement('a'); a.href = r.pv; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'Preview ↗'; a.className = 'mini'; d.querySelector('.row').appendChild(a); }
+      var on = S.blocks.indexOf(r.n) > -1, b = d.querySelector('.add'); b.textContent = on ? '✓ Added' : '+ Add'; b.classList.toggle('on', on); b.addEventListener('click', function () { toggleList('blocks', r.n); renderHF(); });
+      d.querySelector('.cp').addEventListener('click', function () { copy(r.n, 'Name copied'); });
+      g.appendChild(d);
+    });
+    if (!all.length) g.innerHTML = '<p class="note">No blocks match.</p>';
+    else if (all.length > 120) { var p = document.createElement('p'); p.className = 'note'; p.textContent = 'Showing 120 of ' + all.length + '. Narrow it with search or a tag.'; g.appendChild(p); }
+  }
+  function fillSelects() {
+    if (!DATA.motion) return;
+    var ft = $('#fTrans'), fe = $('#fEase'), es = $('#easeSel');
+    if (!ft.dataset.ok) {
+      DATA.motion.items.filter(function (m) { return (m.cat === 'Transitions' || m.trans) && !m.house; }).forEach(function (m) { var o = document.createElement('option'); o.value = m.id; o.textContent = m.name + (m.energy ? ' · ' + m.energy : ''); ft.appendChild(o); });
+      DATA.motion.items.filter(function (m) { return m.cat === 'Eases & springs' && !m.house; }).forEach(function (m) { var o = document.createElement('option'); o.value = m.id; o.textContent = m.name; fe.appendChild(o); });
+      ['power1.out', 'power2.out', 'power3.out', 'power4.out', 'expo.out', 'expo.inOut', 'sine.inOut', 'circ.out', 'back.out', 'elastic.out', 'bounce.out', 'steps(6)', 'none'].forEach(function (e) { var o = document.createElement('option'); o.value = e; o.textContent = e; es.appendChild(o); });
+      ft.addEventListener('change', function () { S.trans = ft.value; save(); refresh(); }); fe.addEventListener('change', function () { S.ease = fe.value; save(); refresh(); });
+      es.addEventListener('change', easeAnim); ft.dataset.ok = '1';
+      var tags = {}; DATA.hf.forEach(function (r) { r.g.forEach(function (t) { tags[t] = (tags[t] || 0) + 1; }); });
+      var ht = $('#hfTag'); var o0 = document.createElement('option'); o0.value = ''; o0.textContent = 'All tags'; ht.appendChild(o0);
+      Object.keys(tags).sort(function (a, b) { return tags[b] - tags[a]; }).slice(0, 60).forEach(function (t) { var o = document.createElement('option'); o.value = t; o.textContent = t + ' (' + tags[t] + ')'; ht.appendChild(o); });
+      ht.addEventListener('change', renderHF); es.value = 'power3.out';
+    }
+    ft.value = transId(); fe.value = easeId();
+  }
+  function ease(name, t) {
+    var p = function (n) { return function (x) { return 1 - Math.pow(1 - x, n); }; };
+    var E = { 'power1.out': p(2), 'power2.out': p(3), 'power3.out': p(4), 'power4.out': p(5), 'expo.out': function (x) { return x === 1 ? 1 : 1 - Math.pow(2, -10 * x); }, 'expo.inOut': function (x) { return x === 0 ? 0 : x === 1 ? 1 : x < .5 ? Math.pow(2, 20 * x - 10) / 2 : (2 - Math.pow(2, -20 * x + 10)) / 2; }, 'sine.inOut': function (x) { return -(Math.cos(Math.PI * x) - 1) / 2; }, 'circ.out': function (x) { return Math.sqrt(1 - Math.pow(x - 1, 2)); }, 'back.out': function (x) { var c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); }, 'elastic.out': function (x) { var c4 = (2 * Math.PI) / 3; return x === 0 ? 0 : x === 1 ? 1 : Math.pow(2, -10 * x) * Math.sin((x * 10 - .75) * c4) + 1; }, 'bounce.out': function (x) { var n1 = 7.5625, d1 = 2.75; if (x < 1 / d1) return n1 * x * x; if (x < 2 / d1) { x -= 1.5 / d1; return n1 * x * x + .75; } if (x < 2.5 / d1) { x -= 2.25 / d1; return n1 * x * x + .9375; } x -= 2.625 / d1; return n1 * x * x + .984375; }, 'steps(6)': function (x) { return Math.min(1, Math.floor(x * 6) / 5); }, 'none': function (x) { return x; } };
+    return (E[name] || E['power3.out'])(t);
+  }
+  var easeStart = 0, easeRAF = 0;
+  function easeAnim() { easeStart = performance.now(); if (!easeRAF) easeRAF = requestAnimationFrame(easeFrame); }
+  function easeFrame(now) {
+    var cv = $('#easeCanvas'); if (!cv || $('#tab-motion').hidden) { easeRAF = 0; return; }
+    var ctx = cv.getContext('2d'), W = cv.width, H = cv.height, name = $('#easeSel').value || 'power3.out', cs = getComputedStyle(document.documentElement);
+    var fg = cs.getPropertyValue('--muted').trim() || '#888', ac = cs.getPropertyValue('--accent').trim() || '#2f5bea', gr = cs.getPropertyValue('--audio').trim() || '#17875a';
+    ctx.clearRect(0, 0, W, H); var pad = 24, gw = 300, gh = H - 2 * pad, yy = function (v) { return pad + gh - v * gh * 0.8 - gh * 0.1; };
+    ctx.strokeStyle = fg; ctx.globalAlpha = .4; ctx.lineWidth = 1; ctx.strokeRect(pad, pad, gw, gh); ctx.globalAlpha = 1;
+    ctx.strokeStyle = ac; ctx.lineWidth = 2; ctx.beginPath(); for (var i = 0; i <= 100; i++) { var x = i / 100; ctx.lineTo(pad + x * gw, yy(ease(name, x))); } ctx.stroke();
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var period = 1800, t = reduce ? 1 : Math.min(1, ((now - easeStart) % (period + 600)) / period), v = ease(name, t);
+    ctx.fillStyle = ac; ctx.beginPath(); ctx.arc(pad + t * gw, yy(v), 5, 0, 7); ctx.fill();
+    var lx = gw + 2 * pad + 20, lw = W - lx - pad - 20; ctx.strokeStyle = fg; ctx.globalAlpha = .4; ctx.beginPath(); ctx.moveTo(lx, H / 2); ctx.lineTo(lx + lw, H / 2); ctx.stroke(); ctx.globalAlpha = 1;
+    ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(lx + v * lw, H / 2, 16, 0, 7); ctx.fill();
+    ctx.fillStyle = fg; ctx.font = '14px ' + (cs.getPropertyValue('--mono') || 'monospace'); ctx.fillText(name, lx, H / 2 - 30);
+    easeRAF = requestAnimationFrame(easeFrame);
+  }
+
+  var fontsLoaded = false, lucideLoaded = false;
+  function renderFonts() {
+    var A = DATA.assets; if (!A) return;
+    if (!fontsLoaded) { var l = document.createElement('link'); l.rel = 'stylesheet'; l.href = 'https://fonts.googleapis.com/css2?' + A.fonts.map(function (f) { return 'family=' + f.replace(/ /g, '+'); }).join('&') + '&display=swap'; document.head.appendChild(l); fontsLoaded = true; }
+    var g = $('#fontGrid'); g.innerHTML = ''; var sample = $('#fontSample').value || 'Aa';
+    A.fonts.forEach(function (f) { var b = document.createElement('button'); b.type = 'button'; b.style.fontFamily = '"' + f + '", var(--body)'; var on = S.fonts.indexOf(f) > -1; b.setAttribute('aria-pressed', on ? 'true' : 'false'); var s1 = document.createElement('span'); s1.textContent = sample; var s2 = document.createElement('small'); s2.textContent = f + (on ? ' · added' : ' · tap to add'); b.appendChild(s1); b.appendChild(s2); b.addEventListener('click', function () { toggleList('fonts', f); renderFonts(); }); g.appendChild(b); });
+  }
+  function iconSVG(node) {
+    var ns = 'http://www.w3.org/2000/svg', svg = document.createElementNS(ns, 'svg');
+    var attrs = { width: 24, height: 24, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': 2, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'aria-hidden': 'true' };
+    Object.keys(attrs).forEach(function (k) { svg.setAttribute(k, attrs[k]); });
+    var kids = (Array.isArray(node) && node[0] === 'svg') ? node[2] : node;
+    (kids || []).forEach(function (c) { if (!Array.isArray(c)) return; var el = document.createElementNS(ns, c[0]); Object.keys(c[1] || {}).forEach(function (k) { el.setAttribute(k, c[1][k]); }); svg.appendChild(el); });
+    return svg;
+  }
+  function loadLucide() {
+    if (lucideLoaded) { renderIcons(); return; } lucideLoaded = true;
+    var s = document.createElement('script'); s.src = 'https://unpkg.com/lucide@1.52.0/dist/umd/lucide.min.js'; s.onload = renderIcons; s.onerror = function () { $('#iconGrid').innerHTML = '<p class="note">Icons could not load here. Browse them at lucide.dev.</p>'; }; document.head.appendChild(s);
+  }
+  function renderIcons() {
+    var g = $('#iconGrid'); if (!window.lucide || !window.lucide.icons) return; g.innerHTML = '';
+    var q = ($('#iconSearch').value || '').toLowerCase().replace(/[\s-]+/g, ''), names = Object.keys(window.lucide.icons);
+    var kebab = function (n) { return n.replace(/([a-z0-9])([A-Z])/g, '$1-$2').replace(/([A-Z])([A-Z][a-z])/g, '$1-$2').toLowerCase(); };
+    var list = names.filter(function (n) { return !q || n.toLowerCase().indexOf(q) > -1; });
+    list.slice(0, 240).forEach(function (n) {
+      var k = kebab(n), b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-pressed', S.icons.indexOf(k) > -1 ? 'true' : 'false'); b.title = k;
+      try { b.appendChild(iconSVG(window.lucide.icons[n])); } catch (e) {}
+      var sp = document.createElement('span'); sp.textContent = k; b.appendChild(sp); b.addEventListener('click', function () { toggleList('icons', k); renderIcons(); }); g.appendChild(b);
+    });
+    if (!list.length) g.innerHTML = '<p class="note">No icon matches.</p>';
+  }
+  function renderSources() {
+    var A = DATA.assets; if (!A) return; var t = $('#srcTable'); t.innerHTML = '<tr><th>Type</th><th>Source</th><th>Licence</th><th>Bundle?</th><th>Note</th></tr>';
+    A.sources.forEach(function (s) { var tr = document.createElement('tr'); tr.innerHTML = '<td></td><td></td><td></td><td></td><td></td>'; tr.children[0].textContent = s.group; if (s.url) { var a = document.createElement('a'); a.href = s.url; a.target = '_blank'; a.rel = 'noopener'; a.textContent = s.name; tr.children[1].appendChild(a); } else tr.children[1].textContent = s.name; tr.children[2].textContent = s.licence; var b = document.createElement('span'); b.className = 'badge ' + (s.redist === 'yes' ? 'b-native' : /cond|credit/.test(s.redist) ? 'b-warn' : 'b-banned'); b.textContent = s.redist; tr.children[3].appendChild(b); tr.children[4].textContent = s.note; t.appendChild(tr); });
+  }
+
+  function renderFilms() {
+    var g = $('#filmGrid'); if (g.dataset.ok) return; g.dataset.ok = '1';
+    var cost = 0, rr = 0; FILMS.forEach(function (f) { cost += f.cost; rr += f.nr; });
+    var tb = $('#filmTotals'); tb.innerHTML = '';
+    [['Films', String(FILMS.length), 'one engine each', ''], ['Critic rounds', String(rr), 'a fresh sub-agent each', ''], ['Build time', '2–3 h', 'per film with 5 rounds', ''], ['Cost', '≈ $' + cost, 'all five, from the logs', 'est']].forEach(function (t) { var d = document.createElement('div'); d.className = 'tile' + (t[3] ? ' est' : ''); d.innerHTML = '<span class="k"></span><span class="v"></span><span class="s"></span>'; d.querySelector('.k').textContent = t[0]; d.querySelector('.v').textContent = t[1]; d.querySelector('.s').textContent = t[2]; tb.appendChild(d); });
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    FILMS.forEach(function (f) {
+      var d = document.createElement('article'); d.className = 'film';
+      d.innerHTML = '<video muted loop playsinline preload="metadata"></video><div class="head"><h3></h3><span class="meta eng"></span></div><span class="meta dims"></span><p class="line"></p><div class="scores"></div><span class="meta rounds"></span><ul></ul><div class="foot"><span class="meta cost"></span><button class="mini" type="button">Start a prompt from this film</button></div>';
+      var v = d.querySelector('video'); v.src = f.clip; v.setAttribute('aria-label', f.name + ' excerpt, muted'); if (reduce) v.controls = true; else v.autoplay = true;
+      d.querySelector('h3').textContent = f.name; d.querySelector('.eng').textContent = f.n + ' · ' + ENGINES[f.eng].name;
+      d.querySelector('.dims').textContent = f.meta; d.querySelector('.line').textContent = '“' + f.line + '”';
+      var sc = d.querySelector('.scores'); f.sc.forEach(function (x, i) { var s = document.createElement('span'); s.className = x >= 8 ? 'sc-hi' : x >= 7 ? 'sc-mid' : 'sc-lo'; s.title = CRIT[i] + ': ' + x + ' of 10'; s.appendChild(document.createTextNode(CRIT[i])); var b = document.createElement('b'); b.textContent = x; s.appendChild(b); sc.appendChild(s); });
+      d.querySelector('.rounds').textContent = f.rounds;
+      var ul = d.querySelector('ul'); f.notes.forEach(function (n) { var li = document.createElement('li'); li.textContent = n; ul.appendChild(li); });
+      d.querySelector('.cost').textContent = '≈ $' + f.cost + ' API-equivalent';
+      d.querySelector('.foot button').addEventListener('click', function () { var u = f.use; S.type = u.type; S.engine = u.engine || TYPES.filter(function (t) { return t.id === u.type; })[0].eng; S.vibe = u.vibe; S.format = u.format; S.dur = u.dur; save(); refresh(); showTab('quick'); window.scrollTo(0, 0); toast('Prompt set up from ' + f.name); });
+      g.appendChild(d);
+    });
+  }
+  function renderGuide() { var g = $('#fuGrid'); g.innerHTML = ''; FOLLOW.forEach(function (f) { var d = document.createElement('div'); d.className = 'card'; d.innerHTML = '<span class="eyebrow"></span><q></q><button class="mini" type="button">Copy</button>'; d.querySelector('.eyebrow').textContent = f[0]; d.querySelector('q').textContent = f[1]; d.querySelector('button').addEventListener('click', function () { copy(f[1], 'Copied'); }); g.appendChild(d); }); }
+
+  function copy(text, msg) { if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { toast(msg || 'Copied'); }, function () { toast('Copy blocked: select the text instead'); }); else toast('Copy blocked: select the text instead'); }
+
+  function showTab(name) {
+    S.tab = name; save();
+    $$('nav.tabs button').forEach(function (b) { b.setAttribute('aria-selected', b.dataset.tab === name ? 'true' : 'false'); });
+    $$('section.tab').forEach(function (s) { s.hidden = s.id !== 'tab-' + name; });
+    if (name === 'assets') { renderFonts(); loadLucide(); renderSources(); }
+    if (name === 'motion') { renderMotion(); easeAnim(); }
+    if (name === 'music') renderMusic();
+    if (name === 'films') renderFilms();
+    if (name === 'sounds') renderSounds();
+  }
+
+  $$('nav.tabs button').forEach(function (b) { b.addEventListener('click', function () { showTab(b.dataset.tab); }); });
+  $$('[data-pick-engine]').forEach(function (b) { b.addEventListener('click', function () { S.engine = b.dataset.pickEngine; save(); refresh(); }); });
+  $$('[data-copy]').forEach(function (b) { b.addEventListener('click', function () { copy(promptText(b.dataset.copy === 'full'), 'Prompt copied'); }); });
+  $('#qText').value = S.text; $('#qBrand').value = S.brand; $('#fPurpose').value = S.purpose; $('#fColours').value = S.colours; $('#fRef').value = S.ref; $('#fSpectacle').value = S.spectacle; $('#fShots').checked = S.shots; $('#fPreamble').checked = S.preamble;
+  [['#qText', 'text'], ['#qBrand', 'brand'], ['#fPurpose', 'purpose'], ['#fColours', 'colours'], ['#fRef', 'ref'], ['#fSpectacle', 'spectacle']].forEach(function (p) { $(p[0]).addEventListener('input', function (e) { S[p[1]] = e.target.value; save(); refreshPrompts(); }); });
+  [['#fShots', 'shots'], ['#fPreamble', 'preamble']].forEach(function (p) { $(p[0]).addEventListener('change', function (e) { S[p[1]] = e.target.checked; save(); refreshPrompts(); }); });
+  $('#qDur').addEventListener('input', function (e) { S.dur = +e.target.value; $('#qDurOut').textContent = S.dur + ' s'; save(); refreshPrompts(); });
+  $('#sndSearch').addEventListener('input', renderSounds);
+  $('#cmpClose').addEventListener('click', function () { $('#cmpBox').hidden = true; });
+  $('#motSearch').addEventListener('input', renderMotion); $('#motEngineOnly').addEventListener('change', renderMotion); $('#hfSearch').addEventListener('input', renderHF);
+  $('#fontSample').addEventListener('input', renderFonts); $('#iconSearch').addEventListener('input', renderIcons);
+  $('#zzPlay').addEventListener('click', zzPlay);
+  $('#zzRand').addEventListener('click', function () { var r = function (a, b) { return a + Math.random() * (b - a); }; zz = [1, .05, r(80, 1800), r(0, .1), r(0, .2), r(.05, .5), Math.floor(r(0, 5)), r(.5, 2), r(-30, 30), 0, Math.random() < .3 ? r(-400, 400) : 0, r(0, .1), 0, Math.random() < .3 ? r(0, 2) : 0]; zzRender(); zzPlay(); });
+  $('#zzMut').addEventListener('click', function () { zz = zzFull().map(function (v, i) { return i < 2 ? v : v * (0.85 + Math.random() * 0.3); }); zzRender(); zzPlay(); });
+  $('#zzAdd').addEventListener('click', function () { var name = ($('#zzName').value || 'zzfx').toLowerCase().replace(/[^a-z0-9-]+/g, '-'); addSound({ id: 'zzfx:' + name, label: 'zzfx-' + name, params: zzFull() }); });
+  $('#gBpm').addEventListener('input', function (e) { S.gbpm = +e.target.value; $('#gBpmOut').textContent = S.gbpm; save(); });
+  $('#gSeed').addEventListener('input', function (e) { S.gseed = +e.target.value; $('#gSeedOut').textContent = S.gseed; save(); });
+  $('#gPlay').addEventListener('click', gPlay); $('#gStop').addEventListener('click', gStop);
+  $('#gUse').addEventListener('click', function () { S.music = { kind: 'gen', bpm: S.gbpm, mood: S.gmood, shape: S.gshape, seed: S.gseed }; if (S.audio.indexOf('music') < 0) S.audio.push('music'); save(); refresh(); toast('Generated music settings added'); });
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) $$('.engine video').forEach(function (v) { v.removeAttribute('autoplay'); v.pause(); v.controls = true; });
+
+  zzRender(); renderGuide(); refresh();
+  var h = (location.hash || '').replace('#', '');
+  showTab(['quick', 'full', 'films', 'sounds', 'music', 'motion', 'assets', 'guide'].indexOf(h) > -1 ? h : (S.tab || 'quick'));
+  Promise.all(['sfx-library', 'motion-catalog', 'hf-registry', 'assets'].map(function (n) { return fetch('data/' + n + '.json').then(function (r) { if (!r.ok) throw new Error(n); return r.json(); }); })).then(function (r) {
+    DATA.sfx = r[0]; DATA.motion = r[1]; DATA.hf = r[2]; DATA.assets = r[3]; refresh(); showTab(S.tab || 'quick');
+  }).catch(function () { toast('Catalog data could not load'); });
+})();
+</script>

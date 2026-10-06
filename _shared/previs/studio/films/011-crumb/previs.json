@@ -1,0 +1,4753 @@
+{
+ "project": {
+  "id": "011-crumb",
+  "product": "Crumb",
+  "fictional": true,
+  "feature": "A 21-second 9:16 app film: split a group dinner bill from one receipt photo.",
+  "format": "9:16",
+  "w": 1080,
+  "h": 1920,
+  "fps": 30,
+  "engine": "HyperFrames 0.8.134",
+  "status": "Awaiting creative approval"
+ },
+ "summary": {
+  "tone": "Warm, quick and a little funny.",
+  "audience": "friends who eat out together",
+  "message": "Crumb turns one restaurant receipt into everyone's fair share in three taps.",
+  "arc": "Hook → scan → claim → split → settle → logo"
+ },
+ "directions": {
+  "chosen": "A",
+  "options": [
+   {
+    "id": "A",
+    "name": "Diner receipt",
+    "pitch": "Warm receipt paper, ink and one tomato-red accent. Feels like the table you just ate at.",
+    "why": "The product starts from a paper receipt; the look carries that object through the whole film.",
+    "tradeoff": "Quieter on a busy feed than C.",
+    "tokens": {
+     "bg": "#F2ECE0",
+     "on-bg": "#1D1A16",
+     "card": "#FFFDF9",
+     "on-card": "#1D1A16",
+     "muted": "#776D61",
+     "line": "#E7DFD1",
+     "paper": "#FBF7EE",
+     "on-paper": "#1D1A16",
+     "accent": "#D9432A",
+     "on-accent": "#FFFFFF",
+     "frame": "#1D1A16",
+     "display": "'Fraunces', Georgia, serif",
+     "ui": "'IBM Plex Sans', Arial, sans-serif",
+     "mono": "'IBM Plex Mono', Menlo, monospace"
+    }
+   },
+   {
+    "id": "B",
+    "name": "Midnight ledger",
+    "pitch": "Deep navy, warm amber, crisp geometric type. Late dinner, serious money.",
+    "why": "Signals trust for a payments feature.",
+    "tradeoff": "Less playful; the paper receipt is the only warm surface.",
+    "tokens": {
+     "bg": "#0F1B2D",
+     "on-bg": "#EEF2F8",
+     "card": "#15243A",
+     "on-card": "#EEF2F8",
+     "muted": "#93A2B7",
+     "line": "#26364F",
+     "paper": "#F4F1EA",
+     "on-paper": "#1B1A17",
+     "accent": "#F2B33D",
+     "on-accent": "#1A1203",
+     "frame": "#04080F",
+     "display": "'Sora', Arial, sans-serif",
+     "ui": "'Inter', Arial, sans-serif",
+     "mono": "'IBM Plex Mono', Menlo, monospace"
+    }
+   },
+   {
+    "id": "C",
+    "name": "Citrus pop",
+    "pitch": "Tangerine field, white UI, electric-blue accent, chunky grotesque. Loud and friendly.",
+    "why": "Stops the scroll in a 9:16 feed.",
+    "tradeoff": "Risks feeling like a generic consumer-app ad.",
+    "tokens": {
+     "bg": "#FF7A1A",
+     "on-bg": "#1A1208",
+     "card": "#FFFFFF",
+     "on-card": "#17120B",
+     "muted": "#6F655B",
+     "line": "#EFE6DC",
+     "paper": "#FFF8EF",
+     "on-paper": "#17120B",
+     "accent": "#2737FF",
+     "on-accent": "#FFFFFF",
+     "frame": "#17120B",
+     "display": "'Bricolage Grotesque', Arial, sans-serif",
+     "ui": "'DM Sans', Arial, sans-serif",
+     "mono": "'IBM Plex Mono', Menlo, monospace"
+    }
+   }
+  ]
+ },
+ "global": {
+  "music": {
+   "label": "Music bed",
+   "chosen": "A",
+   "options": [
+    {
+     "id": "A",
+     "name": "Bell Beats",
+     "src": "audio/music/A.mp3",
+     "bpm": 120,
+     "phase": 0,
+     "lic": "Freesound 414441 · CC0 · BuytheField",
+     "why": "Quiet first bar, then the beat drops at 2.0 s, right where the total lands. Playful bells suit a dinner app. Measured 120 BPM (librosa says 96)."
+    },
+    {
+     "id": "B",
+     "name": "Tropicorp Advertisement",
+     "src": "audio/music/B.mp3",
+     "bpm": 101.98,
+     "phase": 0,
+     "lic": "Freesound 561190 · CC0 · code_box",
+     "why": "Bright, steady corporate pulse; safest under the voice, but generic. Measured 102 BPM."
+    },
+    {
+     "id": "C",
+     "name": "Wet Square Techno Beat",
+     "src": "audio/music/C.mp3",
+     "bpm": 127.02,
+     "phase": 0,
+     "lic": "Freesound 170601 · CC0 · Detski",
+     "why": "Driving techno with a strong kick; energetic, but it fights a soft voice and a warm look. Measured 127 BPM."
+    }
+   ]
+  },
+  "motion": {
+   "label": "Motion feel",
+   "chosen": "A",
+   "options": [
+    {
+     "id": "A",
+     "name": "Weighted spring",
+     "ease": "spring",
+     "why": "About 2.5 % overshoot on UI pieces, none on type: things land with weight."
+    },
+    {
+     "id": "B",
+     "name": "Crisp (power3)",
+     "ease": "power3",
+     "why": "Clean decelerations, no overshoot; calmer and more corporate."
+    },
+    {
+     "id": "C",
+     "name": "Snappy (power5)",
+     "ease": "snappy",
+     "why": "Fast starts and hard stops; energetic, can feel mechanical."
+    }
+   ]
+  },
+  "pacing": {
+   "label": "Pacing",
+   "chosen": "B",
+   "options": [
+    {
+     "id": "A",
+     "name": "Tight · 18.9 s",
+     "scale": 0.9,
+     "why": "Every scene 10 % shorter; the voice lines get tight."
+    },
+    {
+     "id": "B",
+     "name": "Standard · 21.0 s",
+     "scale": 1.0,
+     "why": "Hits land on the 120 BPM grid at this pace."
+    },
+    {
+     "id": "C",
+     "name": "Relaxed · 23.5 s",
+     "scale": 1.12,
+     "why": "More air for reading; hits drift off the beat grid."
+    }
+   ]
+  },
+  "voice": {
+   "label": "Voice",
+   "chosen": "A",
+   "options": [
+    {
+     "id": "A",
+     "name": "Sarah",
+     "lang": "en",
+     "accent": "American English",
+     "gender": "female",
+     "intro": "Fish Audio official voice. Young, soft and sincere, close to the mic. Our default narrator.",
+     "tags": [
+      "soft",
+      "warm",
+      "conversational",
+      "default",
+      "female",
+      "en"
+     ],
+     "voice": "933563129e564b19a115bedd57b7406a",
+     "dir": "",
+     "durs": {
+      "s1-A": 2.27,
+      "s1-B": 1.84,
+      "s1-C": 2.08,
+      "s2-A": 1.4,
+      "s2-B": 2.28,
+      "s2-C": 1.38,
+      "s3-A": 0.94,
+      "s3-B": 1.81,
+      "s3-C": 1.76,
+      "s4-A": 2.26,
+      "s4-B": 2.24,
+      "s4-C": 2.1,
+      "s5-A": 1.15,
+      "s5-B": 1.94,
+      "s5-C": 1.43,
+      "s6-A": 2.7,
+      "s6-B": 2.57,
+      "s6-C": 2.67
+     },
+     "sample": "audio/vo/s1-A.mp3",
+     "why": "Soft and sincere; the house narrator. Sits well under a warm look.",
+     "lic": "Fish Audio s2.1-pro-free output (commercial use allowed)",
+     "ref": "voice-sarah"
+    },
+    {
+     "id": "B",
+     "name": "Calm Indian English",
+     "lang": "en",
+     "accent": "Indian English",
+     "gender": "female",
+     "intro": "Calm, clear and professional with an Indian accent.",
+     "tags": [
+      "indian",
+      "calm",
+      "clear",
+      "professional",
+      "female",
+      "en"
+     ],
+     "voice": "0429f2b252464b88b2ab2128f084290c",
+     "dir": "",
+     "durs": {
+      "s1-A": 2.27,
+      "s1-B": 1.84,
+      "s1-C": 2.08,
+      "s2-A": 1.4,
+      "s2-B": 2.28,
+      "s2-C": 1.38,
+      "s3-A": 0.94,
+      "s3-B": 1.81,
+      "s3-C": 1.76,
+      "s4-A": 2.26,
+      "s4-B": 2.24,
+      "s4-C": 2.1,
+      "s5-A": 1.15,
+      "s5-B": 1.94,
+      "s5-C": 1.43,
+      "s6-A": 2.7,
+      "s6-B": 2.57,
+      "s6-C": 2.67
+     },
+     "why": "Calm Indian English; closer to an Indian audience while staying in English.",
+     "lic": "Fish Audio s2.1-pro-free output (commercial use allowed)",
+     "needs": "voice takes: run voices/make_voices.sh with your own Fish key",
+     "ref": "voice-in-f"
+    },
+    {
+     "id": "C",
+     "name": "Hindi, bright",
+     "lang": "hi",
+     "accent": "Hindi",
+     "gender": "female",
+     "intro": "Young, bright and confident Hindi voice; energetic and clear.",
+     "tags": [
+      "hindi",
+      "bright",
+      "energetic",
+      "clear",
+      "female",
+      "hi"
+     ],
+     "voice": "4d7609058bd34213b1378b29efbde1f1",
+     "dir": "",
+     "durs": {
+      "s1-A": 2.27,
+      "s1-B": 1.84,
+      "s1-C": 2.08,
+      "s2-A": 1.4,
+      "s2-B": 2.28,
+      "s2-C": 1.38,
+      "s3-A": 0.94,
+      "s3-B": 1.81,
+      "s3-C": 1.76,
+      "s4-A": 2.26,
+      "s4-B": 2.24,
+      "s4-C": 2.1,
+      "s5-A": 1.15,
+      "s5-B": 1.94,
+      "s5-C": 1.43,
+      "s6-A": 2.7,
+      "s6-B": 2.57,
+      "s6-C": 2.67
+     },
+     "why": "The whole film in Hindi with a bright young voice. On-screen text stays English.",
+     "lic": "Fish Audio s2.1-pro-free output (commercial use allowed)",
+     "texts": {
+      "s1-A": "सात दोस्त। एक बिल।",
+      "s1-B": "खाना हो गया। अब हिसाब।",
+      "s1-C": "एक बिल। सात लोग।",
+      "s2-A": "क्रम्ब हर लाइन पढ़ लेता है।",
+      "s2-B": "फ़ोटो लो। बाकी क्रम्ब पढ़ लेगा।",
+      "s2-C": "बस बिल की तरफ़ कैमरा करो।",
+      "s3-A": "किसने क्या खाया, बस टैप करो।",
+      "s3-B": "नाम पर टैप करो, फिर डिश पर।",
+      "s3-C": "सब अपनी-अपनी प्लेट चुन लेते हैं।",
+      "s4-A": "टैक्स और टिप, सही-सही बँटे।",
+      "s4-B": "टैक्स और टिप, जिसका जितना, उतना।",
+      "s4-C": "साझी प्लेट, बराबर हिस्सा।",
+      "s5-A": "हर कोई अपना हिस्सा देता है।",
+      "s5-B": "छह रिक्वेस्ट, एक टैप में।",
+      "s5-C": "वेटर लौटे, उससे पहले काम ख़त्म।",
+      "s6-A": "क्रम्ब। कॉफ़ी ठंडी होने से पहले हिसाब बराबर।",
+      "s6-B": "क्रम्ब। हर बिल, बराबर।",
+      "s6-C": "क्रम्ब। सही, तेज़, पूरा।"
+     },
+     "needs": "voice takes: run voices/make_voices.sh with your own Fish key",
+     "ref": "voice-hi-f1"
+    }
+   ]
+  }
+ },
+ "engine": {
+  "name": "HyperFrames 0.8.134",
+  "why": "Code-drawn phone UI, kinetic type and one seekable GSAP timeline; matches the installed Claude plugin; 0 ms audio lag measured on 2026-10-06.",
+  "alt": "bang-motion 1.19.0 (same GSAP stack, one index.html) or video-shotcraft (when a real product with real screens exists).",
+  "fallback": "bang-motion"
+ },
+ "references": [
+  {
+   "name": "brag-slim launch videos (_kits/brag, MIT)",
+   "borrow": "entry → key action → result; the hook in two seconds; every frame postable",
+   "avoid": "confetti, synth chimes, the Kokoro voice",
+   "scenes": "Hook, Claim, Settle"
+  },
+  {
+   "name": "Showreel gist, mobile mode (mirzemehdi)",
+   "borrow": "code-drawn phone, touch ring with a press, screen pushes, cards lifting out of the phone",
+   "avoid": "particle bursts, camera shake, a synthesized score",
+   "scenes": "Scan, Claim, Settle"
+  },
+  {
+   "name": "Our 010 MIRA",
+   "borrow": "one object carried through every boundary; the accent lands inside the logo",
+   "avoid": "a dark, slow opening; flat cards with no depth",
+   "scenes": "Scan, Logo"
+  }
+ ],
+ "style_rules": {
+  "Colour": "From the direction tokens only: one accent; text on the stage uses on-bg, inside the phone on-card.",
+  "Type": "One display face, one UI face, mono for money. At most two text levels; captions ≥ 5 % and UI ≥ 3 % of frame height after the camera push.",
+  "Shape": "Phone 780 × 1500, 108 px radius; pills and avatars round; cards 30 px radius.",
+  "Motion": "Springs with weight, overlap and follow-through; overshoot ≤ 4 % on UI, never on type; no pure opacity fades in production.",
+  "Camera": "Steady on UI; pushes land and stop; no handheld shake.",
+  "Sound": "Recorded foley only, fewer sounds than beats, airy whooshes, the logo landing is the loudest moment."
+ },
+ "audio_notes": [
+  "The voice leads; the bed ducks about 8 dB under each line (you hear this live here).",
+  "Final mix: −14 LUFS, true peak ≤ −1 dBTP, checked by cross-correlation and on an SFX-only stem.",
+  "The final adds a Mixkit low impact under the icon landing and one shimmer tail; both are render-only, so this page cannot play them."
+ ],
+ "qa": [
+  {
+   "level": "warn",
+   "text": "Crumb, Nonna's and the seven names are made up; check the name before any public post."
+  },
+  {
+   "level": "warn",
+   "text": "Previs fidelity: layout and motion are rough; type polish, masks and depth happen in production."
+  },
+  {
+   "level": "ok",
+   "text": "Fonts load from Google here; the HyperFrames build vendors them as local woff2 files."
+  }
+ ],
+ "versions": [
+  {
+   "v": "v0.1",
+   "date": "2026-10-06",
+   "note": "First previs: three directions, three beds, three motion feels, three pacings, three options on every scene decision."
+  },
+  {
+   "v": "v0.2",
+   "date": "2026-10-06",
+   "note": "Self-check fixes before your review: the hook reads from frame 0, and the wordmark fits the frame in every look."
+  },
+  {
+   "v": "v0.3",
+   "date": "2026-10-06",
+   "note": "Option libraries: 8 more looks, 11 more music beds, 7 motion feels, camera moves, transitions and a voice library (English and Hindi). Ask the director can add any of them."
+  },
+  {
+   "v": "v0.4",
+   "date": "2026-10-06",
+   "note": "Hook headline now reads \"Seven friends. One receipt.\""
+  },
+  {
+   "v": "v0.5",
+   "date": "2026-10-06",
+   "note": "Seven friends everywhere: new voice takes for three lines in all 10 voices, a seventh diner (Ravi), seven amounts and six request cards."
+  }
+ ],
+ "film_css": "\n#stage { font-family: var(--ui); color: var(--on-bg); }\n#stage * { box-sizing: border-box; }\n#stage .f-hl { position: absolute; left: 108px; right: 108px; top: 236px; font-family: var(--display); font-size: 108px; line-height: 1.02; letter-spacing: -0.025em; font-weight: 600; color: var(--on-bg); }\n#stage .f-rc { position: absolute; left: 210px; top: 640px; width: 660px; background: var(--paper); color: var(--on-paper); font-family: var(--mono); font-size: 34px; padding: 44px 46px 52px; box-shadow: 0 34px 70px rgba(0,0,0,.22); transform-origin: 50% 0; }\n#stage .f-rh { text-align: center; font-size: 27px; letter-spacing: .14em; padding-bottom: 20px; margin-bottom: 14px; border-bottom: 3px dashed currentColor; opacity: .85; }\n#stage .f-r { display: flex; justify-content: space-between; padding: 7px 10px; margin: 0 -10px; border-radius: 6px; }\n#stage .f-r.hl2 { background: color-mix(in srgb, var(--accent) 24%, transparent); }\n#stage .f-rt { display: flex; justify-content: space-between; align-items: baseline; border-top: 3px dashed currentColor; margin-top: 16px; padding-top: 18px; font-weight: 600; }\n#stage .f-tot { font-size: 60px; display: inline-block; transform-origin: 100% 70%; }\n#stage .f-tot.hot { color: var(--accent); }\n#stage .f-ph { position: absolute; left: 150px; top: 210px; width: 780px; height: 1500px; border-radius: 108px; background: var(--frame); padding: 16px; box-shadow: 0 44px 90px rgba(0,0,0,.28); }\n#stage .f-scr { position: relative; width: 100%; height: 100%; border-radius: 92px; background: var(--card); color: var(--on-card); overflow: hidden; }\n#stage .f-isl { position: absolute; left: 50%; top: 22px; width: 196px; height: 56px; margin-left: -98px; border-radius: 30px; background: var(--frame); z-index: 4; }\n#stage .f-sb { position: absolute; left: 70px; right: 70px; top: 30px; display: flex; justify-content: space-between; font-weight: 600; font-size: 30px; z-index: 3; }\n#stage .f-hd { position: absolute; left: 56px; right: 56px; top: 132px; }\n#stage .f-hd h4 { margin: 0; font-family: var(--display); font-size: 66px; font-weight: 600; letter-spacing: -0.015em; line-height: 1.05; }\n#stage .f-hd p { margin: 8px 0 0; font-size: 31px; color: var(--muted); }\n#stage .f-hd .b2, #stage .f-hd.done .b1 { display: none; } #stage .f-hd.done .b2 { display: inline; }\n#stage .f-vf { position: absolute; left: 0; right: 0; top: 120px; height: 1010px; background: #101010; overflow: hidden; }\n#stage .f-vf .f-rc { left: 94px; top: 70px; width: 560px; font-size: 27px; padding: 34px 34px 40px; box-shadow: none; }\n#stage .f-vf .f-tot { font-size: 46px; }\n#stage .f-br { position: absolute; left: 60px; top: 40px; right: 60px; bottom: 40px; border: 5px solid rgba(255,255,255,.85); border-radius: 30px; clip-path: polygon(0 0, 18% 0, 18% 4%, 4% 4%, 4% 18%, 0 18%, 0 82%, 4% 82%, 4% 96%, 18% 96%, 18% 100%, 82% 100%, 82% 96%, 96% 96%, 96% 82%, 100% 82%, 100% 18%, 96% 18%, 96% 4%, 82% 4%, 82% 0, 100% 0, 100% 100%, 0 100%); }\n#stage .f-scan { position: absolute; left: 60px; right: 60px; top: 60px; height: 8px; border-radius: 4px; background: var(--accent); box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 25%, transparent); display: none; }\n#stage .f-scan.on { display: block; }\n#stage .f-pill { position: absolute; left: 50%; top: 1170px; transform: translateX(-50%); white-space: nowrap; }\n#stage .f-pill span { display: inline-block; font-size: 32px; font-weight: 600; padding: 16px 30px; border-radius: 40px; background: rgba(255,255,255,.12); color: #fff; }\n#stage .f-pill .b, #stage .f-pill.done .a { display: none; } #stage .f-pill.done .b { display: inline-block; background: var(--accent); color: var(--on-accent); }\n#stage .f-shut { position: absolute; left: 50%; top: 1270px; width: 130px; height: 130px; margin-left: -65px; border-radius: 50%; border: 8px solid #fff; background: rgba(255,255,255,.18); }\n#stage .f-li { position: absolute; left: 40px; right: 40px; height: 104px; display: flex; align-items: center; gap: 14px; padding: 0 22px; font-size: 33px; border-bottom: 2px solid var(--line); }\n#stage .f-li .nm { min-width: 0; white-space: nowrap; }\n#stage .f-li .p { margin-left: auto; font-family: var(--mono); font-size: 30px; color: var(--muted); }\n#stage .f-chs { display: flex; gap: 6px; margin-left: 10px; }\n#stage .f-ch { width: 54px; height: 54px; border-radius: 50%; background: var(--accent); color: var(--on-accent); display: grid; place-items: center; font-weight: 700; font-size: 25px; font-style: normal; }\n#stage .f-ch.all { width: auto; padding: 0 16px; border-radius: 27px; }\n#stage .f-av { position: absolute; top: 1262px; width: 88px; height: 88px; margin-left: -44px; border-radius: 50%; background: var(--paper); color: var(--on-paper); display: grid; place-items: center; font-weight: 700; font-size: 36px; border: 5px solid transparent; }\n#stage .f-av.sel { border-color: var(--accent); }\n#stage .f-tray { position: absolute; left: 0; right: 0; top: 1236px; height: 150px; border-top: 2px solid var(--line); }\n#stage .f-ring { position: absolute; left: -60px; top: -60px; width: 120px; height: 120px; border-radius: 50%; background: color-mix(in srgb, var(--on-card) 22%, transparent); border: 4px solid color-mix(in srgb, var(--on-card) 55%, transparent); z-index: 6; }\n#stage .f-vf ~ .f-ring, #stage .f-ring.lt { background: rgba(255,255,255,.25); border-color: rgba(255,255,255,.7); }\n#stage .f-pp { position: absolute; left: 40px; right: 40px; height: 98px; display: flex; align-items: center; gap: 22px; padding: 0 22px; font-size: 35px; border-bottom: 2px solid var(--line); }\n#stage .f-pp i { width: 74px; height: 74px; border-radius: 50%; background: var(--paper); color: var(--on-paper); display: grid; place-items: center; font-weight: 700; font-style: normal; font-size: 30px; }\n#stage .f-pp b { margin-left: auto; font-family: var(--mono); font-size: 38px; font-weight: 600; }\n#stage .f-barw { position: absolute; left: 62px; right: 62px; top: 1060px; }\n#stage .f-bl { display: flex; justify-content: space-between; font-size: 30px; color: var(--muted); margin-bottom: 14px; }\n#stage .f-bar { height: 22px; border-radius: 11px; background: var(--line); overflow: hidden; }\n#stage .f-fill { height: 100%; width: 100%; background: var(--accent); transform-origin: 0 50%; }\n#stage .f-ok { position: absolute; left: 50%; top: 1230px; margin-left: -260px; width: 520px; text-align: center; font-size: 33px; font-weight: 700; padding: 22px 0; border-radius: 44px; background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--on-card); }\n#stage .f-mrow { position: absolute; left: 56px; right: 56px; height: 92px; display: flex; align-items: center; justify-content: space-between; font-size: 33px; border-bottom: 2px solid var(--line); }\n#stage .f-mrow b { font-family: var(--mono); font-weight: 600; }\n#stage .f-btn { position: absolute; left: 56px; right: 56px; top: 1190px; height: 136px; border-radius: 68px; background: var(--accent); color: var(--on-accent); display: grid; place-items: center; font-size: 42px; font-weight: 700; }\n#stage .f-card { position: absolute; left: 0; top: 0; width: 410px; height: 150px; border-radius: 30px; background: var(--card); color: var(--on-card); display: flex; align-items: center; gap: 20px; padding: 0 28px; box-shadow: 0 18px 40px rgba(0,0,0,.2); font-size: 33px; z-index: 5; }\n#stage .f-card i { width: 70px; height: 70px; border-radius: 50%; background: var(--paper); color: var(--on-paper); display: grid; place-items: center; font-style: normal; font-weight: 700; font-size: 29px; flex: none; }\n#stage .f-card b { font-family: var(--mono); font-weight: 600; }\n#stage .f-card .ck { margin-left: auto; width: 46px; height: 46px; border-radius: 50%; border: 4px solid var(--line); }\n#stage .f-card.paid .ck { background: var(--accent); border-color: var(--accent); box-shadow: inset 0 0 0 9px var(--card); }\n#stage .f-icon { position: absolute; left: 150px; top: 790px; width: 210px; height: 210px; border-radius: 56px; background: var(--accent); overflow: hidden; }\n#stage .f-icon::before { content: \"\"; position: absolute; left: 42px; top: 42px; width: 126px; height: 126px; border-radius: 50%; background: var(--on-accent); }\n#stage .f-icon::after { content: \"\"; position: absolute; left: 118px; top: 24px; width: 70px; height: 70px; border-radius: 50%; background: var(--accent); }\n#stage .f-wm { position: absolute; left: 395px; top: 795px; white-space: nowrap; font-family: var(--display); font-size: 186px; line-height: 1.05; font-weight: 600; letter-spacing: -0.035em; color: var(--on-bg); }\n#stage .f-tag { position: absolute; left: 150px; right: 108px; top: 1070px; font-size: 60px; line-height: 1.15; color: var(--on-bg); font-weight: 500; }\n",
+ "fonts_url": "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&family=Sora:wght@500;600&family=Inter:wght@400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600&family=DM+Sans:wght@400;500;700&display=swap",
+ "scenes": [
+  {
+   "id": "s1",
+   "name": "Hook",
+   "dur": 3.0,
+   "truth": "conceptual_visual",
+   "levels": 2,
+   "purpose": "Land the problem in two seconds: one long receipt, one big total.",
+   "copy": "Seven friends. One receipt.",
+   "notes": {
+    "camera": "A slow push keeps the held receipt alive without moving the reading line.",
+    "motion": "The receipt arrives with weight and settles at a slight tilt; the total punches on the drop.",
+    "type": "Display face, 108 px, two lines, top safe area.",
+    "music": "Bell Beats is quiet for its first bar and drops at 2.0 s, exactly on the total."
+   },
+   "html": "<div class=\"f-hl\" data-name=\"Headline\" data-copy>Seven friends. One receipt.</div><div class=\"f-rc\" data-name=\"Receipt\"><div class=\"f-rh\">NONNA'S · TABLE 12</div><div class=\"f-r a0\"><span>Margherita</span><span>18.00</span></div><div class=\"f-r a1\"><span>Spritz ×2</span><span>24.00</span></div><div class=\"f-r a2\"><span>Burrata</span><span>16.50</span></div><div class=\"f-r a3\"><span>Risotto ×2</span><span>44.00</span></div><div class=\"f-r a4\"><span>Branzino</span><span>29.00</span></div><div class=\"f-r a5\"><span>Tiramisu ×2</span><span>19.00</span></div><div class=\"f-r a6\"><span>Bread &amp; water</span><span>11.60</span></div><div class=\"f-r a7\"><span>Tax &amp; tip</span><span>24.30</span></div><div class=\"f-rt\"><span>TOTAL</span><b class=\"f-tot\" data-name=\"Receipt total\">$186.40</b></div></div>",
+   "anim": [
+    {
+     "s": ".f-rc",
+     "t": [
+      0.0,
+      0.9
+     ],
+     "f": {
+      "y": 760,
+      "r": -7
+     },
+     "to": {
+      "y": 0,
+      "r": -2.5
+     },
+     "e": "m"
+    },
+    {
+     "s": ".f-hl",
+     "t": [
+      0.0,
+      0.6
+     ],
+     "f": {
+      "y": 24
+     },
+     "to": {
+      "y": 0
+     },
+     "e": "out"
+    },
+    {
+     "s": ".f-tot",
+     "set": "hot",
+     "at": 2.0
+    },
+    {
+     "s": ".f-tot",
+     "t": [
+      2.0,
+      2.12
+     ],
+     "f": {
+      "s": 1
+     },
+     "to": {
+      "s": 1.16
+     },
+     "e": "out"
+    },
+    {
+     "s": ".f-tot",
+     "t": [
+      2.12,
+      2.7
+     ],
+     "to": {
+      "s": 1
+     },
+     "e": "m"
+    }
+   ],
+   "decisions": {
+    "camera": {
+     "label": "Camera",
+     "chosen": "A",
+     "options": [
+      {
+       "name": "Slow push",
+       "cam": {
+        "s": [
+         1,
+         1.06
+        ],
+        "origin": "50% 70%"
+       },
+       "why": "Draws the eye down to the total as it lands.",
+       "id": "A"
+      },
+      {
+       "name": "Locked",
+       "cam": {},
+       "why": "Calm and authoritative; the receipt does all the moving.",
+       "id": "B"
+      },
+      {
+       "name": "Drift up",
+       "cam": {
+        "y": [
+         0,
+         -50
+        ]
+       },
+       "why": "Reads the receipt top to bottom; risks the headline leaving the frame.",
+       "id": "C"
+      }
+     ]
+    },
+    "vo": {
+     "label": "Voice line (Sarah)",
+     "chosen": "A",
+     "options": [
+      {
+       "id": "A",
+       "name": "Seven friends. One receipt.",
+       "text": "Seven friends. One receipt.",
+       "src": "audio/vo/s1-A.mp3",
+       "dur": 2.27,
+       "at": 0.3,
+       "gain": 1.0,
+       "copy": "Seven friends. One receipt."
+      },
+      {
+       "id": "B",
+       "name": "Dinner's done. Now the math.",
+       "text": "Dinner's done. Now the math.",
+       "src": "audio/vo/s1-B.mp3",
+       "dur": 1.84,
+       "at": 0.3,
+       "gain": 1.0,
+       "copy": "Dinner's done. Now the math."
+      },
+      {
+       "id": "C",
+       "name": "One bill. Seven people.",
+       "text": "One bill. Seven people.",
+       "src": "audio/vo/s1-C.mp3",
+       "dur": 2.08,
+       "at": 0.3,
+       "gain": 1.0,
+       "copy": "One bill. Seven people."
+      }
+     ]
+    }
+   },
+   "sfx": [
+    {
+     "id": "x1",
+     "label": "Receipt slides in",
+     "at": 0.05,
+     "chosen": "A",
+     "options": [
+      {
+       "name": "Paper handling (FS 651514)",
+       "src": "audio/sfx/fs651514.mp3",
+       "gain": 0.8,
+       "why": "",
+       "id": "A"
+      },
+      {
+       "name": "Gentle swish (FS 614153)",
+       "src": "audio/sfx/fs614153.mp3",
+       "gain": 0.6,
+       "why": "",
+       "id": "B"
+      },
+      {
+       "name": "Card riffle (FS 554208)",
+       "src": "audio/sfx/fs554208.mp3",
+       "gain": 0.6,
+       "why": "",
+       "id": "C"
+      }
+     ],
+     "why": "A real paper sound sells the object."
+    },
+    {
+     "id": "x2",
+     "label": "Total lands",
+     "at": 2.0,
+     "chosen": "C",
+     "options": [
+      {
+       "name": "Soft snap (FS 388958)",
+       "src": "audio/sfx/fs388958.mp3",
+       "gain": 1.0,
+       "why": "",
+       "id": "A"
+      },
+      {
+       "name": "Mechanical key (FS 378085)",
+       "src": "audio/sfx/fs378085.mp3",
+       "gain": 0.8,
+       "why": "",
+       "id": "B"
+      },
+      {
+       "name": "Heavy paper drop (FS 406586)",
+       "src": "audio/sfx/fs406586.mp3",
+       "gain": 0.9,
+       "why": "",
+       "id": "C"
+      }
+     ],
+     "why": "The first hit of the film; physical, not a chime.",
+     "hit": true
+    }
+   ],
+   "key": 2.4
+  },
+  {
+   "id": "s2",
+   "name": "Scan",
+   "dur": 3.5,
+   "truth": "conceptual_ui",
+   "levels": 1,
+   "purpose": "Show the cause: one tap on the shutter, then Crumb reads every line.",
+   "copy": "(UI) Reading the receipt… → 8 lines found",
+   "notes": {
+    "camera": "Steady on the phone so the scan reads.",
+    "motion": "Phone rises from below; the shutter press is visible before the scan starts.",
+    "type": "UI only: one status pill.",
+    "music": "The shutter press lands on 4.0 s, a downbeat at 120 BPM."
+   },
+   "html": "<div class=\"f-ph\" data-name=\"Phone\"><div class=\"f-scr\" style=\"background:#0d0d0c\"><div class=\"f-isl\"></div><div class=\"f-sb\" style=\"color:#fff\"><span>9:41</span><span>●●● ▮</span></div><div class=\"f-vf\" data-name=\"Camera view\"><div class=\"f-rc\" data-name=\"Receipt\"><div class=\"f-rh\">NONNA'S · TABLE 12</div><div class=\"f-r a0\"><span>Margherita</span><span>18.00</span></div><div class=\"f-r a1\"><span>Spritz ×2</span><span>24.00</span></div><div class=\"f-r a2\"><span>Burrata</span><span>16.50</span></div><div class=\"f-r a3\"><span>Risotto ×2</span><span>44.00</span></div><div class=\"f-r a4\"><span>Branzino</span><span>29.00</span></div><div class=\"f-r a5\"><span>Tiramisu ×2</span><span>19.00</span></div><div class=\"f-r a6\"><span>Bread &amp; water</span><span>11.60</span></div><div class=\"f-r a7\"><span>Tax &amp; tip</span><span>24.30</span></div><div class=\"f-rt\"><span>TOTAL</span><b class=\"f-tot\" data-name=\"Receipt total\">$186.40</b></div></div><div class=\"f-br\"></div><div class=\"f-scan\" data-name=\"Scan line\"></div></div><div class=\"f-pill\" data-name=\"Status pill\"><span class=\"a\">Reading the receipt…</span><span class=\"b\">8 lines found</span></div><div class=\"f-shut\" data-name=\"Shutter button\"></div><div class=\"f-ring lt\" data-name=\"Finger\"></div></div></div>",
+   "anim": [
+    {
+     "s": ".f-ph",
+     "t": [
+      0.0,
+      0.75
+     ],
+     "f": {
+      "y": 1500
+     },
+     "to": {
+      "y": 0
+     },
+     "e": "m"
+    },
+    {
+     "s": ".f-vf .f-rc",
+     "t": [
+      0.3,
+      1.0
+     ],
+     "f": {
+      "s": 1.25,
+      "r": -4
+     },
+     "to": {
+      "s": 1,
+      "r": -1.5
+     },
+     "e": "m"
+    },
+    {
+     "s": ".f-br",
+     "t": [
+      0.7,
+      1.0
+     ],
+     "f": {
+      "s": 1.1,
+      "o": 0
+     },
+     "to": {
+      "s": 1,
+      "o": 1
+     },
+     "e": "out"
+    },
+    {
+     "s": ".f-ring",
+     "t": [
+      0.0,
+      0.6
+     ],
+     "f": {
+      "x": 560,
+      "y": 1560,
+      "o": 0
+     },
+     "to": {
+      "x": 560,
+      "y": 1560,
+      "o": 0
+     },
+     "e": "lin"
+    },
+    {
+     "s": ".f-ring",
+     "t": [
+      0.6,
+      0.95
+     ],
+     "to": {
+      "x": 374,
+      "y": 1335,
+      "o": 1
+     },
+     "e": "out"
+    },
+    {
+     "s": ".f-ring",
+     "t": [
+      0.95,
+      1.03
+     ],
+     "to": {
+      "s": 0.8
+     },
+     "e": "out"
+    },
+    {
+     "s": ".f-ring",
+     "t": [
+      1.03,
+      1.25
+     ],
+     "to": {
+      "s": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".f-ring",
+     "t": [
+      1.3,
+      1.6
+     ],
+     "to": {
+      "x": 600,
+      "y": 1600,
+      "o": 0
+     },
+     "e": "in"
+    },
+    {
+     "s": ".f-shut",
+     "t": [
+      0.97,
+      1.05
+     ],
+     "f": {
+      "s": 1
+     },
+     "to": {
+      "s": 0.9
+     },
+     "e": "out"
+    },
+    {
+     "s": ".f-shut",
+     "t": [
+      1.05,
+      1.3
+     ],
+     "to": {
+      "s": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".f-scan",
+     "set": "on",
+     "at": 1.1,
+     "until": 2.35
+    },
+    {
+     "s": ".f-scan",
+     "t": [
+      1.1,
+      2.3
+     ],
+     "f": {
+      "y": 0
+     },
+     "to": {
+      "y": 880
+     },
+     "e": "lin"
+    },
+    {
+     "s": ".f-vf .a0",
+     "set": "hl2",
+     "at": 1.3
+    },
+    {
+     "s": ".f-vf .a1",
+     "set": "hl2",
+     "at": 1.42
+    },
+    {
+     "s": ".f-vf .a2",
+     "set": "hl2",
+     "at": 1.54
+    },
+    {
+     "s": ".f-vf .a3",
+     "set": "hl2",
+     "at": 1.66
+    },
+    {
+     "s": ".f-vf .a4",
+     "set": "hl2",
+     "at": 1.78
+    },
+    {
+     "s": ".f-vf .a5",
+     "set": "hl2",
+     "at": 1.9
+    },
+    {
+     "s": ".f-vf .a6",
+     "set": "hl2",
+     "at": 2.02
+    },
+    {
+     "s": ".f-vf .a7",
+     "set": "hl2",
+     "at": 2.14
+    },
+    {
+     "s": ".f-pill",
+     "set": "done",
+     "at": 2.45
+    },
+    {
+     "s": ".f-pill",
+     "t": [
+      2.45,
+      2.75
+     ],
+     "f": {
+      "s": 0.92
+     },
+     "to": {
+      "s": 1
+     },
+     "e": "m"
+    }
+   ],
+   "decisions": {
+    "transition": {
+     "label": "Into this scene",
+     "chosen": "B",
+     "options": [
+      {
+       "name": "Push up",
+       "type": "push",
+       "why": "Clear and quick; the receipt leaves as the phone arrives.",
+       "id": "A"
+      },
+      {
+       "name": "Zoom into the viewfinder",
+       "type": "zoom",
+       "why": "The receipt grows into the phone screen: one object carried, not replaced.",
+       "id": "B"
+      },
+      {
+       "name": "Hard cut on the beat",
+       "type": "cut",
+       "why": "Fastest; loses the sense that the paper becomes data.",
+       "id": "C"
+      }
+     ]
+    },
+    "camera": {
+     "label": "Camera",
+     "chosen": "A",
+     "options": [
+      {
+       "name": "Locked",
+       "cam": {},
+       "why": "Product UI reads best on a steady camera.",
+       "id": "A"
+      },
+      {
+       "name": "Push to the viewfinder",
+       "cam": {
+        "s": [
+         1,
+         1.08
+        ],
+        "origin": "50% 42%"
+       },
+       "why": "Puts the scan line closer; crops the shutter press.",
+       "id": "B"
+      },
+      {
+       "name": "Drift down",
+       "cam": {
+        "y": [
+         0,
+         40
+        ]
+       },
+       "why": "Follows the scan line; slightly busy under the voice.",
+       "id": "C"
+      }
+     ]
+    },
+    "vo": {
+     "label": "Voice line (Sarah)",
+     "chosen": "A",
+     "options": [
+      {
+       "id": "A",
+       "name": "Crumb reads every line.",
+       "text": "Crumb reads every line.",
+       "src": "audio/vo/s2-A.mp3",
+       "dur": 1.4,
+       "at": 0.5,
+       "gain": 1.0
+      },
+      {
+       "id": "B",
+       "name": "Snap it. Crumb reads the rest.",
+       "text": "Snap it. Crumb reads the rest.",
+       "src": "audio/vo/s2-B.mp3",
+       "dur": 2.28,
+       "at": 0.5,
+       "gain": 1.0
+      },
+      {
+       "id": "C",
+       "name": "Point your camera at the receipt.",
+       "text": "Point your camera at the receipt.",
+       "src": "audio/vo/s2-C.mp3",
+       "dur": 1.38,
+       "at": 0.5,
+       "gain": 1.0
+      }
+     ]
+    }
+   },
+   "sfx": [
+    {
+     "id": "x1",
+     "label": "Phone rises",
+     "at": 0.0,
+     "chosen": "A",
+     "options": [
+      {
+       "name": "Light slow swoosh (FS 349698)",
+       "src": "audio/sfx/fs349698.mp3",
+       "gain": 0.55,
+       "why": "",
+       "id": "A"
+      },
+      {
+       "name": "Digital whoosh soft (FS 71852)",
+       "src": "audio/sfx/fs71852.mp3",
+       "gain": 0.6,
+       "why": "",
+       "id": "B"
+      },
+      {
+       "name": "Whoosh light (FS 701104)",
+       "src": "audio/sfx/fs701104.mp3",
+       "gain": 0.5,
+       "why": "",
+       "id": "C"
+      }
+     ],
+     "why": "Airy, slow swell; never an action-film blast."
+    },
+    {
+     "id": "x2",
+     "label": "Shutter press",
+     "at": 1.0,
+     "chosen": "C",
+     "options": [
+      {
+       "name": "Mouse click (FS 256455)",
+       "src": "audio/sfx/fs256455.mp3",
+       "gain": 1.0,
+       "why": "",
+       "id": "A"
+      },
+      {
+       "name": "Key press (FS 570754)",
+       "src": "audio/sfx/fs570754.mp3",
+       "gain": 0.9,
+       "why": "",
+       "id": "B"
+      },
+      {
+       "name": "Touch tap (FS 332713)",
+       "src": "audio/sfx/fs332713.mp3",
+       "gain": 1.0,
+       "why": "",
+       "id": "C"
+      }
+     ],
+     "why": "A soft touch, because a finger presses glass.",
+     "hit": true
+    },
+    {
+     "id": "x3",
+     "label": "Scan sweeps",
+     "at": 1.1,
+     "chosen": "C",
+     "options": [
+      {
+       "name": "Typing run (FS 447909)",
+       "src": "audio/sfx/fs447909.mp3",
+       "gain": 0.3,
+       "why": "",
+       "id": "A"
+      },
+      {
+       "name": "Gentle swish (FS 614153)",
+       "src": "audio/sfx/fs614153.mp3",
+       "gain": 0.4,
+       "why": "",
+       "id": "B"
+      },
+      {
+       "name": "Nothing",
+       "src": null,
+       "why": "Silence here lets the picture and voice carry it.",
+       "id": "C"
+      }
+     ],
+     "why": "Fewer sounds than beats; the voice is speaking here."
+    }
+   ],
+   "key": 2.6
+  },
+  {
+   "id": "s3",
+   "name": "Claim",
+   "dur": 4.5,
+   "truth": "conceptual_ui",
+   "levels": 2,
+   "purpose": "The key action: tap a name, tap a dish. Three taps shown, the rest fill in.",
+   "copy": "(UI) Nonna's · 8 items → All 8 items claimed",
+   "notes": {
+    "camera": "Push in until the list text is at least 3 % of the frame (house rule).",
+    "motion": "A 96 px touch ring travels, presses (0.8 scale), and the chip pops on the dish it lands on.",
+    "type": "Display title, UI rows at 33 px.",
+    "music": "Taps run with the groove, not locked to every beat."
+   },
+   "html": "<div class=\"f-ph\" data-name=\"Phone\"><div class=\"f-scr\"><div class=\"f-isl\"></div><div class=\"f-sb\"><span>9:41</span><span>●●● ▮</span></div><div class=\"f-hd\" data-name=\"Screen title\"><h4>Nonna's</h4><p><span class=\"b1\">8 items · $186.40</span><span class=\"b2\">All 8 items claimed</span></p></div><div class=\"f-li b0\" data-name=\"Dish: Margherita\" style=\"top:300px\"><span class=\"nm\">Margherita</span><span class=\"f-chs c0\"><i class=\"f-ch  k0M\">M</i></span><span class=\"p\">18.00</span></div><div class=\"f-li b1\" data-name=\"Dish: Spritz ×2\" style=\"top:416px\"><span class=\"nm\">Spritz ×2</span><span class=\"f-chs c1\"><i class=\"f-ch  k1J\">J</i><i class=\"f-ch  k1S\">S</i></span><span class=\"p\">24.00</span></div><div class=\"f-li b2\" data-name=\"Dish: Burrata\" style=\"top:532px\"><span class=\"nm\">Burrata</span><span class=\"f-chs c2\"><i class=\"f-ch  k2P\">P</i><i class=\"f-ch  k2L\">L</i><i class=\"f-ch  k2A\">A</i></span><span class=\"p\">16.50</span></div><div class=\"f-li b3\" data-name=\"Dish: Risotto ×2\" style=\"top:648px\"><span class=\"nm\">Risotto ×2</span><span class=\"f-chs c3\"><i class=\"f-ch  k3L\">L</i><i class=\"f-ch  k3R\">R</i></span><span class=\"p\">44.00</span></div><div class=\"f-li b4\" data-name=\"Dish: Branzino\" style=\"top:764px\"><span class=\"nm\">Branzino</span><span class=\"f-chs c4\"><i class=\"f-ch  k4J\">J</i><i class=\"f-ch  k4P\">P</i></span><span class=\"p\">29.00</span></div><div class=\"f-li b5\" data-name=\"Dish: Tiramisu ×2\" style=\"top:880px\"><span class=\"nm\">Tiramisu ×2</span><span class=\"f-chs c5\"><i class=\"f-ch  k5S\">S</i><i class=\"f-ch  k5A\">A</i></span><span class=\"p\">19.00</span></div><div class=\"f-li b6\" data-name=\"Dish: Bread and water\" style=\"top:996px\"><span class=\"nm\">Bread &amp; water</span><span class=\"f-chs c6\"><i class=\"f-ch all k6all\">All 7</i></span><span class=\"p\">11.60</span></div><div class=\"f-tray\"></div><div class=\"f-av v0\" data-name=\"Diner: Maya\" style=\"left:68px\">M</div><div class=\"f-av v1\" data-name=\"Diner: Jon\" style=\"left:170px\">J</div><div class=\"f-av v2\" data-name=\"Diner: Sam\" style=\"left:272px\">S</div><div class=\"f-av v3\" data-name=\"Diner: Priya\" style=\"left:374px\">P</div><div class=\"f-av v4\" data-name=\"Diner: Leo\" style=\"left:476px\">L</div><div class=\"f-av v5\" data-name=\"Diner: Ana\" style=\"left:578px\">A</div><div class=\"f-av v6\" data-name=\"Diner: Ravi\" style=\"left:680px\">R</div><div class=\"f-ring\" data-name=\"Finger\"></div></div></div>",
+   "anim": [
+    {
+     "s": ".f-ring",
+     "t": [
+      0.0,
+      0.01
+     ],
+     "to": {
+      "x": 520,
+      "y": 1700
+     },
+     "e": "out"
+    },
+    {
+     "s": ".f-ring",
+     "t": [
+      0.3,
+      0.6
+     ],
+     "to": {
+      "x": 68,
+      "y": 1310
+     },
+     "e": "out"
+    },
+    {
+     "s": ".f-ring",
+     "t": [
+      0.6,
+      0.6799999999999999
+     ],
+     "to": {
+      "s": 0.8
+     },
+     "e": "out"
+    },
+    {
+     "s": ".f-ring",
+     "t": [
+      0.6799999999999999,
+      0.88
+     ],
+     "to": {
+      "s": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".f-ring",
+     "t": [
+      0.65,
+      0.92
+     ],
+     "to": {
+      "x": 560,
+      "y": 352
+     },
+     "e": "out"
+    },
+    {
+     "s": ".f-ring",
+     "t": [
+      0.92,
+      1.0
+     ],
+     "to": {
+      "s": 0.8
+     },
+     "e": "out"
+    },
+    {
+     "s": ".f-ring",
+     "t": [
+      1.0,
+      1.2000000000000002
+     ],
+     "to": {
+      "s": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".f-ring",
+     "t": [
+      1.1,
+      1.35
+     ],
+     "to": {
+      "x": 170,
+      "y": 1310
+     },
+     "e": "out"
+    },
+    {
+     "s": ".f-ring",
+     "t": [
+      1.35,
+      1.4300000000000002
+     ],
+     "to": {
+      "s": 0.8
+     },
+     "e": "out"
+    },
+    {
+     "s": ".f-ring",
+     "t": [
+      1.4300000000000002,
+      1.6300000000000001
+     ],
+     "to": {
+      "s": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".f-ring",
+     "t": [
+      1.4,
+      1.65
+     ],
+     "to": {
+      "x": 560,
+      "y": 468
+     },
+     "e": "out"
+    },
+    {
+     "s": ".f-ring",
+     "t": [
+      1.65,
+      1.73
+     ],
+     "to": {
+      "s": 0.8
+     },
+     "e": "out"
+    },
+    {
+     "s": ".f-ring",
+     "t": [
+      1.73,
+      1.93
+     ],
+     "to": {
+      "s": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".f-ring",
+     "t": [
+      1.85,
+      2.1
+     ],
+     "to": {
+      "x": 374,
+      "y": 1310
+     },
+     "e": "out"
+    },
+    {
+     "s": ".f-ring",
+     "t": [
+      2.1,
+      2.18
+     ],
+     "to": {
+      "s": 0.8
+     },
+     "e": "out"
+    },
+    {
+     "s": ".f-ring",
+     "t": [
+      2.18,
+      2.38
+     ],
+     "to": {
+      "s": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".f-ring",
+     "t": [
+      2.15,
+      2.4
+     ],
+     "to": {
+      "x": 560,
+      "y": 584
+     },
+     "e": "out"
+    },
+    {
+     "s": ".f-ring",
+     "t": [
+      2.4,
+      2.48
+     ],
+     "to": {
+      "s": 0.8
+     },
+     "e": "out"
+    },
+    {
+     "s": ".f-ring",
+     "t": [
+      2.48,
+      2.6799999999999997
+     ],
+     "to": {
+      "s": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".f-ring",
+     "t": [
+      2.6,
+      3.0
+     ],
+     "to": {
+      "x": 700,
+      "y": 1700
+     },
+     "e": "out"
+    },
+    {
+     "s": ".f-ring",
+     "t": [
+      0.0,
+      0.3
+     ],
+     "f": {
+      "o": 0
+     },
+     "to": {
+      "o": 1
+     },
+     "e": "out"
+    },
+    {
+     "s": ".f-ring",
+     "t": [
+      2.7,
+      3.0
+     ],
+     "to": {
+      "o": 0
+     },
+     "e": "lin"
+    },
+    {
+     "s": ".v0",
+     "set": "sel",
+     "at": 0.62,
+     "until": 1.2999999999999998
+    },
+    {
+     "s": ".v1",
+     "set": "sel",
+     "at": 1.37,
+     "until": 2.05
+    },
+    {
+     "s": ".v3",
+     "set": "sel",
+     "at": 2.12,
+     "until": 2.8
+    },
+    {
+     "s": ".k0M",
+     "t": [
+      0.92,
+      1.12
+     ],
+     "f": {
+      "s": 0
+     },
+     "to": {
+      "s": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".k1J",
+     "t": [
+      1.65,
+      1.8499999999999999
+     ],
+     "f": {
+      "s": 0
+     },
+     "to": {
+      "s": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".k2P",
+     "t": [
+      2.4,
+      2.6
+     ],
+     "f": {
+      "s": 0
+     },
+     "to": {
+      "s": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".k1S",
+     "t": [
+      2.75,
+      2.95
+     ],
+     "f": {
+      "s": 0
+     },
+     "to": {
+      "s": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".k2L",
+     "t": [
+      2.83,
+      3.03
+     ],
+     "f": {
+      "s": 0
+     },
+     "to": {
+      "s": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".k2A",
+     "t": [
+      2.91,
+      3.11
+     ],
+     "f": {
+      "s": 0
+     },
+     "to": {
+      "s": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".k3L",
+     "t": [
+      2.99,
+      3.19
+     ],
+     "f": {
+      "s": 0
+     },
+     "to": {
+      "s": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".k3R",
+     "t": [
+      3.07,
+      3.27
+     ],
+     "f": {
+      "s": 0
+     },
+     "to": {
+      "s": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".k4J",
+     "t": [
+      3.15,
+      3.35
+     ],
+     "f": {
+      "s": 0
+     },
+     "to": {
+      "s": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".k4P",
+     "t": [
+      3.23,
+      3.43
+     ],
+     "f": {
+      "s": 0
+     },
+     "to": {
+      "s": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".k5S",
+     "t": [
+      3.31,
+      3.51
+     ],
+     "f": {
+      "s": 0
+     },
+     "to": {
+      "s": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".k5A",
+     "t": [
+      3.39,
+      3.59
+     ],
+     "f": {
+      "s": 0
+     },
+     "to": {
+      "s": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".k6all",
+     "t": [
+      3.47,
+      3.67
+     ],
+     "f": {
+      "s": 0
+     },
+     "to": {
+      "s": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".f-hd",
+     "set": "done",
+     "at": 3.7
+    }
+   ],
+   "decisions": {
+    "transition": {
+     "label": "Into this scene",
+     "chosen": "A",
+     "options": [
+      {
+       "name": "Screen slides left",
+       "type": "slide",
+       "why": "Reads as the app moving to its next screen. In production only the screen content slides; the phone stays.",
+       "id": "A"
+      },
+      {
+       "name": "Hard cut",
+       "type": "cut",
+       "why": "Snappy, but the scan result and the list feel unrelated.",
+       "id": "B"
+      },
+      {
+       "name": "Iris from the pill",
+       "type": "iris",
+       "at": [
+        50,
+        63
+       ],
+       "why": "The list opens out of \"8 lines found\"; the strongest carry, slower.",
+       "id": "C"
+      }
+     ]
+    },
+    "camera": {
+     "label": "Camera",
+     "chosen": "A",
+     "options": [
+      {
+       "name": "Push in to the list",
+       "cam": {
+        "s": [
+         1,
+         1.12
+        ],
+        "origin": "55% 34%"
+       },
+       "why": "Makes the rows readable on a phone; follows the taps.",
+       "id": "A"
+      },
+      {
+       "name": "Locked",
+       "cam": {},
+       "why": "Shows the whole tray and list; row text stays small.",
+       "id": "B"
+      },
+      {
+       "name": "Drift with the taps",
+       "cam": {
+        "s": [
+         1.04,
+         1.04
+        ],
+        "x": [
+         0,
+         -30
+        ]
+       },
+       "why": "Lively; can feel handheld, which product films avoid.",
+       "id": "C"
+      }
+     ]
+    },
+    "vo": {
+     "label": "Voice line (Sarah)",
+     "chosen": "A",
+     "options": [
+      {
+       "id": "A",
+       "name": "Tap who had what.",
+       "text": "Tap who had what.",
+       "src": "audio/vo/s3-A.mp3",
+       "dur": 0.94,
+       "at": 0.3,
+       "gain": 1.0
+      },
+      {
+       "id": "B",
+       "name": "Tap a name, then tap a dish.",
+       "text": "Tap a name, then tap a dish.",
+       "src": "audio/vo/s3-B.mp3",
+       "dur": 1.81,
+       "at": 0.3,
+       "gain": 1.0
+      },
+      {
+       "id": "C",
+       "name": "Everyone claims their own plates.",
+       "text": "Everyone claims their own plates.",
+       "src": "audio/vo/s3-C.mp3",
+       "dur": 1.76,
+       "at": 0.3,
+       "gain": 1.0
+      }
+     ]
+    }
+   },
+   "sfx": [
+    {
+     "id": "x1",
+     "label": "Taps on names and dishes",
+     "at": [
+      0.6,
+      0.92,
+      1.35,
+      1.65,
+      2.1,
+      2.4
+     ],
+     "chosen": "A",
+     "options": [
+      {
+       "name": "Touch tap (FS 332713)",
+       "src": "audio/sfx/fs332713.mp3",
+       "gain": 1.0,
+       "why": "",
+       "id": "A"
+      },
+      {
+       "name": "Mouse click (FS 256455)",
+       "src": "audio/sfx/fs256455.mp3",
+       "gain": 0.9,
+       "why": "",
+       "id": "B"
+      },
+      {
+       "name": "Short press (FS 534103)",
+       "src": "audio/sfx/fs534103.mp3",
+       "gain": 0.9,
+       "why": "",
+       "id": "C"
+      }
+     ],
+     "why": "One real tap per press, each a little quieter (house rule for runs).",
+     "step": 0.9
+    },
+    {
+     "id": "x2",
+     "label": "The rest fill in",
+     "at": 2.75,
+     "chosen": "A",
+     "options": [
+      {
+       "name": "Gentle swish (FS 614153)",
+       "src": "audio/sfx/fs614153.mp3",
+       "gain": 0.5,
+       "why": "",
+       "id": "A"
+      },
+      {
+       "name": "Typing run (FS 447909)",
+       "src": "audio/sfx/fs447909.mp3",
+       "gain": 0.3,
+       "why": "",
+       "id": "B"
+      },
+      {
+       "name": "Nothing",
+       "src": null,
+       "why": "Let the voice and the chips carry it.",
+       "id": "C"
+      }
+     ],
+     "why": "When hits blur together, one swoosh instead of nine clicks."
+    }
+   ],
+   "key": 3.9
+  },
+  {
+   "id": "s4",
+   "name": "Split",
+   "dur": 3.5,
+   "truth": "conceptual_ui",
+   "levels": 2,
+   "purpose": "The result: everyone's fair share, tax and tip spread by what they ate.",
+   "copy": "(UI) Who owes what · seven amounts · Tax & tip $24.30 · All squared",
+   "notes": {
+    "camera": "A slow push lands on the totals.",
+    "motion": "Rows rise in order; amounts count up in tabular figures; the tax bar fills last.",
+    "type": "Amounts in the mono face, 38 px.",
+    "music": "Energy holds; no hit, the voice carries it."
+   },
+   "html": "<div class=\"f-ph\" data-name=\"Phone\"><div class=\"f-scr\"><div class=\"f-isl\"></div><div class=\"f-sb\"><span>9:41</span><span>●●● ▮</span></div><div class=\"f-hd\" data-name=\"Screen title\"><h4>Who owes what</h4><p>Tax and tip follow what each person ate</p></div><div class=\"f-pp q0\" data-name=\"Maya's share\" style=\"top:290px\"><i>M</i><span>Maya</span><b class=\"m0\">$22.61</b></div><div class=\"f-pp q1\" data-name=\"Jon's share\" style=\"top:394px\"><i>J</i><span>Jon</span><b class=\"m1\">$32.38</b></div><div class=\"f-pp q2\" data-name=\"Sam's share\" style=\"top:498px\"><i>S</i><span>Sam</span><b class=\"m2\">$26.63</b></div><div class=\"f-pp q3\" data-name=\"Priya's share\" style=\"top:602px\"><i>P</i><span>Priya</span><b class=\"m3\">$24.90</b></div><div class=\"f-pp q4\" data-name=\"Leo's share\" style=\"top:706px\"><i>L</i><span>Leo</span><b class=\"m4\">$33.53</b></div><div class=\"f-pp q5\" data-name=\"Ana's share\" style=\"top:810px\"><i>A</i><span>Ana</span><b class=\"m5\">$19.15</b></div><div class=\"f-pp q6\" data-name=\"Ravi's share\" style=\"top:914px\"><i>R</i><span>Ravi</span><b class=\"m6\">$27.20</b></div><div class=\"f-barw\" data-name=\"Tax and tip bar\"><div class=\"f-bl\"><span>Tax &amp; tip</span><span>$24.30</span></div><div class=\"f-bar\"><div class=\"f-fill\"></div></div></div><div class=\"f-ok\" data-name=\"All squared pill\">All squared · $186.40</div></div></div>",
+   "anim": [
+    {
+     "s": ".q0",
+     "t": [
+      0.1,
+      0.5
+     ],
+     "f": {
+      "y": 40,
+      "o": 0
+     },
+     "to": {
+      "y": 0,
+      "o": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".q1",
+     "t": [
+      0.16,
+      0.56
+     ],
+     "f": {
+      "y": 40,
+      "o": 0
+     },
+     "to": {
+      "y": 0,
+      "o": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".q2",
+     "t": [
+      0.22,
+      0.62
+     ],
+     "f": {
+      "y": 40,
+      "o": 0
+     },
+     "to": {
+      "y": 0,
+      "o": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".q3",
+     "t": [
+      0.28,
+      0.68
+     ],
+     "f": {
+      "y": 40,
+      "o": 0
+     },
+     "to": {
+      "y": 0,
+      "o": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".q4",
+     "t": [
+      0.34,
+      0.74
+     ],
+     "f": {
+      "y": 40,
+      "o": 0
+     },
+     "to": {
+      "y": 0,
+      "o": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".q5",
+     "t": [
+      0.4,
+      0.8
+     ],
+     "f": {
+      "y": 40,
+      "o": 0
+     },
+     "to": {
+      "y": 0,
+      "o": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".q6",
+     "t": [
+      0.46,
+      0.86
+     ],
+     "f": {
+      "y": 40,
+      "o": 0
+     },
+     "to": {
+      "y": 0,
+      "o": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".m0",
+     "count": [
+      0,
+      22.61
+     ],
+     "t": [
+      0.3,
+      1.3
+     ],
+     "p": "$",
+     "d": 2
+    },
+    {
+     "s": ".m1",
+     "count": [
+      0,
+      32.38
+     ],
+     "t": [
+      0.36,
+      1.36
+     ],
+     "p": "$",
+     "d": 2
+    },
+    {
+     "s": ".m2",
+     "count": [
+      0,
+      26.63
+     ],
+     "t": [
+      0.42,
+      1.42
+     ],
+     "p": "$",
+     "d": 2
+    },
+    {
+     "s": ".m3",
+     "count": [
+      0,
+      24.9
+     ],
+     "t": [
+      0.48,
+      1.48
+     ],
+     "p": "$",
+     "d": 2
+    },
+    {
+     "s": ".m4",
+     "count": [
+      0,
+      33.53
+     ],
+     "t": [
+      0.54,
+      1.54
+     ],
+     "p": "$",
+     "d": 2
+    },
+    {
+     "s": ".m5",
+     "count": [
+      0,
+      19.15
+     ],
+     "t": [
+      0.6,
+      1.6
+     ],
+     "p": "$",
+     "d": 2
+    },
+    {
+     "s": ".m6",
+     "count": [
+      0,
+      27.2
+     ],
+     "t": [
+      0.66,
+      1.66
+     ],
+     "p": "$",
+     "d": 2
+    },
+    {
+     "s": ".f-fill",
+     "t": [
+      1.5,
+      2.4
+     ],
+     "f": {
+      "sx": 0
+     },
+     "to": {
+      "sx": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".f-ok",
+     "t": [
+      2.5,
+      2.85
+     ],
+     "f": {
+      "y": 30,
+      "o": 0
+     },
+     "to": {
+      "y": 0,
+      "o": 1
+     },
+     "e": "m"
+    }
+   ],
+   "decisions": {
+    "transition": {
+     "label": "Into this scene",
+     "chosen": "A",
+     "options": [
+      {
+       "name": "Screen slides left",
+       "type": "slide",
+       "why": "Same grammar as the previous screen change; the app keeps moving forward.",
+       "id": "A"
+      },
+      {
+       "name": "Push up",
+       "type": "push",
+       "why": "Different direction from the last change, so it reads as a new step.",
+       "id": "B"
+      },
+      {
+       "name": "Hard cut",
+       "type": "cut",
+       "why": "Fast; the result appears without any build.",
+       "id": "C"
+      }
+     ]
+    },
+    "camera": {
+     "label": "Camera",
+     "chosen": "B",
+     "options": [
+      {
+       "name": "Locked",
+       "cam": {},
+       "why": "All seven totals in view at once.",
+       "id": "A"
+      },
+      {
+       "name": "Slow push",
+       "cam": {
+        "s": [
+         1,
+         1.08
+        ],
+        "origin": "50% 45%"
+       },
+       "why": "Keeps a still screen alive while numbers count.",
+       "id": "B"
+      },
+      {
+       "name": "Pull back",
+       "cam": {
+        "s": [
+         1.1,
+         1
+        ]
+       },
+       "why": "Starts close on the first total; ends on the whole list.",
+       "id": "C"
+      }
+     ]
+    },
+    "vo": {
+     "label": "Voice line (Sarah)",
+     "chosen": "A",
+     "options": [
+      {
+       "id": "A",
+       "name": "Tax and tip, split fairly.",
+       "text": "Tax and tip, split fairly.",
+       "src": "audio/vo/s4-A.mp3",
+       "dur": 2.26,
+       "at": 0.3,
+       "gain": 1.0
+      },
+      {
+       "id": "B",
+       "name": "Tax and tip land where they belong.",
+       "text": "Tax and tip land where they belong.",
+       "src": "audio/vo/s4-B.mp3",
+       "dur": 2.24,
+       "at": 0.3,
+       "gain": 1.0
+      },
+      {
+       "id": "C",
+       "name": "Shared plates, shared fairly.",
+       "text": "Shared plates, shared fairly.",
+       "src": "audio/vo/s4-C.mp3",
+       "dur": 2.1,
+       "at": 0.3,
+       "gain": 1.0
+      }
+     ]
+    }
+   },
+   "sfx": [
+    {
+     "id": "x1",
+     "label": "Amounts count up",
+     "at": 0.3,
+     "chosen": "B",
+     "options": [
+      {
+       "name": "Typing run (FS 447909)",
+       "src": "audio/sfx/fs447909.mp3",
+       "gain": 0.25,
+       "why": "",
+       "id": "A"
+      },
+      {
+       "name": "Nothing",
+       "src": null,
+       "why": "Silence under the voice; the numbers are the event.",
+       "id": "B"
+      },
+      {
+       "name": "Soft key (FS 421583)",
+       "src": "audio/sfx/fs421583.mp3",
+       "gain": 0.4,
+       "why": "",
+       "id": "C"
+      }
+     ],
+     "why": ""
+    },
+    {
+     "id": "x2",
+     "label": "Tax bar fills",
+     "at": 1.5,
+     "chosen": "A",
+     "options": [
+      {
+       "name": "Digital whoosh soft (FS 71852)",
+       "src": "audio/sfx/fs71852.mp3",
+       "gain": 0.5,
+       "why": "",
+       "id": "A"
+      },
+      {
+       "name": "Gentle swish (FS 614153)",
+       "src": "audio/sfx/fs614153.mp3",
+       "gain": 0.5,
+       "why": "",
+       "id": "B"
+      },
+      {
+       "name": "Nothing",
+       "src": null,
+       "why": "Silence here lets the picture and voice carry it.",
+       "id": "C"
+      }
+     ],
+     "why": "A short airy swell matches the fill."
+    }
+   ],
+   "key": 2.9
+  },
+  {
+   "id": "s5",
+   "name": "Settle",
+   "dur": 3.0,
+   "truth": "conceptual_ui",
+   "levels": 2,
+   "purpose": "Payoff: one press sends six requests; they land paid.",
+   "copy": "(UI) Request $163.79 → six request cards, ticked",
+   "notes": {
+    "camera": "Steady; the phone itself steps back to make room for the cards.",
+    "motion": "The press squashes the button, then the cards lift out of the phone and land in two columns.",
+    "type": "Card names 33 px, amounts mono.",
+    "music": "A riser starts here and peaks into the logo."
+   },
+   "html": "<div class=\"f-ph\" data-name=\"Phone\"><div class=\"f-scr\"><div class=\"f-isl\"></div><div class=\"f-sb\"><span>9:41</span><span>●●● ▮</span></div><div class=\"f-hd\" data-name=\"Screen title\"><h4>Send it</h4><p>You paid · Maya</p></div><div class=\"f-mrow\" style=\"top:300px\"><span>Jon</span><b>$32.38</b></div><div class=\"f-mrow\" style=\"top:400px\"><span>Sam</span><b>$26.63</b></div><div class=\"f-mrow\" style=\"top:500px\"><span>Priya</span><b>$24.90</b></div><div class=\"f-mrow\" style=\"top:600px\"><span>Leo</span><b>$33.53</b></div><div class=\"f-mrow\" style=\"top:700px\"><span>Ana</span><b>$19.15</b></div><div class=\"f-mrow\" style=\"top:800px\"><span>Ravi</span><b>$27.20</b></div><div class=\"f-btn\" data-name=\"Request button\">Request $163.79</div><div class=\"f-ring\" data-name=\"Finger\"></div></div></div><div class=\"f-card k0\" data-name=\"Request: Jon\"><i>J</i><span>Jon</span><b>$32.38</b><span class=\"ck\"></span></div><div class=\"f-card k1\" data-name=\"Request: Sam\"><i>S</i><span>Sam</span><b>$26.63</b><span class=\"ck\"></span></div><div class=\"f-card k2\" data-name=\"Request: Priya\"><i>P</i><span>Priya</span><b>$24.90</b><span class=\"ck\"></span></div><div class=\"f-card k3\" data-name=\"Request: Leo\"><i>L</i><span>Leo</span><b>$33.53</b><span class=\"ck\"></span></div><div class=\"f-card k4\" data-name=\"Request: Ana\"><i>A</i><span>Ana</span><b>$19.15</b><span class=\"ck\"></span></div><div class=\"f-card k5\" data-name=\"Request: Ravi\"><i>R</i><span>Ravi</span><b>$27.20</b><span class=\"ck\"></span></div>",
+   "anim": [
+    {
+     "s": ".f-ring",
+     "t": [
+      0.0,
+      0.01
+     ],
+     "to": {
+      "x": 520,
+      "y": 1700
+     },
+     "e": "out"
+    },
+    {
+     "s": ".f-ring",
+     "t": [
+      0.15,
+      0.48
+     ],
+     "to": {
+      "x": 374,
+      "y": 1258
+     },
+     "e": "out"
+    },
+    {
+     "s": ".f-ring",
+     "t": [
+      0.48,
+      0.5599999999999999
+     ],
+     "to": {
+      "s": 0.8
+     },
+     "e": "out"
+    },
+    {
+     "s": ".f-ring",
+     "t": [
+      0.5599999999999999,
+      0.76
+     ],
+     "to": {
+      "s": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".f-ring",
+     "t": [
+      0.75,
+      1.0
+     ],
+     "to": {
+      "x": 640,
+      "y": 1700
+     },
+     "e": "out"
+    },
+    {
+     "s": ".f-ring",
+     "t": [
+      0.0,
+      0.2
+     ],
+     "f": {
+      "o": 0
+     },
+     "to": {
+      "o": 1
+     },
+     "e": "out"
+    },
+    {
+     "s": ".f-ring",
+     "t": [
+      0.8,
+      1.0
+     ],
+     "to": {
+      "o": 0
+     },
+     "e": "lin"
+    },
+    {
+     "s": ".f-btn",
+     "t": [
+      0.5,
+      0.58
+     ],
+     "f": {
+      "s": 1
+     },
+     "to": {
+      "s": 0.95
+     },
+     "e": "out"
+    },
+    {
+     "s": ".f-btn",
+     "t": [
+      0.58,
+      0.85
+     ],
+     "to": {
+      "s": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".f-ph",
+     "t": [
+      0.8,
+      1.4
+     ],
+     "f": {
+      "y": 0,
+      "s": 1
+     },
+     "to": {
+      "y": 560,
+      "s": 0.7
+     },
+     "e": "m"
+    },
+    {
+     "s": ".k0",
+     "t": [
+      1.0,
+      1.5
+     ],
+     "f": {
+      "x": 335,
+      "y": 1450,
+      "s": 0.4,
+      "o": 0
+     },
+     "to": {
+      "x": 110,
+      "y": 250,
+      "s": 1,
+      "o": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".k1",
+     "t": [
+      1.1,
+      1.6
+     ],
+     "f": {
+      "x": 335,
+      "y": 1450,
+      "s": 0.4,
+      "o": 0
+     },
+     "to": {
+      "x": 560,
+      "y": 250,
+      "s": 1,
+      "o": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".k2",
+     "t": [
+      1.2,
+      1.7
+     ],
+     "f": {
+      "x": 335,
+      "y": 1450,
+      "s": 0.4,
+      "o": 0
+     },
+     "to": {
+      "x": 110,
+      "y": 440,
+      "s": 1,
+      "o": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".k3",
+     "t": [
+      1.3,
+      1.8
+     ],
+     "f": {
+      "x": 335,
+      "y": 1450,
+      "s": 0.4,
+      "o": 0
+     },
+     "to": {
+      "x": 560,
+      "y": 440,
+      "s": 1,
+      "o": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".k4",
+     "t": [
+      1.4,
+      1.9
+     ],
+     "f": {
+      "x": 335,
+      "y": 1450,
+      "s": 0.4,
+      "o": 0
+     },
+     "to": {
+      "x": 110,
+      "y": 630,
+      "s": 1,
+      "o": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".k5",
+     "t": [
+      1.5,
+      2.0
+     ],
+     "f": {
+      "x": 335,
+      "y": 1450,
+      "s": 0.4,
+      "o": 0
+     },
+     "to": {
+      "x": 560,
+      "y": 630,
+      "s": 1,
+      "o": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".k0",
+     "set": "paid",
+     "at": 2.0
+    },
+    {
+     "s": ".k1",
+     "set": "paid",
+     "at": 2.1
+    },
+    {
+     "s": ".k2",
+     "set": "paid",
+     "at": 2.2
+    },
+    {
+     "s": ".k3",
+     "set": "paid",
+     "at": 2.3
+    },
+    {
+     "s": ".k4",
+     "set": "paid",
+     "at": 2.4
+    },
+    {
+     "s": ".k5",
+     "set": "paid",
+     "at": 2.5
+    }
+   ],
+   "decisions": {
+    "transition": {
+     "label": "Into this scene",
+     "chosen": "A",
+     "options": [
+      {
+       "name": "Hard cut on the beat",
+       "type": "cut",
+       "why": "The split is done; a clean cut resets attention for the payoff.",
+       "id": "A"
+      },
+      {
+       "name": "Screen slides left",
+       "type": "slide",
+       "why": "Third slide in a row; consistent but predictable.",
+       "id": "B"
+      },
+      {
+       "name": "Zoom through",
+       "type": "zoom",
+       "why": "More energy into the payoff; can feel like an effect for its own sake.",
+       "id": "C"
+      }
+     ]
+    },
+    "camera": {
+     "label": "Camera",
+     "chosen": "A",
+     "options": [
+      {
+       "name": "Locked",
+       "cam": {},
+       "why": "The cards need a still frame to land into.",
+       "id": "A"
+      },
+      {
+       "name": "Slow push",
+       "cam": {
+        "s": [
+         1,
+         1.05
+        ]
+       },
+       "why": "Adds life; the top cards come close to the edge.",
+       "id": "B"
+      },
+      {
+       "name": "Drift up",
+       "cam": {
+        "y": [
+         0,
+         -40
+        ]
+       },
+       "why": "Follows the cards upward.",
+       "id": "C"
+      }
+     ]
+    },
+    "vo": {
+     "label": "Voice line (Sarah)",
+     "chosen": "A",
+     "options": [
+      {
+       "id": "A",
+       "name": "Everyone pays their part.",
+       "text": "Everyone pays their part.",
+       "src": "audio/vo/s5-A.mp3",
+       "dur": 1.15,
+       "at": 0.7,
+       "gain": 1.0
+      },
+      {
+       "id": "B",
+       "name": "Six requests, sent in one tap.",
+       "text": "Six requests, sent in one tap.",
+       "src": "audio/vo/s5-B.mp3",
+       "dur": 1.94,
+       "at": 0.7,
+       "gain": 1.0
+      },
+      {
+       "id": "C",
+       "name": "Done before the waiter's back.",
+       "text": "Done before the waiter's back.",
+       "src": "audio/vo/s5-C.mp3",
+       "dur": 1.43,
+       "at": 0.7,
+       "gain": 1.0
+      }
+     ]
+    }
+   },
+   "sfx": [
+    {
+     "id": "x1",
+     "label": "Request press",
+     "at": 0.5,
+     "chosen": "A",
+     "options": [
+      {
+       "name": "Touch tap (FS 332713)",
+       "src": "audio/sfx/fs332713.mp3",
+       "gain": 1.0,
+       "why": "",
+       "id": "A"
+      },
+      {
+       "name": "Mouse click (FS 256455)",
+       "src": "audio/sfx/fs256455.mp3",
+       "gain": 0.9,
+       "why": "",
+       "id": "B"
+      },
+      {
+       "name": "Short press (FS 534103)",
+       "src": "audio/sfx/fs534103.mp3",
+       "gain": 0.9,
+       "why": "",
+       "id": "C"
+      }
+     ],
+     "why": "Same tap as the claims, so the action sounds like the same app.",
+     "hit": true
+    },
+    {
+     "id": "x2",
+     "label": "Cards fly out",
+     "at": 1.0,
+     "chosen": "A",
+     "options": [
+      {
+       "name": "Card riffle (FS 554208)",
+       "src": "audio/sfx/fs554208.mp3",
+       "gain": 0.7,
+       "why": "",
+       "id": "A"
+      },
+      {
+       "name": "Gentle swish (FS 614153)",
+       "src": "audio/sfx/fs614153.mp3",
+       "gain": 0.6,
+       "why": "",
+       "id": "B"
+      },
+      {
+       "name": "Paper handling (FS 651514)",
+       "src": "audio/sfx/fs651514.mp3",
+       "gain": 0.6,
+       "why": "",
+       "id": "C"
+      }
+     ],
+     "why": "Paper-like riffle for six cards leaving at once."
+    },
+    {
+     "id": "x3",
+     "label": "Riser into the logo",
+     "at": 0.0,
+     "chosen": "A",
+     "options": [
+      {
+       "name": "Riser, short (FS 685256)",
+       "src": "audio/sfx/fs685256.mp3",
+       "gain": 0.55,
+       "why": "",
+       "id": "A"
+      },
+      {
+       "name": "Light slow swoosh (FS 349698)",
+       "src": "audio/sfx/fs349698.mp3",
+       "gain": 0.6,
+       "why": "",
+       "id": "B"
+      },
+      {
+       "name": "Nothing",
+       "src": null,
+       "why": "No riser; the logo lands on its own.",
+       "id": "C"
+      }
+     ],
+     "why": "Builds toward the loudest moment of the film."
+    }
+   ],
+   "key": 2.6
+  },
+  {
+   "id": "s6",
+   "name": "Logo",
+   "dur": 3.5,
+   "truth": "conceptual_visual",
+   "levels": 2,
+   "purpose": "Brand and promise. The icon lands on the downbeat; the wordmark holds over a second.",
+   "copy": "Crumb · Split it before the coffee's cold.",
+   "notes": {
+    "camera": "Locked: the wordmark holds still.",
+    "motion": "The icon falls in from a large scale, squashes about 6 % on contact and settles.",
+    "type": "Wordmark 186 px (fits the widest display face); tagline 60 px, two text levels.",
+    "music": "The icon lands at 18.0 s, a bar line at 120 BPM: the loudest moment."
+   },
+   "html": "<div class=\"f-icon\" data-name=\"App icon\"></div><div class=\"f-wm\" data-name=\"Wordmark\">Crumb</div><div class=\"f-tag\" data-name=\"Tagline\" data-copy>Split it before the coffee's cold.</div>",
+   "anim": [
+    {
+     "s": ".f-icon",
+     "t": [
+      0.0,
+      0.5
+     ],
+     "f": {
+      "y": 640,
+      "s": 3.2
+     },
+     "to": {
+      "y": 0,
+      "s": 1
+     },
+     "e": "power3"
+    },
+    {
+     "s": ".f-icon",
+     "t": [
+      0.5,
+      0.58
+     ],
+     "f": {
+      "sx": 1,
+      "sy": 1
+     },
+     "to": {
+      "sx": 1.06,
+      "sy": 0.94
+     },
+     "e": "out"
+    },
+    {
+     "s": ".f-icon",
+     "t": [
+      0.58,
+      0.85
+     ],
+     "to": {
+      "sx": 1,
+      "sy": 1
+     },
+     "e": "m"
+    },
+    {
+     "s": ".f-wm",
+     "t": [
+      0.55,
+      0.95
+     ],
+     "f": {
+      "x": -50,
+      "o": 0
+     },
+     "to": {
+      "x": 0,
+      "o": 1
+     },
+     "e": "out"
+    },
+    {
+     "s": ".f-tag",
+     "t": [
+      0.95,
+      1.35
+     ],
+     "f": {
+      "y": 40,
+      "o": 0
+     },
+     "to": {
+      "y": 0,
+      "o": 1
+     },
+     "e": "out"
+    }
+   ],
+   "decisions": {
+    "transition": {
+     "label": "Into this scene",
+     "chosen": "A",
+     "options": [
+      {
+       "name": "The phone collapses into the icon",
+       "type": "zoom",
+       "why": "The app becomes its own icon: the film's one carry into the logo.",
+       "id": "A"
+      },
+      {
+       "name": "Accent flood from the button",
+       "type": "iris",
+       "at": [
+        50,
+        80
+       ],
+       "why": "The request button floods the frame; loud, very on brand.",
+       "id": "B"
+      },
+      {
+       "name": "Hard cut",
+       "type": "cut",
+       "why": "Clean end card; loses the carry.",
+       "id": "C"
+      }
+     ]
+    },
+    "camera": {
+     "label": "Camera",
+     "chosen": "A",
+     "options": [
+      {
+       "name": "Locked",
+       "cam": {},
+       "why": "A wordmark reads best still.",
+       "id": "A"
+      },
+      {
+       "name": "Slow push",
+       "cam": {
+        "s": [
+         1,
+         1.04
+        ]
+       },
+       "why": "A little life on a long hold.",
+       "id": "B"
+      },
+      {
+       "name": "Pull back",
+       "cam": {
+        "s": [
+         1.06,
+         1
+        ]
+       },
+       "why": "Opens out as the tagline arrives.",
+       "id": "C"
+      }
+     ]
+    },
+    "vo": {
+     "label": "Voice line (Sarah)",
+     "chosen": "A",
+     "options": [
+      {
+       "id": "A",
+       "name": "Crumb. Split it before the coffee's cold.",
+       "text": "Crumb. Split it before the coffee's cold.",
+       "src": "audio/vo/s6-A.mp3",
+       "dur": 2.7,
+       "at": 0.6,
+       "gain": 1.0,
+       "copy": "Split it before the coffee's cold."
+      },
+      {
+       "id": "B",
+       "name": "Crumb. Every bill, settled.",
+       "text": "Crumb. Every bill, settled.",
+       "src": "audio/vo/s6-B.mp3",
+       "dur": 2.57,
+       "at": 0.6,
+       "gain": 1.0,
+       "copy": "Every bill, settled."
+      },
+      {
+       "id": "C",
+       "name": "Crumb. Fair, fast, done.",
+       "text": "Crumb. Fair, fast, done.",
+       "src": "audio/vo/s6-C.mp3",
+       "dur": 2.67,
+       "at": 0.6,
+       "gain": 1.0,
+       "copy": "Fair, fast, done."
+      }
+     ]
+    }
+   },
+   "sfx": [
+    {
+     "id": "x1",
+     "label": "Icon lands (loudest moment)",
+     "at": 0.5,
+     "chosen": "B",
+     "options": [
+      {
+       "name": "Metal ring drop (FS 767613)",
+       "src": "audio/sfx/fs767613.mp3",
+       "gain": 0.9,
+       "why": "",
+       "id": "A"
+      },
+      {
+       "name": "Heavy paper drop (FS 406586)",
+       "src": "audio/sfx/fs406586.mp3",
+       "gain": 1.0,
+       "why": "",
+       "id": "B"
+      },
+      {
+       "name": "Soft snap (FS 388958)",
+       "src": "audio/sfx/fs388958.mp3",
+       "gain": 1.0,
+       "why": "",
+       "id": "C"
+      }
+     ],
+     "why": "The final mix layers the Mixkit low impact under this (render-only, so this page cannot play it).",
+     "hit": true
+    }
+   ],
+   "key": 2.0
+  }
+ ],
+ "chief": {
+  "objective": "Show in 21 seconds that one receipt photo becomes everyone's fair share.",
+  "thesis": "The receipt is the hero object: it is carried from paper into the phone and ends as the logo's promise.",
+  "feeling": "Curiosity → relief → satisfaction",
+  "depth": "Small product film: one combined approval gate instead of five, ten specialists active, four not needed."
+ },
+ "story": [
+  {
+   "beat": "Hook",
+   "scene": "s1",
+   "viewer": "Seven people, one long bill: who pays what?"
+  },
+  {
+   "beat": "Discovery",
+   "scene": "s2",
+   "viewer": "Crumb can read the receipt from a photo."
+  },
+  {
+   "beat": "Proof",
+   "scene": "s3",
+   "viewer": "Claiming dishes is a tap per name."
+  },
+  {
+   "beat": "Payoff",
+   "scene": "s4",
+   "viewer": "Everyone's share, tax and tip included, adds up."
+  },
+  {
+   "beat": "Resolution",
+   "scene": "s5",
+   "viewer": "Money requests go out in one tap and come back paid."
+  },
+  {
+   "beat": "Call to action",
+   "scene": "s6",
+   "viewer": "The name and the promise."
+  }
+ ],
+ "directors": [
+  {
+   "id": "story",
+   "group": "Story",
+   "name": "Story director",
+   "active": true,
+   "owns": [
+    "storyline"
+   ],
+   "summary": "Hook → discovery → proof → payoff → resolution → name. One idea per shot; the receipt connects them.",
+   "why": "A bill-splitting app is understood fastest as before and after: one bill, then seven fair shares."
+  },
+  {
+   "id": "script",
+   "group": "Story",
+   "name": "Script and voice director",
+   "active": true,
+   "owns": [
+    "vo",
+    "voice"
+   ],
+   "summary": "Six short lines for Sarah, three wordings each, at most 3.4 words a second; the last line is also the tagline.",
+   "why": "Short lines leave room for the taps and sounds to be heard."
+  },
+  {
+   "id": "editorial",
+   "group": "Story",
+   "name": "Editorial director",
+   "active": true,
+   "owns": [
+    "pacing",
+    "transition"
+   ],
+   "summary": "Shots of 3.0 to 4.5 s; cuts on the beat only for the two hits (total and logo); the longest shot is the key action.",
+   "why": "Varying shot length and saving the beat for big moments keeps it from feeling like a music video."
+  },
+  {
+   "id": "art",
+   "group": "Look",
+   "name": "Art director",
+   "active": true,
+   "owns": [
+    "direction"
+   ],
+   "summary": "Three looks: diner receipt (recommended), midnight ledger, citrus pop.",
+   "why": "The paper receipt is the product's own starting point, so the recommended look grows out of it."
+  },
+  {
+   "id": "design",
+   "group": "Look",
+   "name": "Design and styleframe director",
+   "active": true,
+   "owns": [
+    "style"
+   ],
+   "summary": "One accent colour, a code-drawn phone, money in a mono face, two text levels at most.",
+   "why": "Premium means subtracting: no decorative cards or borders."
+  },
+  {
+   "id": "type",
+   "group": "Look",
+   "name": "Typography director",
+   "active": true,
+   "owns": [
+    "type"
+   ],
+   "summary": "One display face per look, one UI face, mono for amounts; headline 108 px, UI text at least 3 % of the frame after the push-in.",
+   "why": "It has to read on a phone held at arm's length."
+  },
+  {
+   "id": "refs",
+   "group": "Look",
+   "name": "Reference director",
+   "active": true,
+   "owns": [
+    "references"
+   ],
+   "summary": "brag-slim launch videos, the showreel gist's phone mode, our own 010 MIRA. Grammar only, never content.",
+   "why": "Each reference lends one principle; see the list for what we avoid."
+  },
+  {
+   "id": "camera",
+   "group": "Motion",
+   "name": "Camera director",
+   "active": true,
+   "owns": [
+    "camera"
+   ],
+   "summary": "Steady on UI, slow pushes to make text readable, a locked frame for the logo.",
+   "why": "Product films keep the camera calm; each move has a reason written on the shot."
+  },
+  {
+   "id": "motion",
+   "group": "Motion",
+   "name": "Motion director",
+   "active": true,
+   "owns": [
+    "motion"
+   ],
+   "summary": "Weighted springs with about 2.5 % overshoot on UI, none on type; the finger presses before anything reacts.",
+   "why": "Cause before effect is what makes UI motion believable."
+  },
+  {
+   "id": "transitions",
+   "group": "Motion",
+   "name": "Transition director",
+   "active": true,
+   "owns": [
+    "transition"
+   ],
+   "summary": "Receipt zooms into the viewfinder, screens slide, a hard cut resets for the payoff, the phone collapses into the icon.",
+   "why": "Every boundary carries something across; a cut is used where a reset helps."
+  },
+  {
+   "id": "music",
+   "group": "Sound",
+   "name": "Music director",
+   "active": true,
+   "owns": [
+    "music"
+   ],
+   "summary": "Bell Beats at a measured 120 BPM: quiet first bar, drop at 2.0 s on the total, the logo on the bar at 18.0 s.",
+   "why": "The track's own structure gives the two hits; we cut on phrases, not every beat."
+  },
+  {
+   "id": "sfx",
+   "group": "Sound",
+   "name": "Sound design director",
+   "active": true,
+   "owns": [
+    "sfx"
+   ],
+   "summary": "Recorded foley only: paper, touch taps, a soft whoosh per move, a riser into the logo, one landing.",
+   "why": "Real sounds for real actions; fewer sounds than beats."
+  },
+  {
+   "id": "mix",
+   "group": "Sound",
+   "name": "Mix director",
+   "active": true,
+   "owns": [
+    "mix"
+   ],
+   "summary": "Voice leads; music ducks about 8 dB under each line; the logo landing is the loudest moment; master −14 LUFS.",
+   "why": "A non-expert hears the words first and feels the landing."
+  },
+  {
+   "id": "assets",
+   "group": "Production",
+   "name": "Asset director",
+   "active": true,
+   "owns": [
+    "assets"
+   ],
+   "summary": "Everything is drawn in code or recorded CC0 audio; no screenshots exist because Crumb is made up.",
+   "why": "See the asset list for each item's source and licence."
+  },
+  {
+   "id": "engine",
+   "group": "Production",
+   "name": "Engine director",
+   "active": true,
+   "owns": [
+    "engine"
+   ],
+   "summary": "HyperFrames 0.8.134 for every shot (one film, one engine).",
+   "why": "Code-drawn UI and type on one seekable timeline; 0 ms audio lag measured."
+  },
+  {
+   "id": "pipeline",
+   "group": "Production",
+   "name": "Pipeline director",
+   "active": true,
+   "owns": [
+    "pipeline"
+   ],
+   "summary": "After approval: freeze the spec, build shot by shot with stills, one render, self-check (your call for this sample).",
+   "why": "No renders until you approve; one worker, no parallel renders."
+  },
+  {
+   "id": "qa",
+   "group": "Production",
+   "name": "QA director",
+   "active": true,
+   "owns": [
+    "qa"
+   ],
+   "summary": "Checks timing, beat hits, voice speed, text levels and product truth for your current picks.",
+   "why": "Issues are cheapest to fix here, before any render."
+  },
+  {
+   "id": "vfx",
+   "group": "Not needed",
+   "name": "VFX and compositing director",
+   "active": false,
+   "summary": "Not used.",
+   "why": "No footage to composite; house rules ban glows and particles anyway."
+  },
+  {
+   "id": "lighting",
+   "group": "Not needed",
+   "name": "Lighting director",
+   "active": false,
+   "summary": "Not used.",
+   "why": "Flat 2D UI film; no 3D scene to light."
+  },
+  {
+   "id": "broll",
+   "group": "Not needed",
+   "name": "B-roll and caption director",
+   "active": false,
+   "summary": "Not used.",
+   "why": "No talking head or footage; the voice lines are short."
+  },
+  {
+   "id": "color",
+   "group": "Not needed",
+   "name": "Colour grading director",
+   "active": false,
+   "summary": "Not used.",
+   "why": "Colours come straight from the chosen look's tokens."
+  }
+ ],
+ "assets": [
+  {
+   "name": "Crumb UI, phone, receipt, icon",
+   "kind": "new",
+   "source": "Drawn in code (HTML/CSS)",
+   "licence": "Self-made",
+   "truth": "Made-up product"
+  },
+  {
+   "name": "Sarah voice, 18 takes",
+   "kind": "generated",
+   "source": "Fish Audio s2.1-pro-free",
+   "licence": "Free grant, commercial OK",
+   "truth": ""
+  },
+  {
+   "name": "Music beds A, B, C",
+   "kind": "existing",
+   "source": "Freesound 414441, 561190, 170601",
+   "licence": "CC0",
+   "truth": ""
+  },
+  {
+   "name": "Foley: taps, clicks, paper, whooshes, riser",
+   "kind": "existing",
+   "source": "Freesound (ids on each sound)",
+   "licence": "CC0",
+   "truth": ""
+  },
+  {
+   "name": "Low impact and shimmer under the logo",
+   "kind": "existing",
+   "source": "Mixkit via video-shotcraft",
+   "licence": "Render-only (not on this page)",
+   "truth": ""
+  },
+  {
+   "name": "Fonts: Fraunces, IBM Plex, Sora, Inter, Bricolage, DM Sans",
+   "kind": "existing",
+   "source": "Google Fonts",
+   "licence": "OFL",
+   "truth": ""
+  },
+  {
+   "name": "Voice library: 9 more voices × 18 lines (English and Hindi)",
+   "kind": "generated",
+   "source": "Fish Audio s2.1-pro-free (public Fish voices, no real-person clones)",
+   "licence": "Free grant, commercial OK",
+   "truth": ""
+  },
+  {
+   "name": "Music library: 11 more beds (24 s excerpts)",
+   "kind": "existing",
+   "source": "Freesound 679738, 671900, 629170, 670039, 395037, 639933, 335361, 655615, 566952, 607304, 384202",
+   "licence": "CC0",
+   "truth": ""
+  },
+  {
+   "name": "Library looks: 8 more token sets and fonts",
+   "kind": "new",
+   "source": "Designed for this previs; Google Fonts",
+   "licence": "Self-made / OFL",
+   "truth": ""
+  }
+ ],
+ "gates": [
+  {
+   "name": "Direction",
+   "covers": "look, references, tone"
+  },
+  {
+   "name": "Story",
+   "covers": "shots, order, script"
+  },
+  {
+   "name": "Look",
+   "covers": "styleframes, type, colours"
+  },
+  {
+   "name": "Animatic",
+   "covers": "timing, motion, sound"
+  },
+  {
+   "name": "Production",
+   "covers": "engine, assets, plan"
+  }
+ ],
+ "pipeline": {
+  "engine": "HyperFrames 0.8.134",
+  "steps": [
+   "Freeze approved-video-spec.json",
+   "Vendor fonts locally",
+   "Build shot by shot, check a still of each",
+   "hyperframes check",
+   "One draft render, one worker",
+   "Self-check: contact sheet, phone sheet, loudness, sync",
+   "Final render"
+  ],
+  "formats": "1080×1920, 30 fps, H.264 + AAC",
+  "estimate": "About 2–3 h of build, one render of about 40 s"
+ },
+ "changes": [
+  {
+   "v": "v0.2",
+   "target": "Shot 1: Hook",
+   "change": "The headline is on screen from the first frame and the receipt starts half in view, instead of an empty first frame.",
+   "reason": "House rule: frame 0 already reads"
+  },
+  {
+   "v": "v0.2",
+   "target": "Shot 6: Logo",
+   "change": "Wordmark 220 px → 186 px and kept on one line.",
+   "reason": "In Midnight ledger and Citrus pop the wider faces ran off the right edge"
+  },
+  {
+   "v": "v0.3",
+   "target": "Whole film: Voice",
+   "change": "New \"Which voice?\" choice: Sarah, calm Indian English, or the whole film in Hindi; 7 more voices in the library.",
+   "reason": "the reviewer asked for other voices and languages"
+  },
+  {
+   "v": "v0.3",
+   "target": "Whole film: libraries",
+   "change": "Look, music, motion, pacing, camera, transition and sound libraries the reviewer can add from.",
+   "reason": "the reviewer asked for more than three options"
+  },
+  {
+   "v": "v0.4",
+   "target": "Shot 1: Hook",
+   "change": "Headline \"Six friends. One receipt.\" → \"Seven friends. One receipt.\"",
+   "reason": "the reviewer asked for seven friends instead of six"
+  },
+  {
+   "v": "v0.5",
+   "target": "Shots 1 and 5: Voice",
+   "change": "\"Six friends\" → \"Seven friends\", \"Six people\" → \"Seven people\", \"Five requests\" → \"Six requests\"; re-recorded in all 10 voices (English and Hindi).",
+   "reason": "the reviewer chose seven friends everywhere"
+  },
+  {
+   "v": "v0.5",
+   "target": "Shot 3: Claim",
+   "change": "A seventh person, Ravi (R), in the tray; Risotto now L + R, Branzino J + P; chip reads \"All 7\".",
+   "reason": "Seven diners need seven avatars and claims that add up"
+  },
+  {
+   "v": "v0.5",
+   "target": "Shot 4: Split",
+   "change": "Seven amounts that follow the claims (food share plus tax and tip in proportion), still totalling $186.40.",
+   "reason": "The amounts now match what each person ate"
+  },
+  {
+   "v": "v0.5",
+   "target": "Shot 5: Settle",
+   "change": "Six request cards in a 2 × 3 grid; the button reads Request $163.79.",
+   "reason": "Maya paid, so six friends get a request"
+  }
+ ],
+ "libraries": {
+  "direction": [
+   {
+    "id": "look-slate",
+    "name": "Sober slate",
+    "pitch": "Cool grey ground, white cards and one steel-blue accent. Quiet and grown-up.",
+    "why": "The most restrained option: the product and the voice do all the talking.",
+    "tradeoff": "Can feel like any fintech app.",
+    "tags": [
+     "sober",
+     "calm",
+     "minimal",
+     "simple",
+     "corporate",
+     "grey",
+     "blue"
+    ],
+    "tokens": {
+     "bg": "#E8EAED",
+     "on-bg": "#1E2329",
+     "card": "#FFFFFF",
+     "on-card": "#1E2329",
+     "muted": "#5E6672",
+     "line": "#DDE1E6",
+     "paper": "#F7F8FA",
+     "on-paper": "#1E2329",
+     "accent": "#2F5D8C",
+     "on-accent": "#FFFFFF",
+     "frame": "#1E2329",
+     "display": "'Manrope', Arial, sans-serif",
+     "ui": "'Inter', Arial, sans-serif",
+     "mono": "'IBM Plex Mono', Menlo, monospace"
+    },
+    "fonts_url": "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap",
+    "origin": "library"
+   },
+   {
+    "id": "look-ocean",
+    "name": "Ocean calm",
+    "pitch": "Pale sky ground, navy type and a clear blue accent. Calm and trustworthy.",
+    "why": "Blue reads as safe money; soft ground keeps it friendly.",
+    "tradeoff": "Blue is the most common fintech colour.",
+    "tags": [
+     "calm",
+     "trust",
+     "sober",
+     "blue",
+     "light",
+     "finance"
+    ],
+    "tokens": {
+     "bg": "#EAF2FA",
+     "on-bg": "#0D2340",
+     "card": "#FFFFFF",
+     "on-card": "#0D2340",
+     "muted": "#56708F",
+     "line": "#D9E5F2",
+     "paper": "#F7FAFD",
+     "on-paper": "#0D2340",
+     "accent": "#1F63D6",
+     "on-accent": "#FFFFFF",
+     "frame": "#0D2340",
+     "display": "'Plus Jakarta Sans', Arial, sans-serif",
+     "ui": "'Plus Jakarta Sans', Arial, sans-serif",
+     "mono": "'IBM Plex Mono', Menlo, monospace"
+    },
+    "fonts_url": "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap",
+    "origin": "library"
+   },
+   {
+    "id": "look-mono",
+    "name": "Paper mono",
+    "pitch": "Pure white, black ink, no colour at all. Editorial and exact.",
+    "why": "Lets the receipt itself be the hero; very premium when the type is right.",
+    "tradeoff": "No accent means hits need motion to read.",
+    "tags": [
+     "minimal",
+     "monochrome",
+     "editorial",
+     "sober",
+     "black and white",
+     "premium"
+    ],
+    "tokens": {
+     "bg": "#FFFFFF",
+     "on-bg": "#111111",
+     "card": "#FFFFFF",
+     "on-card": "#111111",
+     "muted": "#666666",
+     "line": "#E6E6E6",
+     "paper": "#F5F5F2",
+     "on-paper": "#111111",
+     "accent": "#111111",
+     "on-accent": "#FFFFFF",
+     "frame": "#111111",
+     "display": "'Space Grotesk', Arial, sans-serif",
+     "ui": "'IBM Plex Sans', Arial, sans-serif",
+     "mono": "'IBM Plex Mono', Menlo, monospace"
+    },
+    "fonts_url": "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap",
+    "origin": "library"
+   },
+   {
+    "id": "look-forest",
+    "name": "Forest bistro",
+    "pitch": "Deep green, cream paper and a mustard accent. A good restaurant at night.",
+    "why": "Ties the app to eating out; warm and premium.",
+    "tradeoff": "Darker ground; small UI text needs the camera push.",
+    "tags": [
+     "warm",
+     "premium",
+     "restaurant",
+     "green",
+     "dark",
+     "elegant"
+    ],
+    "tokens": {
+     "bg": "#1F3A2E",
+     "on-bg": "#F1EDE3",
+     "card": "#FBF8F1",
+     "on-card": "#1C2A22",
+     "muted": "#6E7F73",
+     "line": "#E6E1D5",
+     "paper": "#FBF7EE",
+     "on-paper": "#1C2A22",
+     "accent": "#E2A13B",
+     "on-accent": "#1F1505",
+     "frame": "#0F1E17",
+     "display": "'DM Serif Display', Georgia, serif",
+     "ui": "'DM Sans', Arial, sans-serif",
+     "mono": "'IBM Plex Mono', Menlo, monospace"
+    },
+    "fonts_url": "https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap",
+    "origin": "library"
+   },
+   {
+    "id": "look-terracotta",
+    "name": "Terracotta",
+    "pitch": "Burnt orange ground, cream cards, espresso ink. Sunny trattoria.",
+    "why": "Warmer and more human than Citrus pop, still bold in a feed.",
+    "tradeoff": "Orange grounds are loud next to food photos.",
+    "tags": [
+     "warm",
+     "bold",
+     "orange",
+     "friendly",
+     "italian"
+    ],
+    "tokens": {
+     "bg": "#B4502E",
+     "on-bg": "#FFF6EE",
+     "card": "#FFF8F1",
+     "on-card": "#2A1710",
+     "muted": "#86675A",
+     "line": "#F0E1D6",
+     "paper": "#FFF8F1",
+     "on-paper": "#2A1710",
+     "accent": "#2A1710",
+     "on-accent": "#FFF6EE",
+     "frame": "#2A1710",
+     "display": "'Fraunces', Georgia, serif",
+     "ui": "'Work Sans', Arial, sans-serif",
+     "mono": "'IBM Plex Mono', Menlo, monospace"
+    },
+    "fonts_url": "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;600&display=swap",
+    "origin": "library"
+   },
+   {
+    "id": "look-mint",
+    "name": "Mint fresh",
+    "pitch": "Mint ground, white cards, green accent. Light and easy.",
+    "why": "Feels like money that is sorted; fresh without shouting.",
+    "tradeoff": "Green can read as a bank.",
+    "tags": [
+     "fresh",
+     "friendly",
+     "light",
+     "green",
+     "calm",
+     "fintech"
+    ],
+    "tokens": {
+     "bg": "#DFF3EA",
+     "on-bg": "#0E2A20",
+     "card": "#FFFFFF",
+     "on-card": "#0E2A20",
+     "muted": "#4F6E62",
+     "line": "#D4E8DE",
+     "paper": "#F6FBF8",
+     "on-paper": "#0E2A20",
+     "accent": "#0C7A4E",
+     "on-accent": "#FFFFFF",
+     "frame": "#0E2A20",
+     "display": "'Outfit', Arial, sans-serif",
+     "ui": "'Figtree', Arial, sans-serif",
+     "mono": "'IBM Plex Mono', Menlo, monospace"
+    },
+    "fonts_url": "https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap",
+    "origin": "library"
+   },
+   {
+    "id": "look-plum",
+    "name": "Plum night",
+    "pitch": "Plum ground, near-white cards and a pink accent. Bold and a little fun.",
+    "why": "Stands out at night in a feed; playful for a friends app.",
+    "tradeoff": "Pink accent is polarising.",
+    "tags": [
+     "bold",
+     "night",
+     "playful",
+     "dark",
+     "pink",
+     "purple"
+    ],
+    "tokens": {
+     "bg": "#24142F",
+     "on-bg": "#F4EEF8",
+     "card": "#F9F6FB",
+     "on-card": "#24142F",
+     "muted": "#7D6C8A",
+     "line": "#E9E1EF",
+     "paper": "#FBF8FD",
+     "on-paper": "#24142F",
+     "accent": "#FF7AB6",
+     "on-accent": "#24142F",
+     "frame": "#12081A",
+     "display": "'Syne', Arial, sans-serif",
+     "ui": "'Manrope', Arial, sans-serif",
+     "mono": "'IBM Plex Mono', Menlo, monospace"
+    },
+    "fonts_url": "https://fonts.googleapis.com/css2?family=Syne:wght@600;700&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap",
+    "origin": "library"
+   },
+   {
+    "id": "look-butter",
+    "name": "Butter and ink",
+    "pitch": "Butter-yellow ground, black ink, chunky grotesque. Cheerful and loud.",
+    "why": "Yellow is the friendliest colour in a feed; black keeps it graphic.",
+    "tradeoff": "Very loud; less premium.",
+    "tags": [
+     "playful",
+     "warm",
+     "sunny",
+     "loud",
+     "yellow",
+     "bold"
+    ],
+    "tokens": {
+     "bg": "#FFE9A8",
+     "on-bg": "#1B1A17",
+     "card": "#FFFFFF",
+     "on-card": "#1B1A17",
+     "muted": "#6F6550",
+     "line": "#F1E6C4",
+     "paper": "#FFFBEE",
+     "on-paper": "#1B1A17",
+     "accent": "#1B1A17",
+     "on-accent": "#FFE9A8",
+     "frame": "#1B1A17",
+     "display": "'Bricolage Grotesque', Arial, sans-serif",
+     "ui": "'DM Sans', Arial, sans-serif",
+     "mono": "'IBM Plex Mono', Menlo, monospace"
+    },
+    "fonts_url": "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600&family=DM+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap",
+    "origin": "library"
+   }
+  ],
+  "music": [
+   {
+    "id": "fs679738",
+    "name": "Calming piano loop",
+    "src": "audio/music/lib/679738.mp3",
+    "bpm": 60,
+    "phase": 0,
+    "lic": "Freesound 679738 · CC0 · Seth_Makes_Sounds",
+    "why": "Solo piano at 60 BPM. The most sober option: nothing competes with the voice.",
+    "tradeoff": "Little drive; the logo landing leans on the sound effects.",
+    "tags": [
+     "calm",
+     "sober",
+     "simple",
+     "minimal",
+     "piano",
+     "soft",
+     "low energy"
+    ],
+    "level": "low",
+    "origin": "library"
+   },
+   {
+    "id": "fs671900",
+    "name": "Calm background",
+    "src": "audio/music/lib/671900.mp3",
+    "bpm": 100,
+    "phase": 0,
+    "lic": "Freesound 671900 · CC0 · Bertsz",
+    "why": "Soft pads with a light pulse. Reads as a quiet, polished product film.",
+    "tradeoff": "A weak beat, so hits land on the music's pulse less clearly.",
+    "tags": [
+     "calm",
+     "sober",
+     "corporate",
+     "soft",
+     "pads",
+     "polished",
+     "low energy"
+    ],
+    "level": "low",
+    "origin": "library"
+   },
+   {
+    "id": "fs629170",
+    "name": "Chill lo-fi e-piano",
+    "src": "audio/music/lib/629170.mp3",
+    "bpm": 80,
+    "phase": 0.69,
+    "lic": "Freesound 629170 · CC0 · holizna",
+    "why": "Warm lo-fi keys at 80 BPM. Feels like a late, relaxed dinner.",
+    "tradeoff": "Loops every 24 s; a little sleepy for a call to action.",
+    "tags": [
+     "lofi",
+     "warm",
+     "cozy",
+     "chill",
+     "keys",
+     "low energy"
+    ],
+    "level": "low",
+    "origin": "library"
+   },
+   {
+    "id": "fs670039",
+    "name": "Chill background",
+    "src": "audio/music/lib/670039.mp3",
+    "bpm": 132,
+    "phase": 0,
+    "lic": "Freesound 670039 · CC0 · Seth_Makes_Sounds",
+    "why": "Relaxed modern groove with a soft beat. Easy under a voice.",
+    "tradeoff": "Fairly anonymous; less personality than the recommended bed.",
+    "tags": [
+     "chill",
+     "relaxed",
+     "modern",
+     "soft beat",
+     "medium energy"
+    ],
+    "level": "medium",
+    "origin": "library"
+   },
+   {
+    "id": "fs395037",
+    "name": "Simple relaxing guitar",
+    "src": "audio/music/lib/395037.mp3",
+    "bpm": 99,
+    "phase": 0,
+    "lic": "Freesound 395037 · CC0 · Kodack",
+    "why": "One acoustic guitar. Human and warm, fits a restaurant table.",
+    "tradeoff": "No drums, so the beat grid is soft.",
+    "tags": [
+     "acoustic",
+     "guitar",
+     "warm",
+     "organic",
+     "simple",
+     "low energy"
+    ],
+    "level": "low",
+    "origin": "library"
+   },
+   {
+    "id": "fs639933",
+    "name": "Blue sky ukulele",
+    "src": "audio/music/lib/639933.mp3",
+    "bpm": 106.5,
+    "phase": 0,
+    "lic": "Freesound 639933 · CC0 · Sergmusic",
+    "why": "Bright ukulele and a happy lift. Friendly and casual.",
+    "tradeoff": "Can feel like a stock ad if overused.",
+    "tags": [
+     "sunny",
+     "happy",
+     "acoustic",
+     "ukulele",
+     "friendly",
+     "medium energy"
+    ],
+    "level": "medium",
+    "origin": "library"
+   },
+   {
+    "id": "fs335361",
+    "name": "Little happy tune",
+    "src": "audio/music/lib/335361.mp3",
+    "bpm": 120,
+    "phase": 0,
+    "lic": "Freesound 335361 · CC0 · cabled_mess",
+    "why": "Light, playful melody at 120 BPM: the same grid as the recommended bed.",
+    "tradeoff": "Busy melody; it may fight the voice in shot 3.",
+    "tags": [
+     "playful",
+     "bright",
+     "light",
+     "happy",
+     "medium energy"
+    ],
+    "level": "medium",
+    "origin": "library"
+   },
+   {
+    "id": "fs655615",
+    "name": "Happy hip hop beat",
+    "src": "audio/music/lib/655615.mp3",
+    "bpm": 105,
+    "phase": 0,
+    "lic": "Freesound 655615 · CC0 · Seth_Makes_Sounds",
+    "why": "Confident head-nod groove. Strong beats for the taps and the logo.",
+    "tradeoff": "Heavier drums; keep the voice well above it.",
+    "tags": [
+     "upbeat",
+     "groovy",
+     "confident",
+     "hip hop",
+     "drums",
+     "high energy"
+    ],
+    "level": "high",
+    "origin": "library"
+   },
+   {
+    "id": "fs566952",
+    "name": "Funky groove",
+    "src": "audio/music/lib/566952.mp3",
+    "bpm": 83,
+    "phase": 0.488,
+    "lic": "Freesound 566952 · CC0 · code_box",
+    "why": "Funky bass and drums. Fun and lively.",
+    "tradeoff": "Swingy feel; hits sit less tightly on the grid.",
+    "tags": [
+     "funky",
+     "energetic",
+     "bass",
+     "fun",
+     "high energy"
+    ],
+    "level": "high",
+    "origin": "library"
+   },
+   {
+    "id": "fs607304",
+    "name": "Beach dance",
+    "src": "audio/music/lib/607304.mp3",
+    "bpm": 120,
+    "phase": 0,
+    "lic": "Freesound 607304 · CC0 · szegvari",
+    "why": "Bright dance track at 120 BPM. Maximum energy.",
+    "tradeoff": "Loud and busy; the least premium option.",
+    "tags": [
+     "energetic",
+     "dance",
+     "party",
+     "edm",
+     "bright",
+     "high energy"
+    ],
+    "level": "high",
+    "origin": "library"
+   },
+   {
+    "id": "fs384202",
+    "name": "Slow cinematic",
+    "src": "audio/music/lib/384202.mp3",
+    "bpm": null,
+    "phase": 0,
+    "lic": "Freesound 384202 · CC0 · DeVern",
+    "why": "Slow, emotional swells. Turns the film into a short story.",
+    "tradeoff": "No steady beat, so nothing snaps to a grid; feels heavy for a bill-splitting app.",
+    "tags": [
+     "cinematic",
+     "emotional",
+     "slow",
+     "strings",
+     "dramatic",
+     "low energy"
+    ],
+    "level": "low",
+    "origin": "library"
+   }
+  ],
+  "motion": [
+   {
+    "id": "motion-gentle",
+    "name": "Gentle (sine)",
+    "ease": "sine",
+    "why": "Soft, even arrivals; nothing snaps. The calmest feel.",
+    "tags": [
+     "calm",
+     "sober",
+     "soft",
+     "slow"
+    ]
+   },
+   {
+    "id": "motion-smooth",
+    "name": "Smooth (power2)",
+    "ease": "power2",
+    "why": "A gentle deceleration; softer than Crisp.",
+    "tags": [
+     "calm",
+     "smooth",
+     "simple"
+    ]
+   },
+   {
+    "id": "motion-expo",
+    "name": "Fast-out (expo)",
+    "ease": "expo",
+    "why": "Moves almost instantly, then glides in. Modern app feel.",
+    "tags": [
+     "modern",
+     "fast",
+     "premium"
+    ]
+   },
+   {
+    "id": "motion-softspring",
+    "name": "Soft spring",
+    "spring": {
+     "f": 5.2,
+     "d": 6.5
+    },
+    "why": "A rounder spring with about 1 % overshoot; friendly but calm.",
+    "tags": [
+     "friendly",
+     "spring",
+     "soft"
+    ]
+   },
+   {
+    "id": "motion-pop",
+    "name": "Playful pop",
+    "spring": {
+     "f": 9.5,
+     "d": 5.2
+    },
+    "why": "Visible bounce on arrival (about 8 %). Fun, but above the 4 % house limit for UI.",
+    "tags": [
+     "playful",
+     "bouncy",
+     "fun"
+    ],
+    "tradeoff": "Breaks the house overshoot rule; use only for a playful brand."
+   },
+   {
+    "id": "motion-cinematic",
+    "name": "Slow cinematic",
+    "bezier": [
+     0.65,
+     0,
+     0.35,
+     1
+    ],
+    "why": "Slow in, slow out. Weighty and deliberate.",
+    "tags": [
+     "cinematic",
+     "slow",
+     "dramatic",
+     "sober"
+    ]
+   },
+   {
+    "id": "motion-linear",
+    "name": "Mechanical (linear)",
+    "ease": "lin",
+    "why": "Constant speed, robotic. Useful only as a contrast.",
+    "tags": [
+     "mechanical",
+     "robotic"
+    ],
+    "tradeoff": "Feels cheap for UI."
+   }
+  ],
+  "pacing": [
+   {
+    "id": "pace-080",
+    "name": "Very tight · 16.8 s",
+    "scale": 0.8,
+    "why": "Every shot 20 % shorter. Punchy for a feed; the voice must be quick.",
+    "tags": [
+     "fast",
+     "punchy"
+    ]
+   },
+   {
+    "id": "pace-095",
+    "name": "Brisk · 20.0 s",
+    "scale": 0.95,
+    "why": "A touch quicker than standard.",
+    "tags": [
+     "brisk"
+    ]
+   },
+   {
+    "id": "pace-105",
+    "name": "Easy · 22.1 s",
+    "scale": 1.05,
+    "why": "A little more air between beats.",
+    "tags": [
+     "calm"
+    ]
+   },
+   {
+    "id": "pace-125",
+    "name": "Slow · 26.3 s",
+    "scale": 1.25,
+    "why": "Very relaxed; hits drift off the beat grid.",
+    "tags": [
+     "slow",
+     "calm",
+     "sober"
+    ]
+   }
+  ],
+  "camera": [
+   {
+    "id": "cam-locked",
+    "name": "Locked",
+    "cam": {},
+    "why": "No camera move: the content moves, the frame stays still.",
+    "tags": [
+     "still",
+     "sober",
+     "calm"
+    ]
+   },
+   {
+    "id": "cam-push",
+    "name": "Slow push",
+    "cam": {
+     "s": [
+      1,
+      1.06
+     ]
+    },
+    "why": "A gentle push draws the eye in.",
+    "tags": [
+     "push",
+     "calm"
+    ]
+   },
+   {
+    "id": "cam-push-hard",
+    "name": "Strong push",
+    "cam": {
+     "s": [
+      1,
+      1.16
+     ]
+    },
+    "why": "A clear push in; good for making small text readable.",
+    "tags": [
+     "push",
+     "bold"
+    ]
+   },
+   {
+    "id": "cam-pull",
+    "name": "Pull back",
+    "cam": {
+     "s": [
+      1.1,
+      1
+     ]
+    },
+    "why": "Starts close, opens out to reveal the whole frame.",
+    "tags": [
+     "reveal",
+     "pull"
+    ]
+   },
+   {
+    "id": "cam-drift-left",
+    "name": "Drift left",
+    "cam": {
+     "s": [
+      1.05,
+      1.05
+     ],
+     "x": [
+      20,
+      -30
+     ]
+    },
+    "why": "A slow sideways drift; adds life to a hold.",
+    "tags": [
+     "drift",
+     "lively"
+    ]
+   },
+   {
+    "id": "cam-drift-up",
+    "name": "Drift up",
+    "cam": {
+     "s": [
+      1.05,
+      1.05
+     ],
+     "y": [
+      24,
+      -30
+     ]
+    },
+    "why": "A slow rise; reads top to bottom content.",
+    "tags": [
+     "drift",
+     "reveal"
+    ]
+   }
+  ],
+  "transition": [
+   {
+    "id": "tr-cut",
+    "name": "Hard cut",
+    "type": "cut",
+    "why": "Instant change. Clean, but nothing carries across.",
+    "tags": [
+     "simple",
+     "fast"
+    ]
+   },
+   {
+    "id": "tr-push",
+    "name": "Push up",
+    "type": "push",
+    "d": 0.5,
+    "why": "The new shot pushes the old one up and away.",
+    "tags": [
+     "smooth",
+     "carry"
+    ]
+   },
+   {
+    "id": "tr-slide",
+    "name": "Slide left",
+    "type": "slide",
+    "d": 0.5,
+    "why": "Like moving to the next app screen.",
+    "tags": [
+     "app",
+     "smooth"
+    ]
+   },
+   {
+    "id": "tr-slide-fast",
+    "name": "Quick slide",
+    "type": "slide",
+    "d": 0.3,
+    "why": "A faster slide that feels snappy.",
+    "tags": [
+     "fast",
+     "app"
+    ]
+   },
+   {
+    "id": "tr-zoom",
+    "name": "Zoom through",
+    "type": "zoom",
+    "d": 0.6,
+    "why": "Push through the frame into the next shot.",
+    "tags": [
+     "carry",
+     "bold"
+    ]
+   },
+   {
+    "id": "tr-iris",
+    "name": "Iris from centre",
+    "type": "iris",
+    "d": 0.6,
+    "at": [
+     50,
+     50
+    ],
+    "why": "The next shot opens out of the middle.",
+    "tags": [
+     "reveal",
+     "playful"
+    ]
+   }
+  ],
+  "sfx": [
+   {
+    "id": "sfx-fs651514",
+    "name": "Paper handling (FS 651514)",
+    "src": "audio/sfx/fs651514.mp3",
+    "gain": 0.8,
+    "why": "Recorded foley (Paper handling (FS 651514)).",
+    "tags": [
+     "foley",
+     "paper",
+     "handling"
+    ],
+    "origin": "library"
+   },
+   {
+    "id": "sfx-fs614153",
+    "name": "Gentle swish (FS 614153)",
+    "src": "audio/sfx/fs614153.mp3",
+    "gain": 0.6,
+    "why": "Recorded foley (Gentle swish (FS 614153)).",
+    "tags": [
+     "foley",
+     "gentle",
+     "swish"
+    ],
+    "origin": "library"
+   },
+   {
+    "id": "sfx-fs554208",
+    "name": "Card riffle (FS 554208)",
+    "src": "audio/sfx/fs554208.mp3",
+    "gain": 0.6,
+    "why": "Recorded foley (Card riffle (FS 554208)).",
+    "tags": [
+     "foley",
+     "card",
+     "riffle"
+    ],
+    "origin": "library"
+   },
+   {
+    "id": "sfx-fs388958",
+    "name": "Soft snap (FS 388958)",
+    "src": "audio/sfx/fs388958.mp3",
+    "gain": 1.0,
+    "why": "Recorded foley (Soft snap (FS 388958)).",
+    "tags": [
+     "foley",
+     "soft",
+     "snap"
+    ],
+    "origin": "library"
+   },
+   {
+    "id": "sfx-fs378085",
+    "name": "Mechanical key (FS 378085)",
+    "src": "audio/sfx/fs378085.mp3",
+    "gain": 0.8,
+    "why": "Recorded foley (Mechanical key (FS 378085)).",
+    "tags": [
+     "foley",
+     "mechanical",
+     "key"
+    ],
+    "origin": "library"
+   },
+   {
+    "id": "sfx-fs406586",
+    "name": "Heavy paper drop (FS 406586)",
+    "src": "audio/sfx/fs406586.mp3",
+    "gain": 0.9,
+    "why": "Recorded foley (Heavy paper drop (FS 406586)).",
+    "tags": [
+     "foley",
+     "heavy",
+     "paper",
+     "drop"
+    ],
+    "origin": "library"
+   },
+   {
+    "id": "sfx-fs349698",
+    "name": "Light slow swoosh (FS 349698)",
+    "src": "audio/sfx/fs349698.mp3",
+    "gain": 0.55,
+    "why": "Recorded foley (Light slow swoosh (FS 349698)).",
+    "tags": [
+     "foley",
+     "light",
+     "slow",
+     "swoosh"
+    ],
+    "origin": "library"
+   },
+   {
+    "id": "sfx-fs71852",
+    "name": "Digital whoosh soft (FS 71852)",
+    "src": "audio/sfx/fs71852.mp3",
+    "gain": 0.6,
+    "why": "Recorded foley (Digital whoosh soft (FS 71852)).",
+    "tags": [
+     "foley",
+     "digital",
+     "whoosh",
+     "soft"
+    ],
+    "origin": "library"
+   },
+   {
+    "id": "sfx-fs701104",
+    "name": "Whoosh light (FS 701104)",
+    "src": "audio/sfx/fs701104.mp3",
+    "gain": 0.5,
+    "why": "Recorded foley (Whoosh light (FS 701104)).",
+    "tags": [
+     "foley",
+     "whoosh",
+     "light"
+    ],
+    "origin": "library"
+   },
+   {
+    "id": "sfx-fs256455",
+    "name": "Mouse click (FS 256455)",
+    "src": "audio/sfx/fs256455.mp3",
+    "gain": 1.0,
+    "why": "Recorded foley (Mouse click (FS 256455)).",
+    "tags": [
+     "foley",
+     "mouse",
+     "click"
+    ],
+    "origin": "library"
+   },
+   {
+    "id": "sfx-fs570754",
+    "name": "Key press (FS 570754)",
+    "src": "audio/sfx/fs570754.mp3",
+    "gain": 0.9,
+    "why": "Recorded foley (Key press (FS 570754)).",
+    "tags": [
+     "foley",
+     "key",
+     "press"
+    ],
+    "origin": "library"
+   },
+   {
+    "id": "sfx-fs332713",
+    "name": "Touch tap (FS 332713)",
+    "src": "audio/sfx/fs332713.mp3",
+    "gain": 1.0,
+    "why": "Recorded foley (Touch tap (FS 332713)).",
+    "tags": [
+     "foley",
+     "touch",
+     "tap"
+    ],
+    "origin": "library"
+   },
+   {
+    "id": "sfx-fs447909",
+    "name": "Typing run (FS 447909)",
+    "src": "audio/sfx/fs447909.mp3",
+    "gain": 0.3,
+    "why": "Recorded foley (Typing run (FS 447909)).",
+    "tags": [
+     "foley",
+     "typing",
+     "run"
+    ],
+    "origin": "library"
+   },
+   {
+    "id": "sfx-fs534103",
+    "name": "Short press (FS 534103)",
+    "src": "audio/sfx/fs534103.mp3",
+    "gain": 0.9,
+    "why": "Recorded foley (Short press (FS 534103)).",
+    "tags": [
+     "foley",
+     "short",
+     "press"
+    ],
+    "origin": "library"
+   },
+   {
+    "id": "sfx-fs421583",
+    "name": "Soft key (FS 421583)",
+    "src": "audio/sfx/fs421583.mp3",
+    "gain": 0.4,
+    "why": "Recorded foley (Soft key (FS 421583)).",
+    "tags": [
+     "foley",
+     "soft",
+     "key"
+    ],
+    "origin": "library"
+   },
+   {
+    "id": "sfx-fs685256",
+    "name": "Riser, short (FS 685256)",
+    "src": "audio/sfx/fs685256.mp3",
+    "gain": 0.55,
+    "why": "Recorded foley (Riser, short (FS 685256)).",
+    "tags": [
+     "foley",
+     "riser,",
+     "short"
+    ],
+    "origin": "library"
+   },
+   {
+    "id": "sfx-fs767613",
+    "name": "Metal ring drop (FS 767613)",
+    "src": "audio/sfx/fs767613.mp3",
+    "gain": 0.9,
+    "why": "Recorded foley (Metal ring drop (FS 767613)).",
+    "tags": [
+     "foley",
+     "metal",
+     "ring",
+     "drop"
+    ],
+    "origin": "library"
+   }
+  ],
+  "voice": [
+   {
+    "id": "voice-sarah",
+    "name": "Sarah",
+    "lang": "en",
+    "accent": "American English",
+    "gender": "female",
+    "intro": "Fish Audio official voice. Young, soft and sincere, close to the mic. Our default narrator.",
+    "tags": [
+     "soft",
+     "warm",
+     "conversational",
+     "default",
+     "female",
+     "en"
+    ],
+    "voice": "933563129e564b19a115bedd57b7406a",
+    "dir": "",
+    "durs": {
+     "s1-A": 2.27,
+     "s1-B": 1.84,
+     "s1-C": 2.08,
+     "s2-A": 1.4,
+     "s2-B": 2.28,
+     "s2-C": 1.38,
+     "s3-A": 0.94,
+     "s3-B": 1.81,
+     "s3-C": 1.76,
+     "s4-A": 2.26,
+     "s4-B": 2.24,
+     "s4-C": 2.1,
+     "s5-A": 1.15,
+     "s5-B": 1.94,
+     "s5-C": 1.43,
+     "s6-A": 2.7,
+     "s6-B": 2.57,
+     "s6-C": 2.67
+    },
+    "sample": "audio/vo/s1-A.mp3",
+    "why": "Fish Audio official voice. Young, soft and sincere, close to the mic. Our default narrator.",
+    "lic": "Fish Audio s2.1-pro-free output (commercial use allowed)",
+    "origin": "library"
+   },
+   {
+    "id": "voice-adrian",
+    "name": "Adrian",
+    "lang": "en",
+    "accent": "English",
+    "gender": "male",
+    "intro": "Fish Audio official voice. Deep, slow and measured; a serious storyteller.",
+    "tags": [
+     "deep",
+     "calm",
+     "serious",
+     "trust",
+     "male",
+     "en"
+    ],
+    "voice": "bf322df2096a46f18c579d0baa36f41d",
+    "dir": "",
+    "durs": {
+     "s1-A": 2.27,
+     "s1-B": 1.84,
+     "s1-C": 2.08,
+     "s2-A": 1.4,
+     "s2-B": 2.28,
+     "s2-C": 1.38,
+     "s3-A": 0.94,
+     "s3-B": 1.81,
+     "s3-C": 1.76,
+     "s4-A": 2.26,
+     "s4-B": 2.24,
+     "s4-C": 2.1,
+     "s5-A": 1.15,
+     "s5-B": 1.94,
+     "s5-C": 1.43,
+     "s6-A": 2.7,
+     "s6-B": 2.57,
+     "s6-C": 2.67
+    },
+    "why": "Fish Audio official voice. Deep, slow and measured; a serious storyteller.",
+    "lic": "Fish Audio s2.1-pro-free output (commercial use allowed)",
+    "origin": "library",
+    "needs": "voice takes: run voices/make_voices.sh with your own Fish key"
+   },
+   {
+    "id": "voice-slax",
+    "name": "Slax",
+    "lang": "en",
+    "accent": "English",
+    "gender": "male",
+    "intro": "Calm, clear and professional; a neutral explainer voice.",
+    "tags": [
+     "calm",
+     "clear",
+     "professional",
+     "sober",
+     "male",
+     "en"
+    ],
+    "voice": "c5f56a6cc2ec4fa8920cb4c5889a3fb7",
+    "dir": "",
+    "durs": {
+     "s1-A": 2.27,
+     "s1-B": 1.84,
+     "s1-C": 2.08,
+     "s2-A": 1.4,
+     "s2-B": 2.28,
+     "s2-C": 1.38,
+     "s3-A": 0.94,
+     "s3-B": 1.81,
+     "s3-C": 1.76,
+     "s4-A": 2.26,
+     "s4-B": 2.24,
+     "s4-C": 2.1,
+     "s5-A": 1.15,
+     "s5-B": 1.94,
+     "s5-C": 1.43,
+     "s6-A": 2.7,
+     "s6-B": 2.57,
+     "s6-C": 2.67
+    },
+    "why": "Calm, clear and professional; a neutral explainer voice.",
+    "lic": "Fish Audio s2.1-pro-free output (commercial use allowed)",
+    "origin": "library",
+    "needs": "voice takes: run voices/make_voices.sh with your own Fish key"
+   },
+   {
+    "id": "voice-alok",
+    "name": "Alok",
+    "lang": "en",
+    "accent": "British English",
+    "gender": "male",
+    "intro": "Calm podcast host with a British accent; measured and polished.",
+    "tags": [
+     "british",
+     "calm",
+     "polished",
+     "male",
+     "en"
+    ],
+    "voice": "b7204d4e40ef4a548c7c8547b7f73492",
+    "dir": "",
+    "durs": {
+     "s1-A": 2.27,
+     "s1-B": 1.84,
+     "s1-C": 2.08,
+     "s2-A": 1.4,
+     "s2-B": 2.28,
+     "s2-C": 1.38,
+     "s3-A": 0.94,
+     "s3-B": 1.81,
+     "s3-C": 1.76,
+     "s4-A": 2.26,
+     "s4-B": 2.24,
+     "s4-C": 2.1,
+     "s5-A": 1.15,
+     "s5-B": 1.94,
+     "s5-C": 1.43,
+     "s6-A": 2.7,
+     "s6-B": 2.57,
+     "s6-C": 2.67
+    },
+    "why": "Calm podcast host with a British accent; measured and polished.",
+    "lic": "Fish Audio s2.1-pro-free output (commercial use allowed)",
+    "origin": "library",
+    "needs": "voice takes: run voices/make_voices.sh with your own Fish key"
+   },
+   {
+    "id": "voice-in-f",
+    "name": "Calm Indian English",
+    "lang": "en",
+    "accent": "Indian English",
+    "gender": "female",
+    "intro": "Calm, clear and professional with an Indian accent.",
+    "tags": [
+     "indian",
+     "calm",
+     "clear",
+     "professional",
+     "female",
+     "en"
+    ],
+    "voice": "0429f2b252464b88b2ab2128f084290c",
+    "dir": "",
+    "durs": {
+     "s1-A": 2.27,
+     "s1-B": 1.84,
+     "s1-C": 2.08,
+     "s2-A": 1.4,
+     "s2-B": 2.28,
+     "s2-C": 1.38,
+     "s3-A": 0.94,
+     "s3-B": 1.81,
+     "s3-C": 1.76,
+     "s4-A": 2.26,
+     "s4-B": 2.24,
+     "s4-C": 2.1,
+     "s5-A": 1.15,
+     "s5-B": 1.94,
+     "s5-C": 1.43,
+     "s6-A": 2.7,
+     "s6-B": 2.57,
+     "s6-C": 2.67
+    },
+    "why": "Calm, clear and professional with an Indian accent.",
+    "lic": "Fish Audio s2.1-pro-free output (commercial use allowed)",
+    "origin": "library",
+    "needs": "voice takes: run voices/make_voices.sh with your own Fish key"
+   },
+   {
+    "id": "voice-in-m",
+    "name": "Warm Indian English",
+    "lang": "en",
+    "accent": "Indian English",
+    "gender": "male",
+    "intro": "Young, warm and slow with an Indian accent; gentle and friendly.",
+    "tags": [
+     "indian",
+     "warm",
+     "friendly",
+     "slow",
+     "male",
+     "en"
+    ],
+    "voice": "ce9c96291460478ea6851049cb847d73",
+    "dir": "",
+    "durs": {
+     "s1-A": 2.27,
+     "s1-B": 1.84,
+     "s1-C": 2.08,
+     "s2-A": 1.4,
+     "s2-B": 2.28,
+     "s2-C": 1.38,
+     "s3-A": 0.94,
+     "s3-B": 1.81,
+     "s3-C": 1.76,
+     "s4-A": 2.26,
+     "s4-B": 2.24,
+     "s4-C": 2.1,
+     "s5-A": 1.15,
+     "s5-B": 1.94,
+     "s5-C": 1.43,
+     "s6-A": 2.7,
+     "s6-B": 2.57,
+     "s6-C": 2.67
+    },
+    "why": "Young, warm and slow with an Indian accent; gentle and friendly.",
+    "lic": "Fish Audio s2.1-pro-free output (commercial use allowed)",
+    "origin": "library",
+    "needs": "voice takes: run voices/make_voices.sh with your own Fish key"
+   },
+   {
+    "id": "voice-hi-f1",
+    "name": "Hindi, bright",
+    "lang": "hi",
+    "accent": "Hindi",
+    "gender": "female",
+    "intro": "Young, bright and confident Hindi voice; energetic and clear.",
+    "tags": [
+     "hindi",
+     "bright",
+     "energetic",
+     "clear",
+     "female",
+     "hi"
+    ],
+    "voice": "4d7609058bd34213b1378b29efbde1f1",
+    "dir": "",
+    "durs": {
+     "s1-A": 2.27,
+     "s1-B": 1.84,
+     "s1-C": 2.08,
+     "s2-A": 1.4,
+     "s2-B": 2.28,
+     "s2-C": 1.38,
+     "s3-A": 0.94,
+     "s3-B": 1.81,
+     "s3-C": 1.76,
+     "s4-A": 2.26,
+     "s4-B": 2.24,
+     "s4-C": 2.1,
+     "s5-A": 1.15,
+     "s5-B": 1.94,
+     "s5-C": 1.43,
+     "s6-A": 2.7,
+     "s6-B": 2.57,
+     "s6-C": 2.67
+    },
+    "why": "Young, bright and confident Hindi voice; energetic and clear.",
+    "lic": "Fish Audio s2.1-pro-free output (commercial use allowed)",
+    "origin": "library",
+    "texts": {
+     "s1-A": "सात दोस्त। एक बिल।",
+     "s1-B": "खाना हो गया। अब हिसाब।",
+     "s1-C": "एक बिल। सात लोग।",
+     "s2-A": "क्रम्ब हर लाइन पढ़ लेता है।",
+     "s2-B": "फ़ोटो लो। बाकी क्रम्ब पढ़ लेगा।",
+     "s2-C": "बस बिल की तरफ़ कैमरा करो।",
+     "s3-A": "किसने क्या खाया, बस टैप करो।",
+     "s3-B": "नाम पर टैप करो, फिर डिश पर।",
+     "s3-C": "सब अपनी-अपनी प्लेट चुन लेते हैं।",
+     "s4-A": "टैक्स और टिप, सही-सही बँटे।",
+     "s4-B": "टैक्स और टिप, जिसका जितना, उतना।",
+     "s4-C": "साझी प्लेट, बराबर हिस्सा।",
+     "s5-A": "हर कोई अपना हिस्सा देता है।",
+     "s5-B": "छह रिक्वेस्ट, एक टैप में।",
+     "s5-C": "वेटर लौटे, उससे पहले काम ख़त्म।",
+     "s6-A": "क्रम्ब। कॉफ़ी ठंडी होने से पहले हिसाब बराबर।",
+     "s6-B": "क्रम्ब। हर बिल, बराबर।",
+     "s6-C": "क्रम्ब। सही, तेज़, पूरा।"
+    },
+    "needs": "voice takes: run voices/make_voices.sh with your own Fish key"
+   },
+   {
+    "id": "voice-hi-f2",
+    "name": "Hindi, friendly",
+    "lang": "hi",
+    "accent": "Hindi",
+    "gender": "female",
+    "intro": "Young, friendly and cheerful Hindi voice; expressive storyteller.",
+    "tags": [
+     "hindi",
+     "friendly",
+     "cheerful",
+     "female",
+     "hi"
+    ],
+    "voice": "94fc4065e6e04b9baf1aea2107e91d66",
+    "dir": "",
+    "durs": {
+     "s1-A": 2.27,
+     "s1-B": 1.84,
+     "s1-C": 2.08,
+     "s2-A": 1.4,
+     "s2-B": 2.28,
+     "s2-C": 1.38,
+     "s3-A": 0.94,
+     "s3-B": 1.81,
+     "s3-C": 1.76,
+     "s4-A": 2.26,
+     "s4-B": 2.24,
+     "s4-C": 2.1,
+     "s5-A": 1.15,
+     "s5-B": 1.94,
+     "s5-C": 1.43,
+     "s6-A": 2.7,
+     "s6-B": 2.57,
+     "s6-C": 2.67
+    },
+    "why": "Young, friendly and cheerful Hindi voice; expressive storyteller.",
+    "lic": "Fish Audio s2.1-pro-free output (commercial use allowed)",
+    "origin": "library",
+    "texts": {
+     "s1-A": "सात दोस्त। एक बिल।",
+     "s1-B": "खाना हो गया। अब हिसाब।",
+     "s1-C": "एक बिल। सात लोग।",
+     "s2-A": "क्रम्ब हर लाइन पढ़ लेता है।",
+     "s2-B": "फ़ोटो लो। बाकी क्रम्ब पढ़ लेगा।",
+     "s2-C": "बस बिल की तरफ़ कैमरा करो।",
+     "s3-A": "किसने क्या खाया, बस टैप करो।",
+     "s3-B": "नाम पर टैप करो, फिर डिश पर।",
+     "s3-C": "सब अपनी-अपनी प्लेट चुन लेते हैं।",
+     "s4-A": "टैक्स और टिप, सही-सही बँटे।",
+     "s4-B": "टैक्स और टिप, जिसका जितना, उतना।",
+     "s4-C": "साझी प्लेट, बराबर हिस्सा।",
+     "s5-A": "हर कोई अपना हिस्सा देता है।",
+     "s5-B": "छह रिक्वेस्ट, एक टैप में।",
+     "s5-C": "वेटर लौटे, उससे पहले काम ख़त्म।",
+     "s6-A": "क्रम्ब। कॉफ़ी ठंडी होने से पहले हिसाब बराबर।",
+     "s6-B": "क्रम्ब। हर बिल, बराबर।",
+     "s6-C": "क्रम्ब। सही, तेज़, पूरा।"
+    },
+    "needs": "voice takes: run voices/make_voices.sh with your own Fish key"
+   },
+   {
+    "id": "voice-hi-m1",
+    "name": "Hindi, narrator",
+    "lang": "hi",
+    "accent": "Hindi",
+    "gender": "male",
+    "intro": "Young, clear and professional Hindi narrator.",
+    "tags": [
+     "hindi",
+     "clear",
+     "professional",
+     "male",
+     "hi"
+    ],
+    "voice": "0de8162a9e384545a0106046b57488a7",
+    "dir": "",
+    "durs": {
+     "s1-A": 2.27,
+     "s1-B": 1.84,
+     "s1-C": 2.08,
+     "s2-A": 1.4,
+     "s2-B": 2.28,
+     "s2-C": 1.38,
+     "s3-A": 0.94,
+     "s3-B": 1.81,
+     "s3-C": 1.76,
+     "s4-A": 2.26,
+     "s4-B": 2.24,
+     "s4-C": 2.1,
+     "s5-A": 1.15,
+     "s5-B": 1.94,
+     "s5-C": 1.43,
+     "s6-A": 2.7,
+     "s6-B": 2.57,
+     "s6-C": 2.67
+    },
+    "why": "Young, clear and professional Hindi narrator.",
+    "lic": "Fish Audio s2.1-pro-free output (commercial use allowed)",
+    "origin": "library",
+    "texts": {
+     "s1-A": "सात दोस्त। एक बिल।",
+     "s1-B": "खाना हो गया। अब हिसाब।",
+     "s1-C": "एक बिल। सात लोग।",
+     "s2-A": "क्रम्ब हर लाइन पढ़ लेता है।",
+     "s2-B": "फ़ोटो लो। बाकी क्रम्ब पढ़ लेगा।",
+     "s2-C": "बस बिल की तरफ़ कैमरा करो।",
+     "s3-A": "किसने क्या खाया, बस टैप करो।",
+     "s3-B": "नाम पर टैप करो, फिर डिश पर।",
+     "s3-C": "सब अपनी-अपनी प्लेट चुन लेते हैं।",
+     "s4-A": "टैक्स और टिप, सही-सही बँटे।",
+     "s4-B": "टैक्स और टिप, जिसका जितना, उतना।",
+     "s4-C": "साझी प्लेट, बराबर हिस्सा।",
+     "s5-A": "हर कोई अपना हिस्सा देता है।",
+     "s5-B": "छह रिक्वेस्ट, एक टैप में।",
+     "s5-C": "वेटर लौटे, उससे पहले काम ख़त्म।",
+     "s6-A": "क्रम्ब। कॉफ़ी ठंडी होने से पहले हिसाब बराबर।",
+     "s6-B": "क्रम्ब। हर बिल, बराबर।",
+     "s6-C": "क्रम्ब। सही, तेज़, पूरा।"
+    },
+    "needs": "voice takes: run voices/make_voices.sh with your own Fish key"
+   },
+   {
+    "id": "voice-hi-m2",
+    "name": "Hindi, warm",
+    "lang": "hi",
+    "accent": "Hindi",
+    "gender": "male",
+    "intro": "Warm, friendly Hindi voice with an easy conversational tone.",
+    "tags": [
+     "hindi",
+     "warm",
+     "friendly",
+     "conversational",
+     "male",
+     "hi"
+    ],
+    "voice": "6366ea69a97d41ada9eb855a64e56fba",
+    "dir": "",
+    "durs": {
+     "s1-A": 2.27,
+     "s1-B": 1.84,
+     "s1-C": 2.08,
+     "s2-A": 1.4,
+     "s2-B": 2.28,
+     "s2-C": 1.38,
+     "s3-A": 0.94,
+     "s3-B": 1.81,
+     "s3-C": 1.76,
+     "s4-A": 2.26,
+     "s4-B": 2.24,
+     "s4-C": 2.1,
+     "s5-A": 1.15,
+     "s5-B": 1.94,
+     "s5-C": 1.43,
+     "s6-A": 2.7,
+     "s6-B": 2.57,
+     "s6-C": 2.67
+    },
+    "why": "Warm, friendly Hindi voice with an easy conversational tone.",
+    "lic": "Fish Audio s2.1-pro-free output (commercial use allowed)",
+    "origin": "library",
+    "texts": {
+     "s1-A": "सात दोस्त। एक बिल।",
+     "s1-B": "खाना हो गया। अब हिसाब।",
+     "s1-C": "एक बिल। सात लोग।",
+     "s2-A": "क्रम्ब हर लाइन पढ़ लेता है।",
+     "s2-B": "फ़ोटो लो। बाकी क्रम्ब पढ़ लेगा।",
+     "s2-C": "बस बिल की तरफ़ कैमरा करो।",
+     "s3-A": "किसने क्या खाया, बस टैप करो।",
+     "s3-B": "नाम पर टैप करो, फिर डिश पर।",
+     "s3-C": "सब अपनी-अपनी प्लेट चुन लेते हैं।",
+     "s4-A": "टैक्स और टिप, सही-सही बँटे।",
+     "s4-B": "टैक्स और टिप, जिसका जितना, उतना।",
+     "s4-C": "साझी प्लेट, बराबर हिस्सा।",
+     "s5-A": "हर कोई अपना हिस्सा देता है।",
+     "s5-B": "छह रिक्वेस्ट, एक टैप में।",
+     "s5-C": "वेटर लौटे, उससे पहले काम ख़त्म।",
+     "s6-A": "क्रम्ब। कॉफ़ी ठंडी होने से पहले हिसाब बराबर।",
+     "s6-B": "क्रम्ब। हर बिल, बराबर।",
+     "s6-C": "क्रम्ब। सही, तेज़, पूरा।"
+    },
+    "needs": "voice takes: run voices/make_voices.sh with your own Fish key"
+   }
+  ]
+ },
+ "fonts_url_extra": [
+  "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap",
+  "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap",
+  "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap",
+  "https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap",
+  "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;600&display=swap",
+  "https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap",
+  "https://fonts.googleapis.com/css2?family=Syne:wght@600;700&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap",
+  "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600&family=DM+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap"
+ ]
+}

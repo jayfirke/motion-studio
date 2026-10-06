@@ -1,0 +1,9 @@
+---
+description: HyperFrames composition rules for HTML video projects
+globs: projects/**/*.html, engines/hyperframes-starter/**/*.html
+alwaysApply: false
+---
+- The root element carries `data-composition-id`, `data-start`, `data-duration`, `data-width` and `data-height`. Timed children use `class="clip"` with `data-start`, `data-duration` and `data-track-index`.
+- Use one paused GSAP timeline per composition, registered as `window.__timelines["<id>"] = tl`. Entrances use `fromTo`. No `repeat`/`yoyo`, no CSS transitions or `@keyframes`, no `Math.random`/`Date.now`.
+- Load fonts by local `@font-face` from the project's fonts folder. Inter has no ₹ or ✓, so draw them as SVG.
+- Run `npx hyperframes@0.8.134 check` before rendering, and render with `--workers 1`.
