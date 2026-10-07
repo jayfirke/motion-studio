@@ -1,0 +1,18 @@
+{
+ "id": "SgmuplXU2iY",
+ "url": "https://www.youtube.com/watch?v=SgmuplXU2iY",
+ "duration_s": 33.09,
+ "cuts": 0,
+ "shots_per_min": 1.8,
+ "shot_s": {
+  "median": 33.09,
+  "min": 33.09,
+  "max": 33.09
+ },
+ "cut_times": [],
+ "lufs": -17.7,
+ "tempo_bpm": 117.5,
+ "sound_events_per_min": 70.7,
+ "transcript_words": 0,
+ "words_per_min": 0.0
+}

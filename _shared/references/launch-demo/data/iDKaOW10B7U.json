@@ -1,0 +1,35 @@
+{
+ "id": "iDKaOW10B7U",
+ "url": "https://www.youtube.com/watch?v=iDKaOW10B7U",
+ "duration_s": 65.55,
+ "cuts": 16,
+ "shots_per_min": 11.0,
+ "shot_s": {
+  "median": 2.05,
+  "min": 0.2,
+  "max": 32.67
+ },
+ "cut_times": [
+  2.43,
+  2.47,
+  2.5,
+  3.27,
+  3.3,
+  3.33,
+  5.0,
+  37.67,
+  37.7,
+  44.0,
+  52.17,
+  52.63,
+  53.03,
+  57.23,
+  57.43,
+  58.33
+ ],
+ "lufs": -18.1,
+ "tempo_bpm": 112.3,
+ "sound_events_per_min": 43.9,
+ "transcript_words": 148,
+ "words_per_min": 135.5
+}

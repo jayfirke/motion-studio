@@ -1,0 +1,24 @@
+{
+ "id": "Juw11REGLaU",
+ "url": "https://www.youtube.com/watch?v=Juw11REGLaU",
+ "duration_s": 51.08,
+ "cuts": 5,
+ "shots_per_min": 5.9,
+ "shot_s": {
+  "median": 7.97,
+  "min": 0.8,
+  "max": 20.63
+ },
+ "cut_times": [
+  7.97,
+  8.77,
+  29.4,
+  44.8,
+  44.83
+ ],
+ "lufs": -11.4,
+ "tempo_bpm": 184.6,
+ "sound_events_per_min": 61.1,
+ "transcript_words": 0,
+ "words_per_min": 0.0
+}

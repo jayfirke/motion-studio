@@ -1,0 +1,22 @@
+{
+ "id": "BfCRKR1rGCY",
+ "url": "https://www.youtube.com/watch?v=BfCRKR1rGCY",
+ "duration_s": 68.08,
+ "cuts": 3,
+ "shots_per_min": 2.6,
+ "shot_s": {
+  "median": 23.41,
+  "min": 19.47,
+  "max": 25.17
+ },
+ "cut_times": [
+  19.47,
+  19.5,
+  44.67
+ ],
+ "lufs": -15.0,
+ "tempo_bpm": 123.0,
+ "sound_events_per_min": 94.3,
+ "transcript_words": 143,
+ "words_per_min": 126.0
+}

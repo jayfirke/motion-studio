@@ -1,0 +1,24 @@
+{
+ "id": "nWay8rdGmAg",
+ "url": "https://www.youtube.com/watch?v=nWay8rdGmAg",
+ "duration_s": 87.26,
+ "cuts": 5,
+ "shots_per_min": 4.1,
+ "shot_s": {
+  "median": 9.8,
+  "min": 0.87,
+  "max": 37.03
+ },
+ "cut_times": [
+  11.87,
+  37.5,
+  38.37,
+  46.1,
+  50.23
+ ],
+ "lufs": -15.0,
+ "tempo_bpm": 99.4,
+ "sound_events_per_min": 135.5,
+ "transcript_words": 177,
+ "words_per_min": 121.7
+}

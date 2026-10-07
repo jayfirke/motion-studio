@@ -1,0 +1,36 @@
+{
+ "id": "rvp5RlrBEZY",
+ "url": "https://www.youtube.com/watch?v=rvp5RlrBEZY",
+ "duration_s": 71.75,
+ "cuts": 17,
+ "shots_per_min": 13.4,
+ "shot_s": {
+  "median": 1.25,
+  "min": 0.07,
+  "max": 23.32
+ },
+ "cut_times": [
+  0.3,
+  0.57,
+  1.07,
+  1.57,
+  2.07,
+  5.47,
+  11.67,
+  22.13,
+  22.37,
+  22.4,
+  29.23,
+  32.27,
+  46.23,
+  46.27,
+  46.33,
+  46.43,
+  48.43
+ ],
+ "lufs": -19.0,
+ "tempo_bpm": 143.6,
+ "sound_events_per_min": 106.2,
+ "transcript_words": 151,
+ "words_per_min": 126.3
+}

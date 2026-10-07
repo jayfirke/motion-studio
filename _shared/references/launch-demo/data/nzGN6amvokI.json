@@ -1,0 +1,34 @@
+{
+ "id": "nzGN6amvokI",
+ "url": "https://www.youtube.com/watch?v=nzGN6amvokI",
+ "duration_s": 97.08,
+ "cuts": 15,
+ "shots_per_min": 9.3,
+ "shot_s": {
+  "median": 3.5,
+  "min": 0.5,
+  "max": 19.5
+ },
+ "cut_times": [
+  19.5,
+  25.0,
+  25.03,
+  33.5,
+  36.0,
+  39.0,
+  47.17,
+  50.17,
+  54.17,
+  55.67,
+  57.67,
+  58.17,
+  61.67,
+  63.67,
+  81.17
+ ],
+ "lufs": -22.4,
+ "tempo_bpm": 129.2,
+ "sound_events_per_min": 169.3,
+ "transcript_words": 214,
+ "words_per_min": 132.3
+}

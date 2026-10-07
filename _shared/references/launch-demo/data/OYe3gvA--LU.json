@@ -1,0 +1,18 @@
+{
+ "id": "OYe3gvA--LU",
+ "url": "https://www.youtube.com/watch?v=OYe3gvA--LU",
+ "duration_s": 65.09,
+ "cuts": 0,
+ "shots_per_min": 0.9,
+ "shot_s": {
+  "median": 65.09,
+  "min": 65.09,
+  "max": 65.09
+ },
+ "cut_times": [],
+ "lufs": -15.4,
+ "tempo_bpm": 123.0,
+ "sound_events_per_min": 154.0,
+ "transcript_words": 146,
+ "words_per_min": 134.6
+}

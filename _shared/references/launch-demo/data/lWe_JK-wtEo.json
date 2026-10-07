@@ -1,0 +1,25 @@
+{
+ "id": "lWe_JK-wtEo",
+ "url": "https://www.youtube.com/watch?v=lWe_JK-wtEo",
+ "duration_s": 29.07,
+ "cuts": 6,
+ "shots_per_min": 12.4,
+ "shot_s": {
+  "median": 4.08,
+  "min": 0.4,
+  "max": 11.63
+ },
+ "cut_times": [
+  2.2,
+  2.23,
+  13.87,
+  14.77,
+  22.7,
+  23.1
+ ],
+ "lufs": -15.0,
+ "tempo_bpm": 129.2,
+ "sound_events_per_min": 177.5,
+ "transcript_words": 54,
+ "words_per_min": 111.4
+}

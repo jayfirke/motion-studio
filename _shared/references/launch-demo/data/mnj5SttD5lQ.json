@@ -1,0 +1,20 @@
+{
+ "id": "mnj5SttD5lQ",
+ "url": "https://www.youtube.com/watch?v=mnj5SttD5lQ",
+ "duration_s": 26.22,
+ "cuts": 1,
+ "shots_per_min": 4.6,
+ "shot_s": {
+  "median": 13.11,
+  "min": 5.68,
+  "max": 20.53
+ },
+ "cut_times": [
+  20.53
+ ],
+ "lufs": -15.6,
+ "tempo_bpm": 99.4,
+ "sound_events_per_min": 141.9,
+ "transcript_words": 31,
+ "words_per_min": 71.0
+}

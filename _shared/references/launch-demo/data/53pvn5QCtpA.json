@@ -1,0 +1,18 @@
+{
+ "id": "53pvn5QCtpA",
+ "url": "https://www.youtube.com/watch?v=53pvn5QCtpA",
+ "duration_s": 71.19,
+ "cuts": 0,
+ "shots_per_min": 0.8,
+ "shot_s": {
+  "median": 71.19,
+  "min": 71.19,
+  "max": 71.19
+ },
+ "cut_times": [],
+ "lufs": -15.2,
+ "tempo_bpm": 129.2,
+ "sound_events_per_min": 139.9,
+ "transcript_words": 139,
+ "words_per_min": 117.1
+}

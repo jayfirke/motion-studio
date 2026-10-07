@@ -29,7 +29,17 @@ export function runtimeStub(arg) {
     }
     const sample = async (input, opts = {}) => { const text = 'Here you go.'; opts.onText?.({ text, delta: text }); return { text } }
     sample.limits = async () => ({ tools: { maxTools: 8 } })
-    sample.json = async () => ({ reply: 'Here you go.', actions: [] })
+    // A recording can script the director's next answer: window.__askScript = [{ reply, actions, streamMs, holdMs }].
+    // The reply streams in like a live answer, then the actions run (label such a clip: the answer is scripted).
+    sample.json = async (input, opts = {}) => {
+      const s = (window.__askScript || []).shift()
+      if (!s) return { reply: 'Here you go.', actions: [] }
+      const words = s.reply.split(' '), n = words.length, step = (s.streamMs || 1600) / n
+      // streamed like the raw JSON a live answer sends (AskPanel reads the "reply" field as it grows)
+      for (let i = 1; i <= n; i++) { await new Promise(r => setTimeout(r, step)); opts.onText?.({ text: '{"reply": "' + words.slice(0, i).join(' ').replace(/"/g, '\\"'), delta: words[i - 1] }) }
+      await new Promise(r => setTimeout(r, s.holdMs || 0))
+      return { reply: s.reply, actions: s.actions || [] }
+    }
     window.__mockdb = docs
     const comments = { canSendToClaude: async () => 'available', anchorFor: async () => ({ path: 'x', x: 0, y: 0 }), sendToClaude: async t => { window.__sent = t.text; return { threadId: 't1', commentId: 'c1' } }, openComposer: async () => ({ opened: true }) }
     const ask = arg && arg.askOffline ? null : sample

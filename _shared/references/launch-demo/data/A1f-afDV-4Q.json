@@ -1,0 +1,23 @@
+{
+ "id": "A1f-afDV-4Q",
+ "url": "https://www.youtube.com/watch?v=A1f-afDV-4Q",
+ "duration_s": 165.81,
+ "cuts": 4,
+ "shots_per_min": 1.8,
+ "shot_s": {
+  "median": 7.63,
+  "min": 0.07,
+  "max": 116.9
+ },
+ "cut_times": [
+  7.63,
+  7.97,
+  8.03,
+  124.93
+ ],
+ "lufs": -20.9,
+ "tempo_bpm": 152.0,
+ "sound_events_per_min": 170.1,
+ "transcript_words": 349,
+ "words_per_min": 126.3
+}

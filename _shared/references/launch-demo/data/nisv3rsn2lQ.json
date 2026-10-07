@@ -1,0 +1,21 @@
+{
+ "id": "nisv3rsn2lQ",
+ "url": "https://www.youtube.com/watch?v=nisv3rsn2lQ",
+ "duration_s": 61.02,
+ "cuts": 2,
+ "shots_per_min": 2.9,
+ "shot_s": {
+  "median": 18.73,
+  "min": 4.47,
+  "max": 37.82
+ },
+ "cut_times": [
+  18.73,
+  23.2
+ ],
+ "lufs": -16.3,
+ "tempo_bpm": 92.3,
+ "sound_events_per_min": 68.8,
+ "transcript_words": 107,
+ "words_per_min": 105.2
+}

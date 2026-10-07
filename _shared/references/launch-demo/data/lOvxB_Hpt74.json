@@ -1,0 +1,32 @@
+{
+ "id": "lOvxB_Hpt74",
+ "url": "https://www.youtube.com/watch?v=lOvxB_Hpt74",
+ "duration_s": 80.29,
+ "cuts": 13,
+ "shots_per_min": 9.0,
+ "shot_s": {
+  "median": 4.56,
+  "min": 0.1,
+  "max": 24.27
+ },
+ "cut_times": [
+  4.5,
+  9.93,
+  15.7,
+  16.9,
+  16.93,
+  17.03,
+  20.17,
+  23.53,
+  24.53,
+  43.63,
+  67.9,
+  67.93,
+  75.67
+ ],
+ "lufs": -23.5,
+ "tempo_bpm": 112.3,
+ "sound_events_per_min": 91.2,
+ "transcript_words": 184,
+ "words_per_min": 137.5
+}

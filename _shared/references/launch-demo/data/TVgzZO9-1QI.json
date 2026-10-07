@@ -1,0 +1,22 @@
+{
+ "id": "TVgzZO9-1QI",
+ "url": "https://www.youtube.com/watch?v=TVgzZO9-1QI",
+ "duration_s": 96.6,
+ "cuts": 3,
+ "shots_per_min": 2.5,
+ "shot_s": {
+  "median": 15.2,
+  "min": 12.96,
+  "max": 53.23
+ },
+ "cut_times": [
+  53.23,
+  67.9,
+  83.63
+ ],
+ "lufs": -20.2,
+ "tempo_bpm": 143.6,
+ "sound_events_per_min": 118.6,
+ "transcript_words": 157,
+ "words_per_min": 97.5
+}

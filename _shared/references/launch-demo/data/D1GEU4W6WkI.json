@@ -1,0 +1,20 @@
+{
+ "id": "D1GEU4W6WkI",
+ "url": "https://www.youtube.com/watch?v=D1GEU4W6WkI",
+ "duration_s": 31.14,
+ "cuts": 1,
+ "shots_per_min": 3.9,
+ "shot_s": {
+  "median": 15.57,
+  "min": 6.84,
+  "max": 24.3
+ },
+ "cut_times": [
+  24.3
+ ],
+ "lufs": -13.1,
+ "tempo_bpm": 143.6,
+ "sound_events_per_min": 175.3,
+ "transcript_words": 2,
+ "words_per_min": 3.9
+}

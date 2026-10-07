@@ -1,0 +1,20 @@
+{
+ "id": "kVsN0WegmaE",
+ "url": "https://www.youtube.com/watch?v=kVsN0WegmaE",
+ "duration_s": 53.08,
+ "cuts": 1,
+ "shots_per_min": 2.3,
+ "shot_s": {
+  "median": 26.54,
+  "min": 4.73,
+  "max": 48.35
+ },
+ "cut_times": [
+  4.73
+ ],
+ "lufs": -15.8,
+ "tempo_bpm": 152.0,
+ "sound_events_per_min": 177.5,
+ "transcript_words": 102,
+ "words_per_min": 115.3
+}

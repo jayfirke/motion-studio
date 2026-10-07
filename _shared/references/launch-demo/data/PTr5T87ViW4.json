@@ -1,0 +1,25 @@
+{
+ "id": "PTr5T87ViW4",
+ "url": "https://www.youtube.com/watch?v=PTr5T87ViW4",
+ "duration_s": 74.35,
+ "cuts": 6,
+ "shots_per_min": 5.6,
+ "shot_s": {
+  "median": 7.2,
+  "min": 0.1,
+  "max": 44.1
+ },
+ "cut_times": [
+  44.1,
+  51.3,
+  52.3,
+  52.4,
+  53.63,
+  62.5
+ ],
+ "lufs": -20.9,
+ "tempo_bpm": 117.5,
+ "sound_events_per_min": 71.0,
+ "transcript_words": 154,
+ "words_per_min": 124.3
+}

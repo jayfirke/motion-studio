@@ -1,0 +1,27 @@
+{
+ "id": "TNCAjtXkb2k",
+ "url": "https://www.youtube.com/watch?v=TNCAjtXkb2k",
+ "duration_s": 62.76,
+ "cuts": 8,
+ "shots_per_min": 7.6,
+ "shot_s": {
+  "median": 4.79,
+  "min": 0.1,
+  "max": 25.83
+ },
+ "cut_times": [
+  0.37,
+  0.4,
+  16.73,
+  24.7,
+  27.23,
+  53.07,
+  57.1,
+  57.2
+ ],
+ "lufs": -15.5,
+ "tempo_bpm": 92.3,
+ "sound_events_per_min": 161.6,
+ "transcript_words": 114,
+ "words_per_min": 109.0
+}

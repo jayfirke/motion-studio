@@ -1,0 +1,18 @@
+{
+ "id": "uw3rtrNc15c",
+ "url": "https://www.youtube.com/watch?v=uw3rtrNc15c",
+ "duration_s": 200.09,
+ "cuts": 0,
+ "shots_per_min": 0.3,
+ "shot_s": {
+  "median": 200.09,
+  "min": 200.09,
+  "max": 200.09
+ },
+ "cut_times": [],
+ "lufs": -17.1,
+ "tempo_bpm": 112.3,
+ "sound_events_per_min": 179.3,
+ "transcript_words": 0,
+ "words_per_min": 0.0
+}

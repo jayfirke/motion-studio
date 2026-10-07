@@ -1,0 +1,27 @@
+{
+ "id": "fyHipALaIAY",
+ "url": "https://www.youtube.com/watch?v=fyHipALaIAY",
+ "duration_s": 77.09,
+ "cuts": 8,
+ "shots_per_min": 6.2,
+ "shot_s": {
+  "median": 3.58,
+  "min": 0.1,
+  "max": 37.6
+ },
+ "cut_times": [
+  0.1,
+  4.57,
+  7.27,
+  21.13,
+  58.73,
+  58.77,
+  61.47,
+  62.9
+ ],
+ "lufs": -15.4,
+ "tempo_bpm": 143.6,
+ "sound_events_per_min": 200.8,
+ "transcript_words": 140,
+ "words_per_min": 109.0
+}

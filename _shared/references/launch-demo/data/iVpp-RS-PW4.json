@@ -1,0 +1,23 @@
+{
+ "id": "iVpp-RS-PW4",
+ "url": "https://www.youtube.com/watch?v=iVpp-RS-PW4",
+ "duration_s": 78.07,
+ "cuts": 4,
+ "shots_per_min": 3.1,
+ "shot_s": {
+  "median": 17.95,
+  "min": 1.97,
+  "max": 40.17
+ },
+ "cut_times": [
+  21.17,
+  61.33,
+  61.37,
+  63.33
+ ],
+ "lufs": -17.6,
+ "tempo_bpm": 112.3,
+ "sound_events_per_min": 89.2,
+ "transcript_words": 128,
+ "words_per_min": 98.4
+}

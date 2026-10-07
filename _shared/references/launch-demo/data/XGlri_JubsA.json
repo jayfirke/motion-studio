@@ -1,0 +1,20 @@
+{
+ "id": "XGlri_JubsA",
+ "url": "https://www.youtube.com/watch?v=XGlri_JubsA",
+ "duration_s": 38.59,
+ "cuts": 1,
+ "shots_per_min": 3.1,
+ "shot_s": {
+  "median": 19.3,
+  "min": 4.2,
+  "max": 34.39
+ },
+ "cut_times": [
+  4.2
+ ],
+ "lufs": -20.9,
+ "tempo_bpm": 123.0,
+ "sound_events_per_min": 143.0,
+ "transcript_words": 61,
+ "words_per_min": 94.8
+}

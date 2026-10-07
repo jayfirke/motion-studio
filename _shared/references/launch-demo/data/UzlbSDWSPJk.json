@@ -1,0 +1,20 @@
+{
+ "id": "UzlbSDWSPJk",
+ "url": "https://www.youtube.com/watch?v=UzlbSDWSPJk",
+ "duration_s": 82.11,
+ "cuts": 1,
+ "shots_per_min": 1.5,
+ "shot_s": {
+  "median": 41.05,
+  "min": 6.34,
+  "max": 75.77
+ },
+ "cut_times": [
+  75.77
+ ],
+ "lufs": -19.8,
+ "tempo_bpm": 99.4,
+ "sound_events_per_min": 168.1,
+ "transcript_words": 178,
+ "words_per_min": 130.1
+}

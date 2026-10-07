@@ -1,0 +1,29 @@
+{
+ "id": "A-1tCn5h1PI",
+ "url": "https://www.youtube.com/watch?v=A-1tCn5h1PI",
+ "duration_s": 72.07,
+ "cuts": 10,
+ "shots_per_min": 6.7,
+ "shot_s": {
+  "median": 4.93,
+  "min": 0.07,
+  "max": 39.17
+ },
+ "cut_times": [
+  39.17,
+  39.23,
+  44.67,
+  44.7,
+  44.73,
+  49.17,
+  60.17,
+  61.83,
+  61.87,
+  63.83
+ ],
+ "lufs": -15.1,
+ "tempo_bpm": 123.0,
+ "sound_events_per_min": 109.1,
+ "transcript_words": 152,
+ "words_per_min": 126.5
+}

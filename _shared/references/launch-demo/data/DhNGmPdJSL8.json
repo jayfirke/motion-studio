@@ -1,0 +1,43 @@
+{
+ "id": "DhNGmPdJSL8",
+ "url": "https://www.youtube.com/watch?v=DhNGmPdJSL8",
+ "duration_s": 100.05,
+ "cuts": 24,
+ "shots_per_min": 7.8,
+ "shot_s": {
+  "median": 4.33,
+  "min": 0.12,
+  "max": 36.17
+ },
+ "cut_times": [
+  4.67,
+  4.7,
+  4.73,
+  4.77,
+  4.8,
+  4.83,
+  4.87,
+  4.9,
+  41.07,
+  48.73,
+  51.7,
+  53.87,
+  56.07,
+  59.37,
+  63.7,
+  74.23,
+  76.97,
+  77.0,
+  77.03,
+  77.07,
+  77.1,
+  83.07,
+  83.18,
+  83.2
+ ],
+ "lufs": -14.9,
+ "tempo_bpm": 99.4,
+ "sound_events_per_min": 131.3,
+ "transcript_words": 130,
+ "words_per_min": 78.0
+}

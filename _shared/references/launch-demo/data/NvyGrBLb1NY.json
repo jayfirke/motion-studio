@@ -1,0 +1,30 @@
+{
+ "id": "NvyGrBLb1NY",
+ "url": "https://www.youtube.com/watch?v=NvyGrBLb1NY",
+ "duration_s": 102.07,
+ "cuts": 11,
+ "shots_per_min": 5.9,
+ "shot_s": {
+  "median": 5.08,
+  "min": 0.4,
+  "max": 40.51
+ },
+ "cut_times": [
+  0.47,
+  2.83,
+  2.87,
+  31.17,
+  43.17,
+  44.8,
+  49.0,
+  55.17,
+  55.2,
+  61.17,
+  61.57
+ ],
+ "lufs": -14.9,
+ "tempo_bpm": 123.0,
+ "sound_events_per_min": 158.1,
+ "transcript_words": 236,
+ "words_per_min": 138.7
+}

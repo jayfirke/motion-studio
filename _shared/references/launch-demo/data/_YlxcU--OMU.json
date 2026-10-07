@@ -1,0 +1,31 @@
+{
+ "id": "_YlxcU--OMU",
+ "url": "https://www.youtube.com/watch?v=_YlxcU--OMU",
+ "duration_s": 156.55,
+ "cuts": 12,
+ "shots_per_min": 3.4,
+ "shot_s": {
+  "median": 13.33,
+  "min": 2.97,
+  "max": 45.83
+ },
+ "cut_times": [
+  16.67,
+  16.7,
+  19.67,
+  19.7,
+  33.03,
+  43.33,
+  43.37,
+  43.4,
+  49.4,
+  95.23,
+  127.77,
+  145.7
+ ],
+ "lufs": -14.6,
+ "tempo_bpm": 129.2,
+ "sound_events_per_min": 163.3,
+ "transcript_words": 306,
+ "words_per_min": 117.3
+}

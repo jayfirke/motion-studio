@@ -1,0 +1,37 @@
+{
+ "id": "SXHCplEakRk",
+ "url": "https://www.youtube.com/watch?v=SXHCplEakRk",
+ "duration_s": 82.52,
+ "cuts": 18,
+ "shots_per_min": 9.5,
+ "shot_s": {
+  "median": 4.0,
+  "min": 0.07,
+  "max": 24.83
+ },
+ "cut_times": [
+  11.5,
+  11.53,
+  17.07,
+  17.3,
+  17.33,
+  20.7,
+  20.73,
+  24.23,
+  28.23,
+  36.67,
+  36.7,
+  50.1,
+  74.93,
+  75.03,
+  75.07,
+  75.1,
+  75.17,
+  82.43
+ ],
+ "lufs": -15.0,
+ "tempo_bpm": 152.0,
+ "sound_events_per_min": 109.8,
+ "transcript_words": 142,
+ "words_per_min": 103.2
+}

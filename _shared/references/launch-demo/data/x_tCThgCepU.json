@@ -1,0 +1,30 @@
+{
+ "id": "x_tCThgCepU",
+ "url": "https://www.youtube.com/watch?v=x_tCThgCepU",
+ "duration_s": 60.09,
+ "cuts": 11,
+ "shots_per_min": 11.0,
+ "shot_s": {
+  "median": 3.0,
+  "min": 0.07,
+  "max": 22.93
+ },
+ "cut_times": [
+  3.0,
+  3.07,
+  3.4,
+  3.43,
+  3.53,
+  4.57,
+  27.5,
+  36.0,
+  41.0,
+  48.13,
+  50.6
+ ],
+ "lufs": -16.0,
+ "tempo_bpm": 117.5,
+ "sound_events_per_min": 96.8,
+ "transcript_words": 102,
+ "words_per_min": 101.8
+}

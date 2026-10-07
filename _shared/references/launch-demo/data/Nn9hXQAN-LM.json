@@ -1,0 +1,22 @@
+{
+ "id": "Nn9hXQAN-LM",
+ "url": "https://www.youtube.com/watch?v=Nn9hXQAN-LM",
+ "duration_s": 100.17,
+ "cuts": 3,
+ "shots_per_min": 2.4,
+ "shot_s": {
+  "median": 9.31,
+  "min": 5.07,
+  "max": 76.48
+ },
+ "cut_times": [
+  5.07,
+  10.58,
+  87.05
+ ],
+ "lufs": -23.5,
+ "tempo_bpm": 123.0,
+ "sound_events_per_min": 182.7,
+ "transcript_words": 0,
+ "words_per_min": 0.0
+}

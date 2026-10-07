@@ -1,0 +1,38 @@
+{
+ "id": "mbKt-0bBmK8",
+ "url": "https://www.youtube.com/watch?v=mbKt-0bBmK8",
+ "duration_s": 171.41,
+ "cuts": 19,
+ "shots_per_min": 6.3,
+ "shot_s": {
+  "median": 6.04,
+  "min": 3.3,
+  "max": 31.63
+ },
+ "cut_times": [
+  0.03,
+  31.67,
+  37.4,
+  55.97,
+  59.27,
+  63.47,
+  69.63,
+  74.3,
+  79.77,
+  83.73,
+  95.27,
+  101.17,
+  111.33,
+  122.7,
+  128.33,
+  128.37,
+  133.03,
+  142.7,
+  160.23
+ ],
+ "lufs": -16.9,
+ "tempo_bpm": 129.2,
+ "sound_events_per_min": 164.9,
+ "transcript_words": 351,
+ "words_per_min": 122.9
+}

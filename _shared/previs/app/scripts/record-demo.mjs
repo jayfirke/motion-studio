@@ -3,7 +3,8 @@
 // (times in seconds from the start of the clip) so the film can place real click and typing sounds exactly.
 //
 //   node scripts/record-demo.mjs <flow.mjs> --out <clip.mp4> [--film 011-crumb] [--w 1440 --h 810] [--dpr 2] [--theme dark|light]
-//                               [--runtime] [--seed seed.json] [--ask-offline] [--who You] [--crf 24]
+//                               [--runtime] [--seed seed.json] [--ask-offline] [--who You] [--crf 24] [--url https://…]
+// --url films any other web page (for example the project's GitHub page) with the same cursor, instead of the local studio.
 //
 // A flow is an ES module: export default async function (h) { await h.move('[data-tab=choices]'); await h.click(); ... }
 // It may also export `prep(h)`, which runs before recording starts (open a tab, seek, set state), so the clip opens ready.
@@ -30,7 +31,7 @@ const flowPath = resolve(process.argv[2])
 const out = resolve(arg('--out', 'demo.mp4'))
 const film = arg('--film', '011-crumb'), W = +arg('--w', 1440), H = +arg('--h', 810), DPR = +arg('--dpr', 2), theme = arg('--theme', 'dark')
 const WHO = arg('--who', ''), CRF = arg('--crf', '24')
-const withRuntime = process.argv.includes('--runtime')
+const withRuntime = process.argv.includes('--runtime'), PAGE_URL = arg('--url', '')
 
 const CHROME = [
   join(homedir(), 'Library/Caches/ms-playwright/chromium-1228/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing'),
@@ -75,7 +76,7 @@ const CURSOR = (who) => {
 }
 
 const browser = await chromium.launch({ executablePath: CHROME, headless: true, args: ['--autoplay-policy=no-user-gesture-required', '--hide-scrollbars'] })
-const ctx = await browser.newContext({ viewport: { width: W, height: H }, deviceScaleFactor: DPR })
+const ctx = await browser.newContext({ viewport: { width: W, height: H }, deviceScaleFactor: DPR, colorScheme: theme === 'light' ? 'light' : 'dark' })
 await ctx.addInitScript(t => { try { localStorage.setItem('studio2:toured', 'true'); localStorage.setItem('studio2:prefs', JSON.stringify({ theme: t })) } catch {} }, theme)
 await ctx.addInitScript(CURSOR, WHO)
 if (withRuntime) {
@@ -85,8 +86,9 @@ if (withRuntime) {
   await ctx.addInitScript(runtimeStub, seed || process.argv.includes('--ask-offline') ? { filmId: film, seed, askOffline: process.argv.includes('--ask-offline') } : film)
 }
 const page = await ctx.newPage()
-await page.goto(url)
-await page.waitForSelector('[data-testid=frame]', { timeout: 20000 })
+await page.goto(PAGE_URL || url)
+if (PAGE_URL) await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {})
+else await page.waitForSelector('[data-testid=frame]', { timeout: 20000 })
 await page.addStyleTag({ content: '*{cursor:none!important}[data-testid=bigplay]{display:none!important}' })
 await page.evaluate(() => document.fonts.ready)
 await new Promise(r => setTimeout(r, 900))
@@ -129,13 +131,13 @@ async function point(target) {
 }
 async function move(target, ms = 650) {
   const p = await point(target), x0 = cx, y0 = cy
-  const steps = Math.max(8, Math.round(ms / 16))
-  // a gentle arc, like a hand moving a mouse
-  const bend = Math.min(80, Math.hypot(p.x - x0, p.y - y0) * 0.12)
-  for (let i = 1; i <= steps; i++) {
-    const e = ease(i / steps), arc = Math.sin(Math.PI * e) * bend
+  // a gentle arc, like a hand moving a mouse; paced by the clock, so a press lands when clickAt() asked for it
+  const bend = Math.min(80, Math.hypot(p.x - x0, p.y - y0) * 0.12), start = Date.now()
+  for (;;) {
+    const k = Math.min(1, (Date.now() - start) / ms), e = ease(k), arc = Math.sin(Math.PI * e) * bend
     await page.mouse.move(x0 + (p.x - x0) * e, y0 + (p.y - y0) * e - arc)
-    await sleep(ms / steps)
+    if (k >= 1) break
+    await sleep(16)
   }
   cx = p.x; cy = p.y
 }
@@ -166,8 +168,8 @@ async function drag(from, to, ms = 700) {
   await move(from, 450); const a = await point(from), b = await point(to)
   events.push({ type: 'click', t: now(), x: Math.round(a.x * DPR), y: Math.round(a.y * DPR), drag: true })
   await page.mouse.down()
-  const steps = Math.max(8, Math.round(ms / 16))
-  for (let i = 1; i <= steps; i++) { const e = ease(i / steps); await page.mouse.move(a.x + (b.x - a.x) * e, a.y + (b.y - a.y) * e); await sleep(ms / steps) }
+  const start = Date.now()
+  for (;;) { const k = Math.min(1, (Date.now() - start) / ms), e = ease(k); await page.mouse.move(a.x + (b.x - a.x) * e, a.y + (b.y - a.y) * e); if (k >= 1) break; await sleep(16) }
   await page.mouse.up(); cx = b.x; cy = b.y; events.push({ type: 'release', t: now(), x: Math.round(b.x * DPR), y: Math.round(b.y * DPR) })
 }
 const db = fn => page.evaluate(async ([src, id]) => { const d = await window.claude.use('db'); return (0, eval)(src)(d, id) }, [fn.toString(), film])

@@ -1,0 +1,22 @@
+{
+ "id": "llRMaoacRA4",
+ "url": "https://www.youtube.com/watch?v=llRMaoacRA4",
+ "duration_s": 57.89,
+ "cuts": 3,
+ "shots_per_min": 4.1,
+ "shot_s": {
+  "median": 14.61,
+  "min": 2.87,
+  "max": 25.8
+ },
+ "cut_times": [
+  13.27,
+  39.07,
+  41.93
+ ],
+ "lufs": -15.9,
+ "tempo_bpm": 129.2,
+ "sound_events_per_min": 120.2,
+ "transcript_words": 82,
+ "words_per_min": 85.0
+}

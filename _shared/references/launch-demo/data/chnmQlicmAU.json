@@ -1,0 +1,30 @@
+{
+ "id": "chnmQlicmAU",
+ "url": "https://www.youtube.com/watch?v=chnmQlicmAU",
+ "duration_s": 145.22,
+ "cuts": 11,
+ "shots_per_min": 4.5,
+ "shot_s": {
+  "median": 7.47,
+  "min": 2.74,
+  "max": 37.9
+ },
+ "cut_times": [
+  14.95,
+  17.68,
+  55.59,
+  81.28,
+  86.22,
+  92.29,
+  97.06,
+  100.17,
+  107.64,
+  107.67,
+  120.89
+ ],
+ "lufs": -15.2,
+ "tempo_bpm": 123.0,
+ "sound_events_per_min": 98.3,
+ "transcript_words": 361,
+ "words_per_min": 149.2
+}

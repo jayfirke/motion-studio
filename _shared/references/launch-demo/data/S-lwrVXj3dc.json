@@ -1,0 +1,18 @@
+{
+ "id": "S-lwrVXj3dc",
+ "url": "https://www.youtube.com/watch?v=S-lwrVXj3dc",
+ "duration_s": 30.07,
+ "cuts": 0,
+ "shots_per_min": 2.0,
+ "shot_s": {
+  "median": 30.07,
+  "min": 30.07,
+  "max": 30.07
+ },
+ "cut_times": [],
+ "lufs": -25.9,
+ "tempo_bpm": 152.0,
+ "sound_events_per_min": 141.7,
+ "transcript_words": 3,
+ "words_per_min": 6.0
+}

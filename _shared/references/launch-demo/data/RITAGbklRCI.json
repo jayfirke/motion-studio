@@ -1,0 +1,21 @@
+{
+ "id": "RITAGbklRCI",
+ "url": "https://www.youtube.com/watch?v=RITAGbklRCI",
+ "duration_s": 98.06,
+ "cuts": 2,
+ "shots_per_min": 1.8,
+ "shot_s": {
+  "median": 16.57,
+  "min": 14.72,
+  "max": 66.77
+ },
+ "cut_times": [
+  66.77,
+  83.33
+ ],
+ "lufs": -16.7,
+ "tempo_bpm": 123.0,
+ "sound_events_per_min": 115.0,
+ "transcript_words": 187,
+ "words_per_min": 114.4
+}

@@ -1,0 +1,28 @@
+{
+ "id": "PBqpDipqNtY",
+ "url": "https://www.youtube.com/watch?v=PBqpDipqNtY",
+ "duration_s": 58.14,
+ "cuts": 9,
+ "shots_per_min": 10.3,
+ "shot_s": {
+  "median": 5.48,
+  "min": 0.07,
+  "max": 18.0
+ },
+ "cut_times": [
+  1.97,
+  6.3,
+  11.93,
+  17.77,
+  23.3,
+  41.3,
+  41.37,
+  46.8,
+  48.83
+ ],
+ "lufs": -15.0,
+ "tempo_bpm": 117.5,
+ "sound_events_per_min": 173.4,
+ "transcript_words": 3,
+ "words_per_min": 3.1
+}

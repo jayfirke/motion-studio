@@ -85,7 +85,7 @@ Distilled from public lessons by motion designers and tool authors (see `CREDITS
 
 ## Writing the brief (the harness)
 
-Use `docs/directors-brief-template.md` for anything over 15 s. A brief names:
+Use `docs/directors-brief-template.md` for anything over 15 s. For a product launch or demo film, read `_shared/references/launch-demo/PLAYBOOK.md` first (rules from 187 studied films, each citing its card and time stamp). A brief names:
 - the film in one line;
 - references;
 - tools, skills and keys;

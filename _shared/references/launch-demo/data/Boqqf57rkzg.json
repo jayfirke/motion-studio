@@ -1,0 +1,21 @@
+{
+ "id": "Boqqf57rkzg",
+ "url": "https://www.youtube.com/watch?v=Boqqf57rkzg",
+ "duration_s": 62.72,
+ "cuts": 2,
+ "shots_per_min": 2.9,
+ "shot_s": {
+  "median": 10.77,
+  "min": 0.07,
+  "max": 51.88
+ },
+ "cut_times": [
+  10.77,
+  10.83
+ ],
+ "lufs": -22.6,
+ "tempo_bpm": 123.0,
+ "sound_events_per_min": 136.8,
+ "transcript_words": 176,
+ "words_per_min": 168.4
+}

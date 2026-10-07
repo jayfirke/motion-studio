@@ -1,0 +1,25 @@
+{
+ "id": "emwftTcwpAo",
+ "url": "https://www.youtube.com/watch?v=emwftTcwpAo",
+ "duration_s": 72.03,
+ "cuts": 6,
+ "shots_per_min": 4.2,
+ "shot_s": {
+  "median": 9.06,
+  "min": 0.07,
+  "max": 48.0
+ },
+ "cut_times": [
+  9.53,
+  14.83,
+  14.87,
+  62.87,
+  62.9,
+  62.97
+ ],
+ "lufs": -15.0,
+ "tempo_bpm": 143.6,
+ "sound_events_per_min": 149.1,
+ "transcript_words": 137,
+ "words_per_min": 114.1
+}

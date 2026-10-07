@@ -1,0 +1,21 @@
+{
+ "id": "VW5MbuRgifY",
+ "url": "https://www.youtube.com/watch?v=VW5MbuRgifY",
+ "duration_s": 40.1,
+ "cuts": 2,
+ "shots_per_min": 4.5,
+ "shot_s": {
+  "median": 16.56,
+  "min": 0.08,
+  "max": 23.46
+ },
+ "cut_times": [
+  16.56,
+  16.64
+ ],
+ "lufs": -18.0,
+ "tempo_bpm": 129.2,
+ "sound_events_per_min": 133.2,
+ "transcript_words": 3,
+ "words_per_min": 4.5
+}

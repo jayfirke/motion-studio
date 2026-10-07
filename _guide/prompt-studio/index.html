@@ -239,7 +239,7 @@ ul.note { margin: 0; padding-left: 18px; display: flex; flex-direction: column; 
     <article class="engine" data-engine="shotcraft"><h3>video-shotcraft</h3><span class="time">38.4 s film · about 2 min render + master</span><p class="note">Product demos and ads from real UI: 2.5D camera, shot recipes, beat-synced cuts. Remotion 4.0.484 inside.</p><button class="mini" type="button" data-pick-engine="shotcraft">Use this engine</button></article>
     <article class="engine" data-engine="hyperframes"><h3>HyperFrames</h3><span class="time">24.5 s 9:16 · 39 s render</span><p class="note">Reels, kinetic type, captions and three.js heroes. HTML + GSAP. Audio lands with 0 ms lag.</p><button class="mini" type="button" data-pick-engine="hyperframes">Use this engine</button></article>
     <article class="engine" data-engine="remotion"><h3>Remotion</h3><span class="time">27.6 s 1080p30 · 41 s render</span><p class="note">React. Charts, lower thirds and templates you will reuse. Personal use.</p><button class="mini" type="button" data-pick-engine="remotion">Use this engine</button></article>
-    <article class="engine" data-engine="motionreel"><h3>motion-reel</h3><span class="time">6 s at 60 fps · 61 s + audio</span><p class="note">Kit 3. Beat-synced reels with springs, a measured grid and critique scripts.</p><button class="mini" type="button" data-pick-engine="motionreel">Use this engine</button></article>
+    <article class="engine" data-engine="motionreel"><h3>motion-reel</h3><span class="time">6 s at 60 fps · 61 s + audio</span><p class="note">The Motion Reel Kit. Beat-synced reels with springs, a measured grid and critique scripts.</p><button class="mini" type="button" data-pick-engine="motionreel">Use this engine</button></article>
     <article class="engine" data-engine="bang"><h3>bang-motion</h3><span class="time">27.9 s · about 2 min frames + mux</span><p class="note">Openers, bumpers, kinetic type. One index.html, one world the camera travels.</p><button class="mini" type="button" data-pick-engine="bang">Use this engine</button></article>
     <article class="engine" data-engine="diffusion"><h3>Diffusion Studio</h3><span class="time">24.5 s 9:16 · 18 s export</span><p class="note">Cut, caption and mask real footage in JSX. Its audio lands about 44 ms late: trim the WAV.</p><button class="mini" type="button" data-pick-engine="diffusion">Use this engine</button></article>
   </div>
@@ -325,12 +325,12 @@ ul.note { margin: 0; padding-left: 18px; display: flex; flex-direction: column; 
     <div class="grid" id="licBeds"></div>
   </div>
   <div class="panel">
-    <div class="row" style="justify-content:space-between"><h3>Synth beds made with Kit 3 (14 s loops)</h3><span class="badge b-warn">drafts · judged too generic</span></div>
+    <div class="row" style="justify-content:space-between"><h3>Synth beds made with the Motion Reel Kit (14 s loops)</h3><span class="badge b-warn">drafts · judged too generic</span></div>
     <div class="grid" id="musicBeds"></div>
   </div>
   <div class="panel">
     <div class="row" style="justify-content:space-between"><h3>Generate a new bed</h3><span class="badge b-lic">browser sketch · real track by music.py</span></div>
-    <p class="note">This plays a quick sketch of the groove in your browser. "Use this music" puts the same settings in the prompt, and the agent renders the real track with Kit 3's <code>music.py</code>, seeded so it is repeatable.</p>
+    <p class="note">This plays a quick sketch of the groove in your browser. "Use this music" puts the same settings in the prompt, and the agent renders the real track with the Motion Reel Kit's <code>music.py</code>, seeded so it is repeatable.</p>
     <div class="sliders">
       <label>BPM <input type="range" id="gBpm" min="80" max="140" step="1"><output id="gBpmOut"></output></label>
       <label>Seed <input type="range" id="gSeed" min="1" max="9999" step="1"><output id="gSeedOut"></output></label>
@@ -368,7 +368,7 @@ ul.note { margin: 0; padding-left: 18px; display: flex; flex-direction: column; 
     <label class="check"><input type="checkbox" id="motEngineOnly" checked> Hide what the house rules or my engine ban</label>
     <div class="opts" data-group="energy"></div>
   </div>
-  <p class="note">Badges: <span class="badge b-native">✓ native</span> the engine has it built in · <span class="badge b-port">~ port</span> the agent rebuilds it from the description · <span class="badge b-banned">✕ banned</span> that engine's rules forbid it · <span class="badge b-banned b-house">house ✕</span> AGENTS.md bans it in every engine. HF = HyperFrames, RM = Remotion, MR = motion-reel. video-shotcraft follows the RM column; bang-motion and Diffusion follow HF (both are GSAP), where "native" still means the agent builds it by hand. Carries are the moves that passed the critics in 006–010.</p>
+  <p class="note">Badges: <span class="badge b-native">✓ native</span> the engine has it built in · <span class="badge b-port">~ port</span> the agent rebuilds it from the description · <span class="badge b-banned">✕ banned</span> that engine's rules forbid it · <span class="badge b-banned b-house">house ✕</span> AGENTS.md bans it in every engine. HF = HyperFrames, RM = Remotion, MR = motion-reel. video-shotcraft follows the RM column; bang-motion and Diffusion follow HF (both are GSAP), where "native" still means the agent builds it by hand. Carries are the moves that passed the critics in our test films.</p>
   <div class="grid" id="motGrid"></div>
   <div class="panel" id="hfPanel" hidden>
     <div class="row" style="justify-content:space-between"><h3>HyperFrames ready-made blocks and components (386)</h3><span class="badge b-lic">Apache-2.0 · names only</span></div>
@@ -425,7 +425,7 @@ ul.note { margin: 0; padding-left: 18px; display: flex; flex-direction: column; 
   </div>
   <div class="panel">
     <h3>What five films taught</h3>
-    <p class="note">The notes fresh critics gave round after round on 006–010, and the fixes that passed. The prompts above already ask for these; check stills for them before round 1.</p>
+    <p class="note">The notes fresh critics gave round after round in our test films, and the fixes that passed. The prompts above already ask for these; check stills for them before round 1.</p>
     <div class="lessons">
       <div class="lesson" style="--c:var(--s1)"><span class="eyebrow">Carry, don't swap</span><ul>
         <li>No one-frame swaps and no empty boxes: morph the container (size, place and radius together) while old content leaves upward and new content rises in, 2 frames of overlap.</li>
@@ -469,7 +469,7 @@ ul.note { margin: 0; padding-left: 18px; display: flex; flex-direction: column; 
       <tr><td>HyperFrames 0.8.134</td><td>0 ms: don't pre-shift the mix</td><td>24.5 s 9:16 in 35–39 s</td><td>Run <code>hyperframes check</code> before every render; shader transitions show blank in <code>snapshot</code>.</td></tr>
       <tr><td>Diffusion Studio 0.209.1</td><td>about 44 ms late: trim the WAV (clip starts snap to frames)</td><td>24.5 s in 18 s</td><td>Writes one frame fewer than the duration unless the scene has a frame of headroom.</td></tr>
       <tr><td>bang-motion 1.19.0</td><td>0 ms with an ffmpeg mux</td><td><code>export-frames.mjs</code> at FPS=30, about 2 min</td><td>Defaults to 60 fps; serve the folder over http for module imports.</td></tr>
-      <tr><td>motion-reel (Kit 3)</td><td>0 ms after the limiter pad</td><td>60 fps, both formats from one timeline</td><td><code>init.sh</code> refuses a non-empty folder; <code>beats.py</code> can lock to the wrong tempo.</td></tr>
+      <tr><td>motion-reel (Motion Reel Kit)</td><td>0 ms after the limiter pad</td><td>60 fps, both formats from one timeline</td><td><code>init.sh</code> refuses a non-empty folder; <code>beats.py</code> can lock to the wrong tempo.</td></tr>
     </table></div>
   </div>
   <div class="panel"><h3>After the first render: follow-up prompts</h3><div class="fu" id="fuGrid"></div></div>
@@ -785,12 +785,12 @@ class ZZFXSound
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
 
   var ENGINES = {
-    shotcraft: { name: 'video-shotcraft', key: 'rm', perSec: 2.4, fixed: 15, baseFps: 30, why: 'real product UI, a 2.5D camera and shot recipes (006 Flowboard)' },
-    hyperframes: { name: 'HyperFrames', key: 'hf', perSec: 1.6, fixed: 0, baseFps: 30, why: 'reels, kinetic type, captions and three.js heroes (007 PULSE)' },
+    shotcraft: { name: 'video-shotcraft', key: 'rm', perSec: 2.4, fixed: 15, baseFps: 30, why: 'real product UI, a 2.5D camera and shot recipes' },
+    hyperframes: { name: 'HyperFrames', key: 'hf', perSec: 1.6, fixed: 0, baseFps: 30, why: 'reels, kinetic type, captions and three.js heroes' },
     remotion: { name: 'Remotion', key: 'rm', perSec: 1.5, fixed: 6, baseFps: 30, why: 'charts, lower thirds and templates you will reuse' },
-    motionreel: { name: 'motion-reel', key: 'mr', perSec: 10.2, fixed: 20, baseFps: 60, why: 'a beat-synced reel with springs and critique scripts (010 MIRA)' },
-    bang: { name: 'bang-motion', key: 'hf', perSec: 4.3, fixed: 10, baseFps: 30, why: 'openers, bumpers and one world the camera travels (009 SHIFT)' },
-    diffusion: { name: 'Diffusion Studio', key: 'hf', perSec: 0.75, fixed: 5, baseFps: 30, why: 'cutting, captioning and masking real footage (008 PULSE)' }
+    motionreel: { name: 'motion-reel', key: 'mr', perSec: 10.2, fixed: 20, baseFps: 60, why: 'a beat-synced reel with springs and critique scripts' },
+    bang: { name: 'bang-motion', key: 'hf', perSec: 4.3, fixed: 10, baseFps: 30, why: 'openers, bumpers and one world the camera travels' },
+    diffusion: { name: 'Diffusion Studio', key: 'hf', perSec: 0.75, fixed: 5, baseFps: 30, why: 'cutting, captioning and masking real footage' }
   };
   var TYPES = [
     { id: 'saas', label: 'Product demo from UI', agent: [10, 25], cx: 1.7, eng: 'shotcraft' }, { id: 'product', label: 'Product launch film', agent: [8, 20], cx: 1.6, eng: 'shotcraft' },
@@ -816,7 +816,7 @@ class ZZFXSound
   var STYLES = {
     brand: { label: "Product's own", tokens: "the product's own design tokens: its display and UI fonts, colours and radii, measured from its site or screenshots; one accent", full: "STYLE: the product's own tokens\n- Measure the real fonts, colours, radii and spacing from the product (site capture or my screenshots). For a made-up brand, design them once to publish quality and keep them in every shot.\n- One display face, one UI face, one accent colour. Real UI and logo only; never redraw UI that exists.\n- Premium means subtract: no decorative cards, borders or dividers unless they do a job.\n- Springs with weight and follow-through; carry something through every boundary." },
     glass: { label: 'Liquid Glass', tokens: 'Liquid Glass: frosted white cards (80%, 30px blur, 32px radius, soft shadow) on a pale blue/lilac/peach blob gradient; Inter; text #1d1d1f; green #34c759 only for ticks', full: 'STYLE: Liquid Glass\n- Frosted glass cards: white at ~80% opacity, 30px background blur, thin white border, 32px corners, soft shadow.\n- Background: soft light gradient with 2–3 blurred colour blobs (pale blue, lilac, peach) drifting slowly.\n- Font: Inter (_shared/fonts/Inter-700.woff2 headings, Inter-400 small text). Dark grey text #1d1d1f, small uppercase grey labels.\n- Accent: green #34c759, only for ticks and checks.\n- Motion: calm. Cards rise into their slots on a critically damped spring (no opacity-only entrances). Nothing bounces.' },
-    product: { label: 'Product Minimal', tokens: 'Product Minimal: warm neutral canvas, real product UI, one display + one UI face, one accent; springs (tiny overshoot on UI, none on type)', full: 'STYLE: Product Minimal (Kit 3 house rules)\n- Warm neutral canvas, one display face and one UI face, one accent colour.\n- Real product UI and logo only; never redraw UI that exists.\n- Springs for everything that enters, exits or retargets. Tiny overshoot on UI, none on type.\n- Push the camera in on the UI (text at least 3 % of the frame) instead of enlarging fonts; carry something through every boundary.\n- Banned: centred title on a gradient, everything fading in, crossfades, glows, particle bursts, spins, glitches, light leaks, dead time.' },
+    product: { label: 'Product Minimal', tokens: 'Product Minimal: warm neutral canvas, real product UI, one display + one UI face, one accent; springs (tiny overshoot on UI, none on type)', full: 'STYLE: Product Minimal (the Motion Reel Kit house rules)\n- Warm neutral canvas, one display face and one UI face, one accent colour.\n- Real product UI and logo only; never redraw UI that exists.\n- Springs for everything that enters, exits or retargets. Tiny overshoot on UI, none on type.\n- Push the camera in on the UI (text at least 3 % of the frame) instead of enlarging fonts; carry something through every boundary.\n- Banned: centred title on a gradient, everything fading in, crossfades, glows, particle bursts, spins, glitches, light leaks, dead time.' },
     kinetic: { label: 'Kinetic Type', tokens: 'Kinetic Type: black background, huge white all-caps Archivo Black, one lime #c6ff3d accent word per screen, cuts on the beat', full: 'STYLE: Kinetic Type\n- The text is the whole video. No cards, no boxes.\n- Font: Archivo Black (_shared/fonts/ArchivoBlack-400.woff2), all caps, huge.\n- Colours: black background, white text, one accent #c6ff3d for the key word on each screen.\n- Motion: words slam in one by one, fast and snappy (0.25–0.4 s); mix slide-in, stretch from squashed, letters splitting apart. Each screen exits fast.\n- Cut the screens on the rhythm of the words, like a beat.' },
     pop: { label: 'Pop Bold', tokens: 'Pop Bold: flat lime/purple/pink blocks, Bricolage Grotesque ExtraBold, 4px black outlines, hard offset shadows, stickers that slap down on the beat', full: 'STYLE: Pop Bold\n- Loud, playful, flat colour. No gradients, no glass.\n- Font: Bricolage Grotesque ExtraBold (_shared/fonts/BricolageGrotesque-800.woff2).\n- Colours: flat #c6ff3d, #8a3cff, #ff4fd8, #111111; 4px black outlines; hard 8px offset shadows.\n- Extras: star and circle stickers that slap down on the beat, little arrows.\n- Motion: snappy springs, at most 4 % overshoot on UI pops and none on type; a little squash on landings. No spins.' },
     grain: { label: 'Editorial Grain', tokens: 'Editorial Grain: warm paper #efe8dc with film grain, Instrument Serif headlines (upright + italic), ink #1a1a1a, one red #c2412d accent', full: 'STYLE: Editorial Grain\n- Looks like a printed magazine page.\n- Background: warm paper #efe8dc with ~12% animated SVG film grain.\n- Font: Instrument Serif (_shared/fonts/InstrumentSerif-400.woff2 + italic) for headlines; small uppercase labels in Inter.\n- Colours: ink #1a1a1a and one deep red #c2412d.\n- Shapes: cut-out paper rectangles rotated 1–3°, thin rules, page numbers.\n- Motion: unhurried, uneven staggers, gentle slides and wipes, no bounces. Render with --crf 23 (grain makes big files).' }
@@ -826,25 +826,25 @@ class ZZFXSound
   var SHAPES = { drop: { label: 'Build and drop', sections: 'intro → build → gap → drop' }, steady: { label: 'Steady groove', sections: 'intro → full → outro' }, minimal: { label: 'Minimal under voice', sections: 'dark → outro' } };
   var BEDS = [{ id: 'launch-drop-120', label: 'Launch drop · 120 BPM', d: 'intro, build, stop, drop' }, { id: 'chill-groove-96', label: 'Chill groove · 96 BPM', d: 'intro, full groove, outro' }, { id: 'dark-tech-90', label: 'Dark tech · 90 BPM', d: 'sparse, build, drop' }, { id: 'upbeat-full-128', label: 'Upbeat · 128 BPM', d: 'full energy, outro' }];
   var LIC = [
-    { id: 'fs414441', label: 'Bell Beats', bpm: '120 BPM; the tracker said 96', src: 'Freesound 414441 · CC0', film: '010 MIRA', fetch: 'python3 _shared/tools/freesound.py get 414441', prev: 'media/music/fs414441.mp3' },
-    { id: 'fs785817', label: 'Darkwave Reactor', bpm: 'not measured yet', src: 'Freesound 785817 · CC0', film: '007 and 008 PULSE', fetch: 'python3 _shared/tools/freesound.py get 785817', prev: 'media/music/fs785817.mp3' },
-    { id: 'fs561190', label: 'Tropicorp Advertisement', bpm: 'not measured yet', src: 'Freesound 561190 · CC0', film: 'the 010 alternate', fetch: 'python3 _shared/tools/freesound.py get 561190', prev: 'media/music/fs561190.mp3' },
-    { id: 'mx-house-vibez', label: 'House Vibez', bpm: '122.0 BPM by comb fit', src: 'Mixkit 745 · render-only', film: '006 Flowboard', fetch: 'copy ~/video-shotcraft/assets/audio/bgm/house-vibez.mp3 into the project' },
-    { id: 'mx-cat-walk', label: 'Cat Walk', bpm: '129.98 BPM; the tag says 129.2', src: 'Mixkit 371 · render-only', film: '009 SHIFT', fetch: 'copy ~/video-shotcraft/assets/audio/bgm/cat-walk.mp3 into the project' }
+    { id: 'fs414441', label: 'Bell Beats', bpm: '120 BPM; the tracker said 96', src: 'Freesound 414441 · CC0', film: 'a test film', fetch: 'python3 _shared/tools/freesound.py get 414441', prev: 'media/music/fs414441.mp3' },
+    { id: 'fs785817', label: 'Darkwave Reactor', bpm: 'not measured yet', src: 'Freesound 785817 · CC0', film: 'two test films', fetch: 'python3 _shared/tools/freesound.py get 785817', prev: 'media/music/fs785817.mp3' },
+    { id: 'fs561190', label: 'Tropicorp Advertisement', bpm: 'not measured yet', src: 'Freesound 561190 · CC0', film: 'an alternate', fetch: 'python3 _shared/tools/freesound.py get 561190', prev: 'media/music/fs561190.mp3' },
+    { id: 'mx-house-vibez', label: 'House Vibez', bpm: '122.0 BPM by comb fit', src: 'Mixkit 745 · render-only', film: 'a test film', fetch: 'copy ~/video-shotcraft/assets/audio/bgm/house-vibez.mp3 into the project' },
+    { id: 'mx-cat-walk', label: 'Cat Walk', bpm: '129.98 BPM; the tag says 129.2', src: 'Mixkit 371 · render-only', film: 'a test film', fetch: 'copy ~/video-shotcraft/assets/audio/bgm/cat-walk.mp3 into the project' }
   ];
   var FOLEY = [
-    ['256455', 'Cursor press', 'Mouse Click', '006 · 009 · 010'], ['534103', 'Short press', 'mouse-click-single', '006'], ['332713', 'Touch tap', 'Tap', '007'],
-    ['378085', 'Key or Enter', 'mechanical key hard', '006 · 009'], ['570754', 'Key press', 'Keyboard - Press down', '006'], ['421583', 'Soft key', 'qKey (pair it with 421581)', '009 · 010'],
-    ['447909', 'Typing run', 'Keyboard typing (trim to the span)', '006 · 009 · 010'], ['349698', 'Camera push, long move', 'light slow swoosh', '006'], ['71852', 'Morph, quick move', 'digital_whoosh_soft', '006'],
-    ['614153', 'Gentle swish', 'Swishes_11_gentle', '006'], ['701104', 'Screen change', 'Whoosh stereo light', '006'], ['388958', 'Small item lands', 'Soft Two-Finger Snap', '006'],
-    ['406586', 'Card drops', 'Picture Drop, heavy paper', '009 · 010'], ['131337', 'Hard cut in a burst', 'Rolled paper, slapping', '009'], ['554208', 'Restack, riffle', 'cardsound', '009'],
-    ['651514', 'Paper handling', 'paper', '009 · 010'], ['767613', 'Product lands (metal)', 'Ring Drop', '007'], ['541434', 'Heartbeat', 'heartbeat', '007'],
-    ['685256', 'Riser into the reveal', 'Riser sound effect short', '006']
+    ['256455', 'Cursor press', 'Mouse Click', '3 test films'], ['534103', 'Short press', 'mouse-click-single', 'a test film'], ['332713', 'Touch tap', 'Tap', 'a test film'],
+    ['378085', 'Key or Enter', 'mechanical key hard', '2 test films'], ['570754', 'Key press', 'Keyboard - Press down', 'a test film'], ['421583', 'Soft key', 'qKey (pair it with 421581)', '2 test films'],
+    ['447909', 'Typing run', 'Keyboard typing (trim to the span)', '3 test films'], ['349698', 'Camera push, long move', 'light slow swoosh', 'a test film'], ['71852', 'Morph, quick move', 'digital_whoosh_soft', 'a test film'],
+    ['614153', 'Gentle swish', 'Swishes_11_gentle', 'a test film'], ['701104', 'Screen change', 'Whoosh stereo light', 'a test film'], ['388958', 'Small item lands', 'Soft Two-Finger Snap', 'a test film'],
+    ['406586', 'Card drops', 'Picture Drop, heavy paper', '2 test films'], ['131337', 'Hard cut in a burst', 'Rolled paper, slapping', 'a test film'], ['554208', 'Restack, riffle', 'cardsound', 'a test film'],
+    ['651514', 'Paper handling', 'paper', '2 test films'], ['767613', 'Product lands (metal)', 'Ring Drop', 'a test film'], ['541434', 'Heartbeat', 'heartbeat', 'a test film'],
+    ['685256', 'Riser into the reveal', 'Riser sound effect short', 'a test film']
   ];
-  var MIXKIT = [['Logo lands (the loudest moment)', 'impact-deep-whoosh or impact-dense, low-passed near 3.2 kHz', '006 · 007 · 009 · 010'], ['Light tail after the logo (once)', 'shimmer-sparkle-sweep', '006 · 009 · 010'], ['Toggle or switch', 'ui/switch-tap', 'palette'], ['Page transition', 'transition/transition-soft', 'palette']];
+  var MIXKIT = [['Logo lands (the loudest moment)', 'impact-deep-whoosh or impact-dense, low-passed near 3.2 kHz', '4 test films'], ['Light tail after the logo (once)', 'shimmer-sparkle-sweep', '3 test films'], ['Toggle or switch', 'ui/switch-tap', 'palette'], ['Page transition', 'transition/transition-soft', 'palette']];
   var CRIT = ['Hook', 'Read 360', 'Motion', 'Layout', 'Depth', 'Brand', 'Sync', 'Polish'];
   var FILMS = [];
-  var STARTER = [['k3-click', 'click', 'Kit 3 synth'], ['k3-tick', 'tick', 'Kit 3 synth'], ['k3-pop', 'pop', 'Kit 3 synth'], ['k3-whoosh', 'whoosh', 'Kit 3 synth'], ['k3-riser', 'riser', 'Kit 3 synth'], ['k3-thump', 'thump', 'Kit 3 synth'], ['k3-shutter', 'shutter', 'Kit 3 synth']];
+  var STARTER = [['k3-click', 'click', 'Motion Reel Kit synth'], ['k3-tick', 'tick', 'Motion Reel Kit synth'], ['k3-pop', 'pop', 'Motion Reel Kit synth'], ['k3-whoosh', 'whoosh', 'Motion Reel Kit synth'], ['k3-riser', 'riser', 'Motion Reel Kit synth'], ['k3-thump', 'thump', 'Motion Reel Kit synth'], ['k3-shutter', 'shutter', 'Motion Reel Kit synth']];
   var ZZP = [['Pop', [1, 0, 600, 0, .01, .06, 0, 1, 30]], ['Tick', [.6, 0, 1800, 0, 0, .02, 1]], ['Click', [.7, 0, 1200, 0, 0, .015, 3]], ['Coin', [1, .05, 1675, 0, .06, .24, 1, 1.82, 0, 0, 837, .06]], ['Success', [1, 0, 880, .01, .1, .4, 0, 1, 0, 0, 440, .1]], ['Notify', [1, 0, 1046, 0, .05, .2, 0, 1, 0, 0, 523, .07]], ['Error', [1, 0, 150, 0, .1, .2, 2, 1, 0, 0, 0, 0, .05]], ['Whoosh', [1, 0, 200, .05, .1, .3, 4, 1, 10, 0, 0, 0, 0, 1.5]], ['Riser', [1, 0, 200, .6, .3, .1, 1, 1, 40]], ['Thump', [1.5, 0, 60, 0, .05, .4, 0, 1, -5, 0, 0, 0, 0, .5]], ['Laser', [1, 0, 1500, 0, .05, .15, 2, 1, -80]], ['Jump', [1, 0, 300, 0, .05, .2, 0, 1, 60]], ['Power-up', [1, 0, 400, 0, .2, .3, 1, 1, 0, 0, 200, .08, .08]], ['Key', [.8, 0, 2400, 0, 0, .01, 4, 1, 0, 0, 0, 0, 0, 2]], ['Explosion', [1.5, .1, 80, 0, .2, .8, 4, 1, -1, 0, 0, 0, 0, 1]], ['Glitch', [1, 0, 300, 0, .05, .2, 2, 1, 0, 0, 0, 0, .02, 0, 0, .5]]];
   var ZZK = [['volume', 0, 2, .05], ['randomness', 0, .3, .01], ['frequency', 40, 2500, 1], ['attack', 0, .6, .01], ['sustain', 0, .6, .01], ['release', 0, 1.2, .01], ['shape', 0, 5, 1], ['shapeCurve', 0, 3, .05], ['slide', -100, 100, 1], ['deltaSlide', -10, 10, .1], ['pitchJump', -1200, 1200, 1], ['pitchJumpTime', 0, .4, .01], ['repeatTime', 0, .3, .01], ['noise', 0, 5, .1], ['modulation', 0, 20, .1], ['bitCrush', 0, 1, .01], ['delay', 0, .3, .01], ['sustainVolume', 0, 1, .05], ['decay', 0, .4, .01], ['tremolo', 0, 1, .05]];
   var ZZD = [1, .05, 220, 0, 0, .1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0];
@@ -857,7 +857,7 @@ class ZZFXSound
     ['Impact too quiet', 'Make the logo landing the loudest moment: step the bed down into it, high-pass and pre-limit the boom, layer a real foley knock, and show me its momentary LUFS against the loudest other moment.'],
     ['Tempo check', 'Before the beat grid, measure the bed\'s tempo from its kick onsets (autocorrelation of a low-band onset envelope). Don\'t trust the tag or the tracker. Tell me the BPM and the drift over the film.'],
     ['Sync check', 'Cross-correlate the render against mix.wav (the lag should be 0 ms) and measure every designed hit on the SFX-only stem, not the full mix. Report the offsets in VERIFY.md.'],
-    ['One critique round', 'Run one critique round: draft render, then the kit (2 fps contact sheet, 12-frame strip around the fastest action, 360 px phone sheet, loop check), a fresh critic sub-agent with Kit 3 CRITIQUE.md scoring the 8 criteria, fix the 3 worst problems, log it in VERIFY.md.'],
+    ['One critique round', 'Run one critique round: draft render, then the kit (2 fps contact sheet, 12-frame strip around the fastest action, 360 px phone sheet, loop check), a fresh critic sub-agent with the Motion Reel Kit CRITIQUE.md scoring the 8 criteria, fix the 3 worst problems, log it in VERIFY.md.'],
     ['Licence check', 'Run the motion-asset-check skill on this project and fill ASSETS-USED.md.'],
     ['Final export', 'Render the final at high quality with one worker, master to −14 LUFS and ≤ −1 dBTP, and give me renders/final.mp4 with the loudness and sync numbers.'],
     ['Wrap up', 'Write HANDOFF.md and finish VERIFY.md (scores per round, loudness, sync), then list the drafts you kept.']
@@ -941,7 +941,7 @@ class ZZFXSound
     if (S.audio.indexOf('music') > -1) {
       if (S.music.kind === 'lic') { var b = licBed(S.music.id); a.push('Music: ' + b.label + ' (' + b.src + '; ' + b.fetch + '). Audition it under the picture. Measure its tempo from the kick onsets before writing the beat grid (so far: ' + b.bpm + '), time-stretch with atempo if needed, and anchor the drop on the hero hit.'); }
       if (S.music.kind === 'bed') a.push('Music (draft only): _shared/music/synth/' + S.music.id + '.mp3 (synth-music:' + S.music.id + '). Replace it with a licensed bed before the final.');
-      if (S.music.kind === 'gen') a.push('Music: synthesize a new bed with Kit 3 music.py: bpm ' + S.music.bpm + ', chords ' + MOODS[S.music.mood].chords.join(' ') + ', sections ' + SHAPES[S.music.shape].sections + ', seed ' + S.music.seed + ', length ' + S.dur + ' s. Keep it only if it sounds finished; otherwise use a licensed bed.');
+      if (S.music.kind === 'gen') a.push('Music: synthesize a new bed with the Motion Reel Kit music.py: bpm ' + S.music.bpm + ', chords ' + MOODS[S.music.mood].chords.join(' ') + ', sections ' + SHAPES[S.music.shape].sections + ', seed ' + S.music.seed + ', length ' + S.dur + ' s. Keep it only if it sounds finished; otherwise use a licensed bed.');
       if (S.music.kind === 'jingle') a.push('Music: Kenney jingle _shared/sfx/kenney/jingles/' + S.music.file + ' (CC0) as a stinger at the end.');
     }
     if (S.audio.indexOf('sfx') > -1) {
@@ -967,7 +967,7 @@ class ZZFXSound
     if (full && S.preamble) out.push('Motion preamble: dense frames with 3 depth layers, a continuous subtle camera, staggered entrances, overshoot on transforms only, one spectacle beat.');
     var snd = soundLines(); if (snd) out.push(snd);
     if (S.audio.indexOf('sfx') > -1) S.sounds.forEach(function (x) { if (/^(uisfx|zzfx|synth):/.test(x.id)) warn.push(x.label + ' is synthesized: drafts only in an ad'); else if (/^kenney:(rpg|casino|jingles|voiceover)\//.test(x.id)) warn.push(x.label + ' is a game timbre'); });
-    if (S.audio.indexOf('music') > -1 && S.music.kind === 'bed') warn.push('the Kit 3 synth bed is a draft; pick a licensed bed for the final');
+    if (S.audio.indexOf('music') > -1 && S.music.kind === 'bed') warn.push('the Motion Reel Kit synth bed is a draft; pick a licensed bed for the final');
     if (S.audio.indexOf('music') > -1 && S.music.kind === 'jingle') warn.push('Kenney jingles are game timbres, not for ads');
     return { text: out.join('\n'), warn: warn };
   }
@@ -983,12 +983,12 @@ class ZZFXSound
 
   function route(full) {
     var e = S.engine, r;
-    if (e === 'shotcraft') r = 'Use the video-shotcraft skill and ask me first: template mode, autonomous or co-creation. Copy the template into the project (never build inside ~/video-shotcraft). For a made-up product, build the UI as React DOM and film it with a 2.5D CSS-zoom camera like 006 Flowboard (src/World.tsx), and reuse its stills.mjs, master.sh and kit.py.';
-    else if (e === 'hyperframes') r = 'Use the /hyperframes skill' + ((S.type === 'product' || S.type === 'saas') ? ' (product-launch-video route, no-capture unless I give a URL)' : '') + '. Pin npx hyperframes@0.8.134, run hyperframes check before every render, render with --workers 1. One render(t) drives DOM and WebGL, like 007 PULSE.';
+    if (e === 'shotcraft') r = 'Use the video-shotcraft skill and ask me first: template mode, autonomous or co-creation. Copy the template into the project (never build inside ~/video-shotcraft). For a made-up product, build the UI as React DOM and film it with a 2.5D CSS-zoom camera (the video-shotcraft lessons in AGENTS-tooling.md show how).';
+    else if (e === 'hyperframes') r = 'Use the /hyperframes skill' + ((S.type === 'product' || S.type === 'saas') ? ' (product-launch-video route, no-capture unless I give a URL)' : '') + '. Pin npx hyperframes@0.8.134, run hyperframes check before every render, render with --workers 1. One render(t) drives DOM and WebGL.';
     else if (e === 'remotion') r = 'Use the remotion-best-practices skill (Remotion 4.0.532, personal use). Everything from useCurrentFrame() with spring() and interpolate().';
-    else if (e === 'bang') r = 'Use the bang-motion skill: one index.html, one world the camera travels (no <section> slides), a paused GSAP timeline driven by the seek time. Export with tools/export-frames.mjs at FPS=30 over http and mux with ffmpeg, like 009 SHIFT; delete the PNG frames after the mux.';
-    else if (e === 'diffusion') r = 'Use Diffusion Studio 0.209.1 and read the app\'s skills/editor.md first. No generate.*, media_listen or media_transcribe without asking me (they cost credits). Trim the mix WAV for the ~44 ms export lag and give the scene one extra frame of headroom, like 008 PULSE.';
-    else r = '/motion-reel with presets/blank; activate .venv for every python3 step. Place recorded SFX with 010 MIRA\'s scripts/sfx-samples.py instead of sfx.mjs, write beats.json by hand if the tracker disagrees with the measured tempo, and pad the master after the limiter (apad, atrim).';
+    else if (e === 'bang') r = 'Use the bang-motion skill: one index.html, one world the camera travels (no <section> slides), a paused GSAP timeline driven by the seek time. Export with tools/export-frames.mjs at FPS=30 over http and mux with ffmpeg; delete the PNG frames after the mux.';
+    else if (e === 'diffusion') r = 'Use Diffusion Studio 0.209.1 and read the app\'s skills/editor.md first. No generate.*, media_listen or media_transcribe without asking me (they cost credits). Trim the mix WAV for the ~44 ms export lag and give the scene one extra frame of headroom.';
+    else r = '/motion-reel with presets/blank; activate .venv for every python3 step. Place recorded SFX from the palette with a small project-local script instead of sfx.mjs, write beats.json by hand if the tracker disagrees with the measured tempo, and pad the master after the limiter (apad, atrim).';
     if (S.previs !== 'off') r = 'First use the video-director-previs skill: publish a previs page (animatic with Sarah, the bed and foley on the measured grid, three options on every decision) and wait until I approve it in the page. Then build exactly approved-video-spec.json. ' + r;
     r += ' Work in this workspace and follow AGENTS.md. Start the project with the motion-new-project skill as projects/' + slug() + '.';
     if (full && S.ref) r += ' Reference: ' + S.ref + ' (take its pacing and layout, never its content).';

@@ -1,0 +1,25 @@
+{
+ "id": "BOupst1PWXI",
+ "url": "https://www.youtube.com/watch?v=BOupst1PWXI",
+ "duration_s": 113.22,
+ "cuts": 6,
+ "shots_per_min": 3.7,
+ "shot_s": {
+  "median": 9.33,
+  "min": 2.37,
+  "max": 52.32
+ },
+ "cut_times": [
+  3.3,
+  7.0,
+  9.37,
+  21.4,
+  30.73,
+  60.9
+ ],
+ "lufs": -16.5,
+ "tempo_bpm": 172.3,
+ "sound_events_per_min": 123.5,
+ "transcript_words": 196,
+ "words_per_min": 103.9
+}

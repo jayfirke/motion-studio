@@ -1,0 +1,18 @@
+{
+ "id": "m9LlsYKFe_k",
+ "url": "https://www.youtube.com/watch?v=m9LlsYKFe_k",
+ "duration_s": 29.05,
+ "cuts": 0,
+ "shots_per_min": 2.1,
+ "shot_s": {
+  "median": 29.05,
+  "min": 29.05,
+  "max": 29.05
+ },
+ "cut_times": [],
+ "lufs": -14.4,
+ "tempo_bpm": 112.3,
+ "sound_events_per_min": 165.2,
+ "transcript_words": 0,
+ "words_per_min": 0.0
+}

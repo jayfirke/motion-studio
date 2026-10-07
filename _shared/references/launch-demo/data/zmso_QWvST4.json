@@ -1,0 +1,22 @@
+{
+ "id": "zmso_QWvST4",
+ "url": "https://www.youtube.com/watch?v=zmso_QWvST4",
+ "duration_s": 98.22,
+ "cuts": 3,
+ "shots_per_min": 1.8,
+ "shot_s": {
+  "median": 45.25,
+  "min": 0.2,
+  "max": 52.73
+ },
+ "cut_times": [
+  52.73,
+  52.77,
+  52.97
+ ],
+ "lufs": -15.0,
+ "tempo_bpm": 107.7,
+ "sound_events_per_min": 182.0,
+ "transcript_words": 225,
+ "words_per_min": 137.4
+}

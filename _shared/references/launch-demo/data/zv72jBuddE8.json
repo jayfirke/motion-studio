@@ -1,0 +1,28 @@
+{
+ "id": "zv72jBuddE8",
+ "url": "https://www.youtube.com/watch?v=zv72jBuddE8",
+ "duration_s": 125.06,
+ "cuts": 9,
+ "shots_per_min": 3.4,
+ "shot_s": {
+  "median": 17.47,
+  "min": 3.1,
+  "max": 38.03
+ },
+ "cut_times": [
+  4.5,
+  4.53,
+  9.53,
+  27.0,
+  30.1,
+  30.13,
+  68.17,
+  68.2,
+  100.83
+ ],
+ "lufs": -21.7,
+ "tempo_bpm": 129.2,
+ "sound_events_per_min": 142.5,
+ "transcript_words": 270,
+ "words_per_min": 129.5
+}

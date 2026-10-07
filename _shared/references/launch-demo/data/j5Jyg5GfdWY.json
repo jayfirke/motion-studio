@@ -1,0 +1,22 @@
+{
+ "id": "j5Jyg5GfdWY",
+ "url": "https://www.youtube.com/watch?v=j5Jyg5GfdWY",
+ "duration_s": 115.05,
+ "cuts": 3,
+ "shots_per_min": 2.1,
+ "shot_s": {
+  "median": 32.03,
+  "min": 0.07,
+  "max": 50.92
+ },
+ "cut_times": [
+  44.07,
+  44.13,
+  64.13
+ ],
+ "lufs": -18.4,
+ "tempo_bpm": 117.5,
+ "sound_events_per_min": 143.4,
+ "transcript_words": 260,
+ "words_per_min": 135.6
+}

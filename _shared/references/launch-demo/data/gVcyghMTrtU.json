@@ -1,0 +1,18 @@
+{
+ "id": "gVcyghMTrtU",
+ "url": "https://www.youtube.com/watch?v=gVcyghMTrtU",
+ "duration_s": 68.06,
+ "cuts": 0,
+ "shots_per_min": 0.9,
+ "shot_s": {
+  "median": 68.06,
+  "min": 68.06,
+  "max": 68.06
+ },
+ "cut_times": [],
+ "lufs": -14.8,
+ "tempo_bpm": 123.0,
+ "sound_events_per_min": 107.6,
+ "transcript_words": 147,
+ "words_per_min": 129.6
+}
