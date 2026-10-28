@@ -38,6 +38,7 @@ A nested `AGENTS.md`/`CLAUDE.md` inside an engine project (written by `hyperfram
 - **Data stories, templates you will reuse:** Remotion.
 - **Cutting or captioning existing footage, masking objects:** Diffusion Studio (or HyperFrames).
 - **A small animated element** (logo build, icon, loader, success check, lower third): text-to-lottie, then place the Lottie in the film's engine.
+- **A real device or object on screen** (a phone or laptop showing the app, a product): `real-device-model` first. It covers the research, the build rules and the flicker checks. Then build the model in the film's engine.
 - **One film, one engine.** A film renders in one engine. Other tools supply parts (Lottie files, voice, SFX, music, masks), never a second half-built timeline.
 
 If the prompt names no tool, pick from the list above and say why in one line. Never build inside `engines/` (clean starters) or inside a skill's own folder (`~/video-shotcraft`, `~/.claude/skills/onetake`): copy what you need into the project.
@@ -70,6 +71,11 @@ Distilled from public lessons by motion designers and tool authors (see `CREDITS
 - Banned clichés: a centered title on a gradient, everything fading in, a pure opacity fade as an enter or exit, crossfades between shots, corner labels and frame borders, glow on UI chrome, particle or confetti bursts, spins, glitches, light leaks, bouncy easing on UI, dead time.
 - Premium means subtract: no decorative cards, borders or dividers unless they do a job. One display face, one UI face, one accent colour. The look comes from the product's own design tokens (fonts, colours, radii), never from the last film or a starter.
 - Real product UI, logos and fonts. Capture them with Playwright or use the owner's screenshots, never redraw UI that exists. For a made-up brand, build the UI to publish quality and keep it consistent across shots.
+- **Real devices and real-world objects** (a phone with app screens, a laptop, a watch, any real product) follow the `real-device-model` skill:
+  - Exact geometry comes from the maker's dimensional drawing, never from memory, mockup kits or marketing renders. That covers size, corner curves, display and glass insets, the cutout (island, notch or punch-hole), buttons, cameras and finish.
+  - Screens are captured at the device's native pixel size, with the cutout drawn in.
+  - A screen inside a moving frame must not flicker. Use smooth fitted motion curves, one emissive front image instead of stacked layers, a depth range fitted to the device, and satin finishes with soft lights.
+  - The skill's checks pass before the critique loop.
 - At most two text levels on screen at once. Readable at phone size: captions at least 5% of frame height, secondary text at least 3%.
 
 **Motion and rhythm.**
@@ -193,7 +199,7 @@ These are what make an agent-made film sound cheap. The action itself is never b
 
 1. Ask for anything missing in one round (tool, format, length, copy, style, music, voice).
 2. Over 10 s: previs first (`video-director-previs`). Publish or open the previs page (animatic with real voice, music and foley on the measured beat grid, three options on every decision) and wait until the owner approves it in the page. Freeze `approved-video-spec.json`, write `SHOTLIST.md` from it, and build exactly that. Page notes change only their target; locked decisions stay.
-3. Build one scene at a time; check stills (`hyperframes snapshot`, `remotion still`, `diffusion capture`, motion-reel `--sheet`) before moving on.
+3. Build one scene at a time; check stills (`hyperframes snapshot`, `remotion still`, `diffusion capture`, motion-reel `--sheet`) before moving on. A real device must pass the `real-device-model` checks before the critique loop: drawing overlay, motion smoothness on a device-only render, and the flash scan.
 4. **Critique loop, mandatory before the owner sees a render** (`docs/critique-scorecard.md`):
    - From the rendered MP4, make:
      - a contact sheet at 2 fps;
@@ -224,7 +230,7 @@ These are what make an agent-made film sound cheap. The action itself is never b
 
 ## Skills routing
 
-- Workspace skills (in `.agents/skills/`, also visible to Claude through `.claude/skills`): `workspace-setup` (first run on a new machine), `motion-new-project` (scaffold a project), `motion-render-review` (check, snapshot, draft render, VERIFY.md), `motion-asset-check` (licence ledger audit), `video-director-previs` (previs page, options, notes, approval, production contract).
+- Workspace skills (in `.agents/skills/`, also visible to Claude through `.claude/skills`): `workspace-setup` (first run on a new machine), `motion-new-project` (scaffold a project), `motion-render-review` (check, snapshot, draft render, VERIFY.md), `motion-asset-check` (licence ledger audit), `video-director-previs` (previs page, options, notes, approval, production contract), `real-device-model` (a real device or object built from the maker's drawing, flicker-free screens in moving frames, and the checks that prove both).
 - Global skills (installed by `scripts/setup/install.sh`):
   - `video-shotcraft`: product films. Read its SKILL.md mode rules; for a full promo, ask the owner whether they want template mode, autonomous free creation or co-creation.
   - `hyperframes` (HyperFrames entry point).

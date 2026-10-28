@@ -78,10 +78,12 @@ All recorded sounds and music beds shipped here are **CC0** (public domain). CC0
 | [Breviceps](https://freesound.org/people/Breviceps/) | [447909](https://freesound.org/s/447909/) Keyboard typing, [448080](https://freesound.org/s/448080/) Wet Click |
 | [BuytheField](https://freesound.org/people/BuytheField/) | [414441](https://freesound.org/s/414441/) Bell Beats.wav |
 | [cabled_mess](https://freesound.org/people/cabled_mess/) | [335361](https://freesound.org/s/335361/) Little, happy tune - 22.10.2015 |
+| [Cloud-10](https://freesound.org/people/Cloud-10/) | [536163](https://freesound.org/s/536163/) EDM Sample 2, [536165](https://freesound.org/s/536165/) EDM Sample 4, [634684](https://freesound.org/s/634684/) The Room - 1 Min. EDM Loop.mp3 |
 | [code_box](https://freesound.org/people/code_box/) | [561190](https://freesound.org/s/561190/) Tropicorp Advertisement, [566952](https://freesound.org/s/566952/) Funky Groove |
 | [danluxradium](https://freesound.org/people/danluxradium/) | [767613](https://freesound.org/s/767613/) Ring Drop |
 | [Detski](https://freesound.org/people/Detski/) | [170601](https://freesound.org/s/170601/) Wet Square Techno Beat With Toppings.wav |
 | [DeVern](https://freesound.org/people/DeVern/) | [384202](https://freesound.org/s/384202/) Slow Cinematic Music.wav |
+| [ertuzeus](https://freesound.org/people/ertuzeus/) | [585467](https://freesound.org/s/585467/) Saturn - Tech House drum base song sample |
 | [eyesonlegs](https://freesound.org/people/eyesonlegs/) | [464302](https://freesound.org/s/464302/) PaperSlide.wav |
 | [florianreichelt](https://freesound.org/people/florianreichelt/) | [683101](https://freesound.org/s/683101/) quick woosh |
 | [Foxfire-](https://freesound.org/people/Foxfire-/) | [570754](https://freesound.org/s/570754/) Keyboard - Press down |
@@ -89,11 +91,13 @@ All recorded sounds and music beds shipped here are **CC0** (public domain). CC0
 | [holizna](https://freesound.org/people/holizna/) | [629170](https://freesound.org/s/629170/) Chill Lofi Epiano Loop 80 BPM.wav |
 | [HunteR4708](https://freesound.org/people/HunteR4708/) | [256455](https://freesound.org/s/256455/) Mouse Click, [256457](https://freesound.org/s/256457/) Mouse Scrolling Slow |
 | [jackieAZ](https://freesound.org/people/jackieAZ/) | [388958](https://freesound.org/s/388958/) Soft Two-Finger Snap |
+| [josefpres](https://freesound.org/people/josefpres/) | [564155](https://freesound.org/s/564155/) House loops 009 long version with drums 120 bmp.wav |
 | [khenshom](https://freesound.org/people/khenshom/) | [565205](https://freesound.org/s/565205/) Computer keyboard - Pressing fast and hard |
 | [Kinoton](https://freesound.org/people/Kinoton/) | [427823](https://freesound.org/s/427823/) Whoosh #1 |
 | [Kodack](https://freesound.org/people/Kodack/) | [395037](https://freesound.org/s/395037/) simple relaxing guitar loop |
 | [ldezem](https://freesound.org/people/ldezem/) | [386216](https://freesound.org/s/386216/) Steel - Angle ring drop |
-| [LilMati](https://freesound.org/people/LilMati/) | [702773](https://freesound.org/s/702773/) Swipe.wav |
+| [LilMati](https://freesound.org/people/LilMati/) | [702773](https://freesound.org/s/702773/) Swipe.wav, [714565](https://freesound.org/s/714565/) Fashion Shimmer - Luxury Runway Percussion Stinger |
+| [LogicMoon](https://freesound.org/people/LogicMoon/) | [636557](https://freesound.org/s/636557/) neo_beat_128bpm.wav |
 | [ludvique](https://freesound.org/people/ludvique/) | [71852](https://freesound.org/s/71852/) digital_whoosh_soft.wav |
 | [Lunardrive](https://freesound.org/people/Lunardrive/) | [22417](https://freesound.org/s/22417/) Single Heartbeat HQ_BeatSmith.wav |
 | [memes_hodachy](https://freesound.org/people/memes_hodachy/) | [554208](https://freesound.org/s/554208/) cardsound32562 |
@@ -108,16 +112,20 @@ All recorded sounds and music beds shipped here are **CC0** (public domain). CC0
 | [pbimal](https://freesound.org/people/pbimal/) | [534103](https://freesound.org/s/534103/) mouse-click-single-00.flac |
 | [Pixeliota](https://freesound.org/people/Pixeliota/) | [678248](https://freesound.org/s/678248/) Mouse Click Sound.mp3 |
 | [PollyannaMedia](https://freesound.org/people/PollyannaMedia/) | [541434](https://freesound.org/s/541434/) heartbeat.wav |
+| [RutgerMuller](https://freesound.org/people/RutgerMuller/) | [51252](https://freesound.org/s/51252/) Minimal Techno with Real Drums.wav |
 | [Sclolex](https://freesound.org/people/Sclolex/) | [179779](https://freesound.org/s/179779/) wipe2.wav |
 | [Sergmusic](https://freesound.org/people/Sergmusic/) | [639933](https://freesound.org/s/639933/) Blue Sky.mp3 |
 | [Seth_Makes_Sounds](https://freesound.org/people/Seth_Makes_Sounds/) | [655615](https://freesound.org/s/655615/) Happy Hip Hop Beat, [670039](https://freesound.org/s/670039/) Chill Background Music, [679738](https://freesound.org/s/679738/) Calming Piano Loop 60bpm, [691837](https://freesound.org/s/691837/) Easy Going Music Loop |
 | [shortiefoeva2](https://freesound.org/people/shortiefoeva2/) | [412048](https://freesound.org/s/412048/) Making Up (soft Hip Hop) |
 | [Spacekittycat](https://freesound.org/people/Spacekittycat/) | [754201](https://freesound.org/s/754201/) Fast keyboard typing |
+| [SSS_Samples](https://freesound.org/people/SSS_Samples/) | [383975](https://freesound.org/s/383975/) Electric Dreams Loop [Electro] (125 BPM_ G Sharp Minor) |
 | [syntheffects](https://freesound.org/people/syntheffects/) | [685256](https://freesound.org/s/685256/) Riser sound effect short.wav |
-| [szegvari](https://freesound.org/people/szegvari/) | [607304](https://freesound.org/s/607304/) Beach Dance - EDM Dance Cinematic Party Eletro Chill Happy 120bpm Music - EQ Mastered.wav |
+| [szegvari](https://freesound.org/people/szegvari/) | [560618](https://freesound.org/s/560618/) Dark Ghost House, [593834](https://freesound.org/s/593834/) Sahara dance - Cinematic deep-house edm music beat.wav, [607304](https://freesound.org/s/607304/) Beach Dance - EDM Dance Cinematic Party Eletro Chill Happy 120bpm Music - EQ Mastered.wav |
+| [thehorsevalse](https://freesound.org/people/thehorsevalse/) | [627926](https://freesound.org/s/627926/) Behringer Neutron One Synth Challenge Tune (Prog/Tech - House/Trance -ish?).wav |
 | [Tomoyo Ichijouji](https://freesound.org/people/Tomoyo Ichijouji/) | [211246](https://freesound.org/s/211246/) PageRustle |
 | [UberBosser](https://freesound.org/people/UberBosser/) | [421581](https://freesound.org/s/421581/) wKey.wav, [421583](https://freesound.org/s/421583/) qKey.wav |
 | [vacuumfan7072](https://freesound.org/people/vacuumfan7072/) | [332713](https://freesound.org/s/332713/) Tap.flac |
+| [Vannipat](https://freesound.org/people/Vannipat/) | [701109](https://freesound.org/s/701109/) Melodic Progressive House Track Music.mp3 |
 | [videofueralle](https://freesound.org/people/videofueralle/) | [614153](https://freesound.org/s/614153/) Swishes_11_gentle.wav, [614156](https://freesound.org/s/614156/) Swishes_16_soft_slower.wav |
 | [xkeril](https://freesound.org/people/xkeril/) | [701104](https://freesound.org/s/701104/) Whoosh stereo light (transition) |
 | [zekybomb](https://freesound.org/people/zekybomb/) | [677658](https://freesound.org/s/677658/) Fast Typying.mp3 |

@@ -14,6 +14,7 @@
   - `onetake` (personal, non-commercial only).
   - `text-to-lottie` (Lottie elements).
   - `fish-audio-api` / `fish-audio-sdk` (voice).
+  - `real-device-model` whenever a real device or object is on screen (exact geometry from the maker's drawing, no flicker in moving frames).
   - The workspace skills `motion-new-project`, `motion-render-review`, `motion-asset-check` and `workspace-setup`.
 - MCP and connectors only Claude has here:
   - The Fish Audio connector (claude.ai): `search_voices`, `get_voice`, `text_to_speech`, `get_credit_balance`. It spends plan credits, so prefer `_shared/tools/fish_tts.py` with `s2.1-pro-free` for real takes.

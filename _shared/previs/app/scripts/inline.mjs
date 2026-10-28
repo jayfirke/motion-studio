@@ -34,6 +34,7 @@ const targets = [
   [resolve(app, '../page/index.html'), 'Previs Studio', true],
   [resolve(root, 'projects/011-crumb-previs/previs/page/index.html'), 'Crumb Previs', false],
   [resolve(root, 'projects/012-motion-studio-launch/previs/page/index.html'), 'motion-studio Launch Previs', false],
+  [resolve(root, 'projects/018-motion-studio-showreel/previs/page/index.html'), 'motion-studio Showreel Previs', false],
 ]
 for (const [file, title, always] of targets) {
   if (!always && !existsSync(dirname(file))) continue

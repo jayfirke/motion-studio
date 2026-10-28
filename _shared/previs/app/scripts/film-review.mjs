@@ -7,7 +7,7 @@
 // for measuring each sound against its picture event. Prints dropped video frames and long paint gaps.
 import { chromium } from 'playwright-core'
 import { createServer } from 'node:http'
-import { readFile, mkdir, writeFile, rm } from 'node:fs/promises'
+import { readFile, mkdir, writeFile, rm, symlink } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import { extname, join, resolve } from 'node:path'
 import { homedir, tmpdir } from 'node:os'
@@ -90,13 +90,17 @@ async function pass(withPicture, solo) {
 
 const A = await pass(true, null)
 const lead = A.playT0 - A.recT0, dur = TO - FROM
-// picture: each frame holds until the next, on the playback clock (0 = play pressed)
-let list = ''; const fr = A.frames.filter(f => f.t >= A.playT0 - 0.5)
-fr.forEach((f, i) => { const nx = i + 1 < fr.length ? fr[i + 1].t : A.playT0 + dur; list += `file '${f.file}'\nduration ${Math.max(0.001, nx - Math.max(f.t, A.playT0)).toFixed(4)}\n` })
-if (fr.length) list += `file '${fr[fr.length - 1].file}'\n`
-await writeFile(join(A.tmp, 'list.txt'), list)
-execFileSync('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', '-f', 'concat', '-safe', '0', '-i', join(A.tmp, 'list.txt'), '-ss', String(Math.max(0, lead - lead)), '-i', join(A.tmp, 'a.webm'),
-  '-filter_complex', `[0:v]fps=30,format=yuv420p,trim=0:${dur.toFixed(3)}[v];[1:a]atrim=start=${lead.toFixed(3)},asetpts=PTS-STARTPTS,atrim=0:${dur.toFixed(3)},aresample=48000[a]`,
+// picture: output frame k (30 fps, 0 = play pressed) shows the newest painted frame at or before that instant. (A concat
+// list with per-frame durations rounds every frame time to its 1/25 s image time base, which repeated every 6th frame.)
+const seq = join(A.tmp, 'seq'); await mkdir(seq, { recursive: true })
+const fr = A.frames, nOut = Math.max(1, Math.round(dur * 30))
+for (let k = 0, j = 0; k < nOut; k++) {
+  const tk = A.playT0 + k / 30 + 0.004
+  while (j + 1 < fr.length && fr[j + 1].t <= tk) j++
+  if (fr.length) await symlink(fr[j].file, join(seq, `o${String(k).padStart(6, '0')}.jpg`))
+}
+execFileSync('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', '-framerate', '30', '-i', join(seq, 'o%06d.jpg'), '-i', join(A.tmp, 'a.webm'),
+  '-filter_complex', `[0:v]format=yuv420p,trim=0:${dur.toFixed(3)}[v];[1:a]atrim=start=${lead.toFixed(3)},asetpts=PTS-STARTPTS,atrim=0:${dur.toFixed(3)},aresample=48000[a]`,
   '-map', '[v]', '-map', '[a]', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '20', '-c:a', 'aac', '-b:a', '256k', '-movflags', '+faststart', out])
 console.log(`${out}: ${dur.toFixed(1)} s, ${A.frames.length} painted frames (${(A.frames.length / dur).toFixed(1)} per second), audio lead ${lead.toFixed(3)} s`)
 console.log(`video frames dropped by the page's clips: ${A.stats.dropped} of ${A.stats.total}; longest paint gaps (film time s, ms): ${JSON.stringify(A.stats.gaps)}`)

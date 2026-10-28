@@ -17,7 +17,7 @@
 // Frames come from Chrome's screencast (JPEG q90, every painted frame), re-timed to a constant 30 fps H.264 file.
 import { chromium } from 'playwright-core'
 import { createServer } from 'node:http'
-import { readFile, mkdir, writeFile, rm } from 'node:fs/promises'
+import { readFile, mkdir, writeFile, rm, symlink } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import { extname, join, resolve, dirname } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
@@ -185,18 +185,21 @@ await cdp.send('Page.stopScreencast')
 await sleep(300)
 await browser.close(); server.close()
 
-// ---- re-time to constant 30 fps (each screencast frame holds until the next one)
-const tStart = frames.length ? Math.min(frames[0].t, t0) : t0
-let list = ''
-frames.forEach((f, i) => {
-  const next = i + 1 < frames.length ? frames[i + 1].t : t1
-  list += `file '${f.file}'\nduration ${Math.max(0.001, next - f.t).toFixed(4)}\n`
-})
-if (frames.length) list += `file '${frames[frames.length - 1].file}'\n`
-await writeFile(join(tmp, 'list.txt'), list)
+// ---- re-time to constant 30 fps: output frame k shows the newest screencast frame painted at or before k / 30 s.
+// (Until 2026-10-07 this went through ffmpeg's concat demuxer with per-frame durations, whose image inputs use a 1/25 s
+// time base: every frame time was rounded to 40 ms, so clips moved at 25 fps with a repeated frame every 6th frame.
+// Chrome paints at 120 Hz and the screencast delivers ~90 frames a second, so picking by timestamp gives true 30 fps.)
+const FPS = 30, tFirst = frames.length ? frames[0].t : t0
+const nOut = Math.max(1, Math.round((t1 - tFirst) * FPS))
+const seq = join(tmp, 'seq'); await mkdir(seq, { recursive: true })
+for (let k = 0, j = 0; k < nOut; k++) {
+  const tk = tFirst + k / FPS + 0.004   // a few ms of slack for timestamp jitter
+  while (j + 1 < frames.length && frames[j + 1].t <= tk) j++
+  await symlink(frames[j].file, join(seq, `o${String(k).padStart(6, '0')}.jpg`))
+}
 const lead = Math.max(0, frames.length ? frames[0].t - t0 : 0)
-execFileSync('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', '-f', 'concat', '-safe', '0', '-i', join(tmp, 'list.txt'),
-  '-vf', `fps=30,scale=${Math.round(W * DPR / 2) * 2}:${Math.round(H * DPR / 2) * 2}:flags=lanczos,format=yuv420p`, '-c:v', 'libx264', '-preset', 'slow', '-crf', CRF, '-movflags', '+faststart', out])
+execFileSync('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', '-framerate', String(FPS), '-i', join(seq, 'o%06d.jpg'),
+  '-vf', `scale=${Math.round(W * DPR / 2) * 2}:${Math.round(H * DPR / 2) * 2}:flags=lanczos,format=yuv420p`, '-c:v', 'libx264', '-preset', 'slow', '-crf', CRF, '-movflags', '+faststart', out])
 await writeFile(out.replace(/\.mp4$/, '.events.json'), JSON.stringify({ duration: +(t1 - t0).toFixed(3), video_starts_at: +lead.toFixed(3), w: Math.round(W * DPR), h: Math.round(H * DPR), events }, null, 1))
 await rm(tmp, { recursive: true, force: true })
 console.log(`${out}: ${(t1 - t0).toFixed(1)} s, ${frames.length} painted frames, ${events.filter(e => e.type === 'click').length} clicks, ${events.filter(e => e.type !== 'click' && e.type !== 'mark').length} keys`)

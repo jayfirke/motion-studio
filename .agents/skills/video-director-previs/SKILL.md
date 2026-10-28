@@ -39,6 +39,7 @@ The owner sends notes from the page ("Send to Claude Code": a live comment that 
 - **Infer aggressively; ask only true blockers** (product truth, a missing asset, a licence question). Never a long questionnaire before the owner sees something.
 - **Three options on every decision, by default.** Direction, music, motion feel, pacing, and per scene: transition, camera, voice line, each SFX event. Options must be genuinely different. Mark the director's pick and give each option one plain sentence of why or trade-off. "Nothing" is a valid SFX option.
 - **Product truth.** Every scene is labelled `real_ui`, `conceptual_ui`, `conceptual_visual` or `external_footage`; anything not real shows a label in the player.
+- **Real devices are exact from the first previs.** A phone, laptop or other real object on screen follows the `real-device-model` skill: the maker's drawing, native-size screens with the cutout drawn in, and no flicker while it moves. Reviewers notice a demo-looking or flickering device in the previs itself.
 - **House rules still apply** (AGENTS.md, OWNER.md): banned clichés, carries, two text levels, recorded foley, the default voice, licences. The page only plays CC0 or self-made audio; Mixkit (render-only) appears by name only.
 - **Scale down.** A 6 s sting can be one direction card, 3 music options and a 6 s animatic. A 40 s product film gets the full set.
 - **Locks.** Once the owner approves, story, copy, order, timing and picks are locked. A later note changes only its target; list what you preserved.

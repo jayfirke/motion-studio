@@ -115,7 +115,7 @@ AGENTS.md              the house rules every agent follows (engine choice, rende
 AGENTS-tooling.md      tested commands and every gotcha, per engine
 OWNER.example.md       your preferences (voice, quality bar, taste, budget); setup turns it into OWNER.md, which stays local
 SETUP.md, scripts/setup/   first-run setup that Claude Code runs with you: health check, installs, Keychain keys
-.agents/skills/        workspace skills: workspace-setup, video-director-previs, motion-new-project, motion-render-review, motion-asset-check
+.agents/skills/        workspace skills: workspace-setup, video-director-previs, real-device-model, motion-new-project, motion-render-review, motion-asset-check
 _shared/previs/        Previs Studio (React + TypeScript app, source and built page) and the spec freezer
 _shared/sfx, music, fonts   CC0 sound effects (Kenney, UISFX), CC0 music beds from Freesound, OFL fonts; every file in _shared/ASSETS.md
 _shared/tools/         fish_tts.py (Fish Audio voice-over), freesound.py (CC0 sound search and download)
